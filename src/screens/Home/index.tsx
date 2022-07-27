@@ -1,17 +1,27 @@
 import React from "react";
-import { Anchors, LatestPodcasts, Container } from "../../components";
+import { Anchors, LatestPodcasts, Container, LikedEpisodes } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings } from "../../helpers";
+
+import { Head, AnchorContainer, LatestPodcastsContainer } from "./styles";
 
 export default function Home() {
   return (
     <Container>
-      <Title>{greetings()}, Jegue! 🐯🏹</Title>
-      <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
+      <Head>
+        <Title>{greetings()}, Jegue! 🐯🏹</Title>
+        <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
+      </Head>
 
-      <Anchors />
+      <AnchorContainer>
+        <Anchors />
+      </AnchorContainer>
 
-      <LatestPodcasts />
+      <LatestPodcastsContainer>
+        <LatestPodcasts />
+      </LatestPodcastsContainer>
+
+      <LikedEpisodes />
     </Container>
   );
 }

@@ -13,5 +13,11 @@ export default {
 
     ANCHOR_BUTTON_BACKGROUND: "#FFFFFF",
     ANCHOR_BUTTON_TEXT: "#333333",
+    
+    BORDER_COLOR: "rgba(255, 255, 255, 0.08)",
+  },
+
+  DIMENSIONS: {
+    PADDING_VERTICAL: "15px",
   },
 };
