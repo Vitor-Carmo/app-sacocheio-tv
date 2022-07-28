@@ -5,6 +5,8 @@ import LatestPodcasts from "./LatestPodcasts";
 import FeaturedPodcast from "./FeaturedPodcast";
 import Container from "./Container";
 import LikedEpisodes from "./LikedEpisodes";
+import Shows from "./Shows";
+import OfficialPlaylist from "./OfficialPlaylist";
 
 export {
   Anchors,
@@ -13,5 +15,7 @@ export {
   AnchorButton,
   FeaturedPodcast,
   Container,
-  LikedEpisodes
+  LikedEpisodes,
+  Shows,
+  OfficialPlaylist
 };

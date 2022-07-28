@@ -1,5 +1,12 @@
 import React from "react";
-import { Anchors, LatestPodcasts, Container, LikedEpisodes } from "../../components";
+import {
+  Anchors,
+  LatestPodcasts,
+  Container,
+  LikedEpisodes,
+  Shows,
+  OfficialPlaylist
+} from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings } from "../../helpers";
 
@@ -22,6 +29,9 @@ export default function Home() {
       </LatestPodcastsContainer>
 
       <LikedEpisodes />
+
+      <Shows />
+      <OfficialPlaylist />
     </Container>
   );
 }
