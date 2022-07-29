@@ -8,7 +8,12 @@ interface ILatestPodcasts {
   marginBottom?: string;
 }
 
-export default function AnchorButton({ children, width, marginBottom, onPress }: ILatestPodcasts) {
+export default function AnchorButton({
+  children,
+  width,
+  marginBottom,
+  onPress,
+}: ILatestPodcasts) {
   return (
     <Container width={width} marginBottom={marginBottom} onPress={onPress}>
       <Text>{children}</Text>

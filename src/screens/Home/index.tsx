@@ -31,6 +31,7 @@ export default function Home() {
       <LikedEpisodes />
 
       <Shows />
+
       <OfficialPlaylist />
     </Container>
   );

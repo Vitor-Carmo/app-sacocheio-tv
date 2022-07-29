@@ -1,30 +1,24 @@
 import React from "react";
+import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTheme } from "styled-components/native";
 
-import Login from "../screens/Login";
-import Home from "../screens/Home";
-
-const { Navigator, Screen } = createNativeStackNavigator();
+import TabRoutes from "./tab.routes";
 
 export default function Routes() {
-  const navigatorConfig = {
-    initialRouteName: "Home",
-    navigationOptions: {
-      headerShown: false,
-    },
-    screenOptions: {},
-  };
+  const { COLORS } = useTheme();
 
   return (
-    <NavigationContainer>
-      <Navigator
-        initialRouteName={navigatorConfig.initialRouteName}
-        screenOptions={navigatorConfig.navigationOptions}
-      >
-        <Screen name="Login" component={Login} />
-        <Screen name="Home" component={Home} />
-      </Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer>
+        <TabRoutes />
+      </NavigationContainer>
+
+      <StatusBar
+        animated
+        style="light"
+        backgroundColor={COLORS.STATUSBAR_COLOR}
+      />
+    </>
   );
 }

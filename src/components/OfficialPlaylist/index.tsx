@@ -1,13 +1,14 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { useTheme } from "styled-components";
-import AnchorButton from "../AnchorButton";
+import { Linking } from "react-native";
 
 import { Title, Subtitle } from "../../styles/global";
-
 import { Container, Playlist, Image, Content } from "./styles";
+import { SPOTIFY_PLAYLIST } from "../../constants";
 
 export default function OfficialPlaylist() {
+  const handleGoToPlaylist = () => {
+    Linking.openURL(SPOTIFY_PLAYLIST);
+  }
 
   return (
     <Container>
@@ -15,7 +16,7 @@ export default function OfficialPlaylist() {
         Playlist oficial da Rádio{"\n"}
         Saco Cheio 📻
       </Title>
-      <Playlist>
+      <Playlist onPress={handleGoToPlaylist}>
         <Image />
         <Content>
           <Title fontSize="14px" marginBottom="5px">

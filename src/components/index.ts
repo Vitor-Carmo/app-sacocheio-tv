@@ -7,6 +7,7 @@ import Container from "./Container";
 import LikedEpisodes from "./LikedEpisodes";
 import Shows from "./Shows";
 import OfficialPlaylist from "./OfficialPlaylist";
+import TabBar from "./TabBar";
 
 export {
   Anchors,
@@ -17,5 +18,6 @@ export {
   Container,
   LikedEpisodes,
   Shows,
-  OfficialPlaylist
+  OfficialPlaylist,
+  TabBar
 };

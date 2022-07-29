@@ -14,8 +14,13 @@ export default {
 
     ANCHOR_BUTTON_BACKGROUND: "#FFFFFF",
     ANCHOR_BUTTON_TEXT: "#333333",
-    
+
     BORDER_COLOR: "rgba(255, 255, 255, 0.08)",
+
+    STATUSBAR_COLOR: "rgba(32, 32, 32, 0.8)",
+    
+    TAB_BAR_COLOR: "rgb(25, 25, 25)",
+    TAB_BAR_COLOR_OPACITY: "rgba(25, 25, 25, 0.2)",
   },
 
   DIMENSIONS: {

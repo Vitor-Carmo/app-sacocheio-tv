@@ -1,6 +1,5 @@
 import styled from "styled-components/native";
-//import RNLinearGradient from "react-native-linear-gradient";
-import {LinearGradient as RNLinearGradient} from 'expo-linear-gradient';
+import { LinearGradient as RNLinearGradient } from "expo-linear-gradient";
 
 import { ScrollView } from "react-native";
 
@@ -9,4 +8,5 @@ export const LinearGradient = styled(RNLinearGradient).attrs({
 })`
   flex: 1;
   padding: 45px 0px;
+  padding-bottom: 70px;
 `;
