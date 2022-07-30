@@ -1,7 +1,6 @@
 import React from "react";
-import { ScrollView } from "react-native";
 
-import { LinearGradient } from "./styles";
+import { ScrollView, LinearGradient } from "./styles";
 
 interface IContainerProps {
   children: React.ReactNode;
