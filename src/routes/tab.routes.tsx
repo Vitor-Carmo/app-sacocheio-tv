@@ -5,7 +5,8 @@ import {
 } from "@react-navigation/bottom-tabs";
 
 import { TabBar } from "../components";
-import Home from "../screens/Home";
+import HomeRoutes from "./home.routes";
+import PodcastsRoutes from "./podcast.routes";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -20,9 +21,9 @@ export default function TabRoutes() {
 
   return (
     <Navigator {...navigatorConfig}>
-      <Screen name="Home" component={Home} />
-      <Screen name="Programas" component={Home} />
-      <Screen name="Biblioteca" component={Home} />
+      <Screen name="Home" component={HomeRoutes} />
+      <Screen name="Programas" component={PodcastsRoutes} />
+      <Screen name="Biblioteca" component={HomeRoutes} />
     </Navigator>
   );
 }
