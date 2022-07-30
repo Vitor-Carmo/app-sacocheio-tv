@@ -23,5 +23,5 @@ export const Subtitle = styled.Text<SubtitleProps>`
   font-size: ${({ fontSize }) => fontSize ?? "10px"};
   margin-top: -8px;
   margin-bottom: ${({ marginBottom }) => marginBottom ?? "0px"};
-  color: ${({ theme, color }) => color ?? theme.COLORS.TEXT_COLOR_50};
+  color: ${({ theme, color }) => color ?? theme.COLORS.TEXT_50};
 `;

@@ -23,7 +23,7 @@ export default function TabBar({
   };
 
   return (
-    <Container colors={[COLORS.TAB_BAR_COLOR_OPACITY, COLORS.TAB_BAR_COLOR]}>
+    <Container colors={[COLORS.TAB_BAR_OPACITY, COLORS.TAB_BAR]}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label = (

@@ -22,5 +22,5 @@ export const Tab = styled.View<{ isFocused: boolean }>`
 export const TabTitle = styled.Text`
   font-family: "Poppins_400Regular";
   font-size: 12px;
-  color: ${({ theme }) => theme.COLORS.TEXT_COLOR};
+  color: ${({ theme }) => theme.COLORS.TEXT};
 `;

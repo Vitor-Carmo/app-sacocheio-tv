@@ -10,14 +10,14 @@ export default function Routes() {
 
   return (
     <>
-      <NavigationContainer>
+      <NavigationContainer >
         <TabRoutes />
       </NavigationContainer>
 
       <StatusBar
         animated
         style="light"
-        backgroundColor={COLORS.STATUSBAR_COLOR}
+        backgroundColor={COLORS.STATUSBAR}
       />
     </>
   );

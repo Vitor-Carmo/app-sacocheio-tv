@@ -8,9 +8,9 @@ export const Container = styled.View<IContainerProps>`
   padding: 30px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
 
   border-top-width: 1px;
-  border-top-color: ${({ theme }) => theme.COLORS.BORDER_COLOR};
+  border-top-color: ${({ theme }) => theme.COLORS.BORDER};
   border-bottom-width: 1px;
-  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER_COLOR};
+  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
 `;
 
 export const Header = styled.View`
@@ -30,7 +30,7 @@ export const Podcast = styled.TouchableOpacity.attrs({
   margin-bottom: ${({ lastEpisode }) => (lastEpisode ? "0px" : "15px")};
   padding-bottom: ${({ lastEpisode }) => (lastEpisode ? "0px" : "15px")};
   border-bottom-width: ${({ lastEpisode }) => (lastEpisode ? "0px" : "1px")};
-  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER_COLOR};
+  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
 `;
 export const PodcastContent = styled.View`
   flex: 1;

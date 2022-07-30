@@ -5,22 +5,22 @@ export default {
 
     PRIMARY: "#FFC739",
     SECONDARY: "#806E42",
-    TEXT_COLOR: "#FFFFFF",
+    TEXT: "#FFFFFF",
 
-    TEXT_COLOR_40: "rgba(255, 255, 255, 0.4)",
-    TEXT_COLOR_50: "rgba(255, 255, 255, 0.5)",
-    TEXT_COLOR_60: "rgba(255, 255, 255, 0.6)",
-    TEXT_COLOR_80: "rgba(255, 255, 255, 0.8)",
+    TEXT_40: "rgba(255, 255, 255, 0.4)",
+    TEXT_50: "rgba(255, 255, 255, 0.5)",
+    TEXT_60: "rgba(255, 255, 255, 0.6)",
+    TEXT_80: "rgba(255, 255, 255, 0.8)",
 
     ANCHOR_BUTTON_BACKGROUND: "#FFFFFF",
     ANCHOR_BUTTON_TEXT: "#333333",
 
-    BORDER_COLOR: "rgba(255, 255, 255, 0.08)",
+    BORDER: "rgba(255, 255, 255, 0.08)",
 
-    STATUSBAR_COLOR: "rgba(32, 32, 32, 0.8)",
+    STATUSBAR: "rgba(32, 32, 32, 0.8)",
     
-    TAB_BAR_COLOR: "rgb(25, 25, 25)",
-    TAB_BAR_COLOR_OPACITY: "rgba(25, 25, 25, 0.2)",
+    TAB_BAR: "rgb(25, 25, 25)",
+    TAB_BAR_OPACITY: "rgba(25, 25, 25, 0.1)",
   },
 
   DIMENSIONS: {
