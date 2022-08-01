@@ -1,3 +1,6 @@
+import PasswordEyeVisible from "../assets/svg/eye_visible.svg";
+import PasswordEyeInvisible from "../assets/svg/eye_invisible.svg";
+
 export default {
   COLORS: {
     BACKGROUND: "#202020",
@@ -18,12 +21,18 @@ export default {
     BORDER: "rgba(255, 255, 255, 0.08)",
 
     STATUSBAR: "rgba(32, 32, 32, 0.8)",
-    
+
     TAB_BAR: "rgb(25, 25, 25)",
     TAB_BAR_OPACITY: "rgba(25, 25, 25, 0.1)",
   },
 
   DIMENSIONS: {
     PADDING_VERTICAL: "15px",
+  },
+
+  IMAGES: {
+    LOGIN_BACKGROUND: require("../assets/image/login-background.png"),
+    PASSWORD_EYE_VISIBLE: PasswordEyeVisible,
+    PASSWORD_EYE_INVISIBLE: PasswordEyeInvisible,
   },
 };

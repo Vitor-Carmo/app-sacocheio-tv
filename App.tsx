@@ -8,6 +8,12 @@ import {
   Poppins_400Regular,
 } from "@expo-google-fonts/poppins";
 
+import {
+  Roboto_400Regular,
+  Roboto_700Bold,
+  Roboto_500Medium,
+} from "@expo-google-fonts/roboto";
+
 import dark from "./src/themes/dark";
 import Routes from "./src/routes";
 
@@ -17,6 +23,9 @@ export default function App() {
     Poppins_400Regular,
     Poppins_600SemiBold,
     Poppins_700Bold,
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_700Bold
   });
 
   if (!fontsLoaded) {
