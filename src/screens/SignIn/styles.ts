@@ -115,5 +115,5 @@ export const SignInText = styled.Text`
   font-family: "Roboto_500Medium";
   font-size: 16px;
   text-align: center;
-  color: ${({ theme }) => theme.COLORS.TEXT};
+  color: white;
 `;
