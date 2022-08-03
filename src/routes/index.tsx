@@ -12,11 +12,6 @@ import { useTheme } from "styled-components/native";
 import TabRoutes from "./tab.routes";
 import LoginRoutes from "./login.routes";
 
-export type RoutesProps = {
-  LoginStack: undefined;
-  AppStack: undefined;
-};
-
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function Routes() {
