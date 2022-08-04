@@ -6,7 +6,7 @@ import {
 
 import { TabBar } from "../components";
 import HomeRoutes from "./home.routes";
-import PodcastsRoutes from "./podcast.routes";
+import ProgramsRoutes from "./programs.routes";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -22,8 +22,8 @@ export default function TabRoutes() {
   return (
     <Navigator {...navigatorConfig}>
       <Screen name="Home" component={HomeRoutes} />
-      <Screen name="Programas" component={PodcastsRoutes} />
-      <Screen name="Biblioteca" component={HomeRoutes} />
+      <Screen name="Programs" component={ProgramsRoutes} />
+      <Screen name="Library" component={HomeRoutes} />
     </Navigator>
   );
 }

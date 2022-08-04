@@ -1,20 +1,17 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
-
-type ProgramasParamList = {
-  PodcastsList: undefined;
-};
-
-type TabParamList = {
-  Home: undefined;
-  Programas: NavigatorScreenParams<ProgramasParamList>;
-  Biblioteca: undefined;
-};
-
 export declare global {
   namespace ReactNavigation {
     interface RootParamList {
-      LoginStack: undefined;
-      AppStack: NavigatorScreenParams<TabParamList>;
+      AppStack: NavigatorScreenParams<any, any> | undefined;
+      LoginStack: NavigatorScreenParams<any, any> | undefined;
+      Home: NavigatorScreenParams<any, any> | undefined;
+      Programs: NavigatorScreenParams<any, any> | undefined;
+      Bibliotecas: NavigatorScreenParams<any, any> | undefined;
+      SignIn: undefined;
+      HomeScreen: undefined;
+      ProgramsList: undefined;
+      Program: undefined;
+      Library: undefined;
     }
   }
 }

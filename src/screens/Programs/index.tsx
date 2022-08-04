@@ -1,11 +1,14 @@
 import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { Container } from "../../components";
+import { IPodcast } from "../../interfaces";
 import { Title, Subtitle } from "../../styles/global";
 
 import { Head, Podcast, PodcastImage, PodcastContent } from "./styles";
 
-export default function PodcastsList() {
-  const podcasts = [
+export default function Programs() {
+  const navigation = useNavigation();
+  const podcasts: IPodcast[] = [
     {
       image: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
       title: "Podcast Saco Cheio",
@@ -37,7 +40,11 @@ export default function PodcastsList() {
         "O programa é para ouvintes que não procuram cultura, informação ou opiniões inteligentes. Durante uma hora que não procuram cultura, que não procuram cultura.",
     },
   ];
-  
+
+  const handleGoToProgram = (podcast: IPodcast) => {
+    navigation.navigate("Program");
+  };
+
   return (
     <Container>
       <Head>
@@ -50,6 +57,7 @@ export default function PodcastsList() {
         <Podcast
           key={index}
           isItTheLatestPodcastItem={index === podcasts.length - 1}
+          onPress={() => handleGoToProgram(podcast)}
         >
           <PodcastImage
             source={{

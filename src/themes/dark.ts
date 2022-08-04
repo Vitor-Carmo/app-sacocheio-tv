@@ -10,9 +10,11 @@ export default {
     SECONDARY: "#806E42",
     TEXT: "#FFFFFF",
 
+    TEXT_30: "rgba(255, 255, 255, 0.3)",
     TEXT_40: "rgba(255, 255, 255, 0.4)",
     TEXT_50: "rgba(255, 255, 255, 0.5)",
     TEXT_60: "rgba(255, 255, 255, 0.6)",
+    TEXT_70: "rgba(255, 255, 255, 0.7)",
     TEXT_80: "rgba(255, 255, 255, 0.8)",
 
     ANCHOR_BUTTON_BACKGROUND: "#FFFFFF",
@@ -24,6 +26,11 @@ export default {
 
     TAB_BAR: "rgb(25, 25, 25)",
     TAB_BAR_OPACITY: "rgba(25, 25, 25, 0.1)",
+
+    FILTER_BUTTON_BACKGROUND: "#383332",
+    FILTER_BUTTON_TITLE: "#ffffff",
+
+    TIMER_BACKGROUND: "#383332",
   },
 
   DIMENSIONS: {

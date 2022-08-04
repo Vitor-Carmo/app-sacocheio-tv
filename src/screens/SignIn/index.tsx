@@ -26,6 +26,7 @@ export default function SignIn() {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigation = useNavigation();
+
   const { IMAGES, COLORS } = useTheme();
 
   const handleShowPassword = () => {
@@ -37,7 +38,7 @@ export default function SignIn() {
   };
 
   const handleSignIn = () => {
-    //navigation.navigate("AppStack");
+    navigation.navigate("AppStack");
   };
 
   return (

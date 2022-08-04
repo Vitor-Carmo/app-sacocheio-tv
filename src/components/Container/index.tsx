@@ -1,14 +1,11 @@
 import React from "react";
+import { ScrollViewProps } from "react-native";
 
 import { ScrollView, LinearGradient } from "./styles";
 
-interface IContainerProps {
-  children: React.ReactNode;
-}
-
-export default function Container({ children }: IContainerProps) {
+export default function Container({ children, ...props }: ScrollViewProps) {
   return (
-    <ScrollView>
+    <ScrollView {...props}>
       <LinearGradient>{children}</LinearGradient>
     </ScrollView>
   );

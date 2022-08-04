@@ -15,13 +15,14 @@ export const Title = styled.Text<TitleProps>`
 export interface SubtitleProps {
   fontSize?: string;
   marginBottom?: string;
+  marginTop?: string;
   color?: string;
 }
 
 export const Subtitle = styled.Text<SubtitleProps>`
   font-family: "Poppins_600SemiBold";
   font-size: ${({ fontSize }) => fontSize ?? "10px"};
-  margin-top: -8px;
+  margin-top:${({ marginTop }) => marginTop ?? "-8px"};
   margin-bottom: ${({ marginBottom }) => marginBottom ?? "0px"};
   color: ${({ theme, color }) => color ?? theme.COLORS.TEXT_50};
 `;

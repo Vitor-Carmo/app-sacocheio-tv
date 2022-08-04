@@ -4,8 +4,8 @@ import { useTheme } from "styled-components/native";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { SvgProps } from "react-native-svg";
 import Home from "../../assets/svg/home.svg";
-import Programas from "../../assets/svg/programas.svg";
-import Biblioteca from "../../assets/svg/biblioteca.svg";
+import Programs from "../../assets/svg/programas.svg";
+import Library from "../../assets/svg/biblioteca.svg";
 
 import { Container, Tab, TabTitle } from "./styles";
 
@@ -18,8 +18,8 @@ export default function TabBar({
 
   const icons: { [key: string]: FC<SvgProps> } = {
     Home,
-    Programas,
-    Biblioteca,
+    Programs,
+    Library,
   };
 
   return (

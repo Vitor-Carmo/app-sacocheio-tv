@@ -1,13 +1,14 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import PodcastsList from "../screens/PodcastsList";
+import Programs from "../screens/Programs";
+import Program from "../screens/Program";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
-export default function PodcastRoutes() {
+export default function ProgramsRoutes() {
   const navigatorConfig = {
-    initialRouteName: "PodcastList",
+    initialRouteName: "ProgramsList",
     screenOptions: {
       headerShown: false,
     },
@@ -15,7 +16,8 @@ export default function PodcastRoutes() {
 
   return (
     <Navigator {...navigatorConfig}>
-      <Screen name="PodcastsList" component={PodcastsList} />
+      <Screen name="ProgramsList" component={Programs} />
+      <Screen name="Program" component={Program} />
     </Navigator>
   );
 }
