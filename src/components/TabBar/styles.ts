@@ -1,7 +1,6 @@
 import styled from "styled-components/native";
 import PlayListImage from "../../assets/image/playlist.jpeg";
 import { LinearGradient } from "expo-linear-gradient";
-import { View, TouchableOpacity } from "react-native";
 
 export const Container = styled(LinearGradient)`
   flex-direction: row;
@@ -13,6 +12,7 @@ export const Container = styled(LinearGradient)`
 `;
 
 export const Tab = styled.View<{ isFocused: boolean }>`
+  width: 70px;
   align-items: center;
   justify-content: center;
   height: 100%;

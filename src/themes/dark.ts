@@ -25,7 +25,7 @@ export default {
     STATUSBAR: "rgba(32, 32, 32, 0.8)",
 
     TAB_BAR: "rgb(25, 25, 25)",
-    TAB_BAR_OPACITY: "rgba(25, 25, 25, 0.1)",
+    TAB_BAR_OPACITY: "rgba(25, 25, 25, 0.6)",
 
     FILTER_BUTTON_BACKGROUND: "#383332",
     FILTER_BUTTON_TITLE: "#ffffff",
@@ -35,6 +35,7 @@ export default {
 
   DIMENSIONS: {
     PADDING_VERTICAL: "15px",
+    MARGIN_BOTTOM_TO_TAB_BAR: "60px",
   },
 
   IMAGES: {

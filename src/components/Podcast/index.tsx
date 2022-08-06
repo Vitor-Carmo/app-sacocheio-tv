@@ -22,11 +22,19 @@ import OptionsSvg from "../../assets/svg/options.svg";
 import PauseIcon from "../../assets/svg/small_pause.svg";
 import PlayIcon from "../../assets/svg/small_play.svg";
 
-export default function Podcast() {
+export type PodcastProps = {
+  isLastPodcast?: boolean;
+};
+
+export default function Podcast({ isLastPodcast }: PodcastProps) {
   const [isPlaying, setIsPlaying] = useState(false);
 
+  const handleClickPlayButton = () => {
+    setIsPlaying(!isPlaying);
+  };
+
   return (
-    <Container>
+    <Container isLastPodcast={isLastPodcast}>
       <AvatarContainer>
         <Avatar
           source={{
@@ -62,10 +70,8 @@ export default function Podcast() {
           </Option>
         </Options>
 
-        <PlayButton>
-          {
-            isPlaying ? <PauseIcon /> : <PlayIcon />
-          }
+        <PlayButton onPress={handleClickPlayButton}>
+          {isPlaying ? <PauseIcon /> : <PlayIcon />}
         </PlayButton>
       </OptionsContainer>
     </Container>

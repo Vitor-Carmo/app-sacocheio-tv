@@ -1,8 +1,15 @@
 import styled from "styled-components/native";
 
-export const Container = styled.View`
+type IContainerProps = {
+  isLastPodcast?: boolean;
+};
+
+export const Container = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})<IContainerProps>`
   padding: 15px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
-  border-bottom-width: 1px;
+  border-bottom-width: ${({ isLastPodcast }) =>
+    isLastPodcast ? "0px" : "1px"};
   border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
 `;
 

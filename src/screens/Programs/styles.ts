@@ -1,11 +1,19 @@
 import styled from "styled-components/native";
 
+export const Container = styled.ScrollView`
+  flex: 1;
+  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
+`;
+
 export const Head = styled.View`
   padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  margin-top: 45px;
   margin-bottom: 30px;
 `;
 
-export const Content = styled.View``;
+export const Content = styled.View`
+  margin-bottom: ${({ theme }) => theme.DIMENSIONS.MARGIN_BOTTOM_TO_TAB_BAR};
+`;
 
 export const Podcast = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,

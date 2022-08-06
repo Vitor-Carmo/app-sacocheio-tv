@@ -1,10 +1,17 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Container } from "../../components";
+import {} from "../../components";
 import { IPodcast } from "../../interfaces";
 import { Title, Subtitle } from "../../styles/global";
 
-import { Head, Podcast, PodcastImage, PodcastContent } from "./styles";
+import {
+  Container,
+  Head,
+  Podcast,
+  PodcastImage,
+  PodcastContent,
+  Content,
+} from "./styles";
 
 export default function Programs() {
   const navigation = useNavigation();
@@ -53,27 +60,30 @@ export default function Programs() {
           Se divirta com todos os programas de rádio disponível na Saco Cheio TV
         </Subtitle>
       </Head>
-      {podcasts.map((podcast, index) => (
-        <Podcast
-          key={index}
-          isItTheLatestPodcastItem={index === podcasts.length - 1}
-          onPress={() => handleGoToProgram(podcast)}
-        >
-          <PodcastImage
-            source={{
-              uri: podcast.image,
-            }}
-          />
-          <PodcastContent>
-            <Title fontSize="16px" marginBottom="5px">
-              {podcast.title}
-            </Title>
-            <Subtitle fontSize="12px" numberOfLines={4}>
-              {podcast.description}
-            </Subtitle>
-          </PodcastContent>
-        </Podcast>
-      ))}
+
+      <Content>
+        {podcasts.map((podcast, index) => (
+          <Podcast
+            key={index}
+            isItTheLatestPodcastItem={index === podcasts.length - 1}
+            onPress={() => handleGoToProgram(podcast)}
+          >
+            <PodcastImage
+              source={{
+                uri: podcast.image,
+              }}
+            />
+            <PodcastContent>
+              <Title fontSize="16px" marginBottom="5px">
+                {podcast.title}
+              </Title>
+              <Subtitle fontSize="12px" numberOfLines={4}>
+                {podcast.description}
+              </Subtitle>
+            </PodcastContent>
+          </Podcast>
+        ))}
+      </Content>
     </Container>
   );
 }

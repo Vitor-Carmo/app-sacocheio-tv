@@ -23,7 +23,7 @@ export default function TabRoutes() {
     <Navigator {...navigatorConfig}>
       <Screen name="Home" component={HomeRoutes} />
       <Screen name="Programs" component={ProgramsRoutes} />
-      <Screen name="Library" component={HomeRoutes} />
+      <Screen name="Biblioteca"  component={HomeRoutes} />
     </Navigator>
   );
 }

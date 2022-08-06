@@ -1,9 +1,9 @@
 import React from "react";
-import { View } from "react-native";
-import { Container, Podcast } from "../../components";
+import { Podcast } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 
 import {
+  Container,
   Head,
   HeadContent,
   Avatar,
@@ -12,6 +12,7 @@ import {
   FilterContainer,
   FilterButton,
   FilterButtonTitle,
+  PodcastListContent,
 } from "./styles";
 
 export default function Program() {
@@ -47,10 +48,16 @@ export default function Program() {
         </FilterButton>
       </FilterContainer>
 
-      <Podcast />
-      <Podcast />
-      <Podcast />
-      <Podcast />
+      <PodcastListContent>
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast isLastPodcast />
+      </PodcastListContent>
     </Container>
   );
 }

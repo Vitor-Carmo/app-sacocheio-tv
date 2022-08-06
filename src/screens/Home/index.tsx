@@ -2,15 +2,19 @@ import React from "react";
 import {
   Anchors,
   LatestPodcasts,
-  Container,
   LikedEpisodes,
   Shows,
-  OfficialPlaylist
+  OfficialPlaylist,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings } from "../../helpers";
 
-import { Head, AnchorContainer, LatestPodcastsContainer } from "./styles";
+import {
+  Container,
+  Head,
+  AnchorContainer,
+  LatestPodcastsContainer,
+} from "./styles";
 
 export default function Home() {
   return (

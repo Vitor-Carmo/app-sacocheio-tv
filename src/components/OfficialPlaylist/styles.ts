@@ -2,7 +2,8 @@ import styled from "styled-components/native";
 import PlayListImage from "../../assets/image/playlist.jpeg";
 export const Container = styled.View`
   padding: 30px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
-  padding-bottom: 0px;
+  padding-bottom: 10px;
+  margin-bottom: ${({ theme }) => theme.DIMENSIONS.MARGIN_BOTTOM_TO_TAB_BAR};
 `;
 
 export const Playlist = styled.TouchableOpacity.attrs({
