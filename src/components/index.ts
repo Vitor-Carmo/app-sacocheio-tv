@@ -8,6 +8,8 @@ import Shows from "./Shows";
 import OfficialPlaylist from "./OfficialPlaylist";
 import TabBar from "./TabBar";
 import Podcast from "./Podcast";
+import Play from "./Play";
+import Pause from "./Pause";
 
 export {
   Anchors,
@@ -20,4 +22,6 @@ export {
   OfficialPlaylist,
   TabBar,
   Podcast,
+  Play,
+  Pause,
 };

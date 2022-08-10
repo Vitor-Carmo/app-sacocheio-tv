@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Title, Subtitle } from "../../styles/global";
+import { Title } from "../../styles/global";
+import { useNavigation } from "@react-navigation/native";
 import {
   Container,
   AvatarContainer,
@@ -20,7 +21,8 @@ import Download from "../../assets/svg/download.svg";
 import Share from "../../assets/svg/share.svg";
 import OptionsSvg from "../../assets/svg/options.svg";
 import PauseIcon from "../../assets/svg/small_pause.svg";
-import PlayIcon from "../../assets/svg/small_play.svg";
+import Play from "../Play";
+import Pause from "../Pause";
 
 export type PodcastProps = {
   isLastPodcast?: boolean;
@@ -28,13 +30,17 @@ export type PodcastProps = {
 
 export default function Podcast({ isLastPodcast }: PodcastProps) {
   const [isPlaying, setIsPlaying] = useState(false);
-
-  const handleClickPlayButton = () => {
+  const navigation = useNavigation();
+  const handlePressPlayButton = () => {
     setIsPlaying(!isPlaying);
   };
 
+  const handlePressPodcast = () => {
+    navigation.navigate("Podcast");
+  };
+
   return (
-    <Container isLastPodcast={isLastPodcast}>
+    <Container isLastPodcast={isLastPodcast} onPress={handlePressPodcast}>
       <AvatarContainer>
         <Avatar
           source={{
@@ -70,8 +76,8 @@ export default function Podcast({ isLastPodcast }: PodcastProps) {
           </Option>
         </Options>
 
-        <PlayButton onPress={handleClickPlayButton}>
-          {isPlaying ? <PauseIcon /> : <PlayIcon />}
+        <PlayButton onPress={handlePressPlayButton}>
+          {isPlaying ? <Pause /> : <Play />}
         </PlayButton>
       </OptionsContainer>
     </Container>
