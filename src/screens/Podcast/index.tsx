@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { useTheme } from "styled-components/native";
-import { Pause, Play } from "../../components";
+import { Pause, Play, Download, Heart, Share } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 
 import {
@@ -16,14 +16,11 @@ import {
   CommentHeader,
 } from "./styles";
 
-import Download from "../../assets/svg/download.svg";
-import SmallHeart from "../../assets/svg/small_heart.svg";
-import Share from "../../assets/svg/share.svg";
-
 export default function Podcast() {
   const { COLORS } = useTheme();
 
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isDownloaded, setIsDownloaded] = useState(false);
   const onPressPlayButton = () => {
     setIsPlaying((isPlaying) => !isPlaying);
   };
@@ -47,20 +44,20 @@ export default function Podcast() {
         <PodcastActions>
           <Options>
             <Option>
-              <Share width={18} height={21} />
+              <Share size={18} />
             </Option>
             <Option>
-              <SmallHeart width={24} height={21} />
+              <Heart size={24} />
             </Option>
             <Option>
-              <Download width={21} height={21} />
+              <Download size={21} isDownloaded={isDownloaded} />
             </Option>
           </Options>
           <TouchableOpacity onPress={onPressPlayButton}>
             {isPlaying ? (
-              <Pause width={50} height={50} backgroundColor={COLORS.PRIMARY} />
+              <Pause size={50} backgroundColor={COLORS.PRIMARY} />
             ) : (
-              <Play width={50} height={50} backgroundColor={COLORS.PRIMARY} />
+              <Play size={50} backgroundColor={COLORS.PRIMARY} />
             )}
           </TouchableOpacity>
         </PodcastActions>

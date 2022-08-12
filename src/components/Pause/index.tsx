@@ -2,20 +2,18 @@ import React from "react";
 import { Svg, Path } from "react-native-svg";
 
 type PauseProps = {
-  width?: number | string;
-  height?: number | string;
+  size?: number;
   playColor?: string;
   backgroundColor?: string;
 };
 
 export default function Pause({
-  width = 24,
-  height = 24,
+  size = 24,
   playColor = "#202020",
   backgroundColor = "#ffffff",
 }: PauseProps) {
   return (
-    <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
       <Path
         d="M24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12Z"
         fill={playColor}

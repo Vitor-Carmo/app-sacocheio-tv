@@ -10,6 +10,10 @@ import TabBar from "./TabBar";
 import Podcast from "./Podcast";
 import Play from "./Play";
 import Pause from "./Pause";
+import Download from "./Download";
+import Heart from "./Heart";
+import Share from "./Share";
+import Options from "./Options";
 
 export {
   Anchors,
@@ -24,4 +28,8 @@ export {
   Podcast,
   Play,
   Pause,
+  Download,
+  Heart,
+  Share,
+  Options,
 };

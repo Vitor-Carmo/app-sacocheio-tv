@@ -7,11 +7,10 @@ import {
   Avatar,
   LinearGradient,
   Content,
-  Like
+  Like,
 } from "./styles";
 
-
-import Heart from "../../assets/svg/heart.svg";
+import Heart from "../Heart";
 
 interface IFeaturedPodcastProps {
   marginRight?: string;
@@ -27,13 +26,11 @@ export default function FeaturedPodcast({
   podcastTitle,
   episodeTitle,
 }: IFeaturedPodcastProps) {
-
   const [liked, setLiked] = useState(false);
-
 
   const handleLike = () => {
     setLiked((liked) => !liked);
-  }
+  };
 
   return (
     <Container marginRight={marginRight}>
@@ -49,7 +46,12 @@ export default function FeaturedPodcast({
       <Episode source={{ uri: episodePhoto }}>
         <Content>
           <Like onPress={handleLike}>
-            <Heart fill={liked ? "white" : "transparent"} />
+            <Heart
+              isLiked={liked}
+              size={28}
+              borderColor="#fff"
+              backgroundColor={liked ? "#fff" : "transparent"}
+            />
           </Like>
           <LinearGradient>
             <Title fontSize="20px">{episodeTitle}</Title>

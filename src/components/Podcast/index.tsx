@@ -16,13 +16,12 @@ import {
   PlayButton,
 } from "./styles";
 
-import SmallHeart from "../../assets/svg/small_heart.svg";
-import Download from "../../assets/svg/download.svg";
-import Share from "../../assets/svg/share.svg";
-import OptionsSvg from "../../assets/svg/options.svg";
-import PauseIcon from "../../assets/svg/small_pause.svg";
 import Play from "../Play";
 import Pause from "../Pause";
+import Download from "../Download";
+import Heart from "../Heart";
+import Share from "../Share";
+import OptionsIcon from "../Options";
 
 export type PodcastProps = {
   isLastPodcast?: boolean;
@@ -30,9 +29,14 @@ export type PodcastProps = {
 
 export default function Podcast({ isLastPodcast }: PodcastProps) {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isPodcastLiked, setIsPodcastLiked] = useState(false);
   const navigation = useNavigation();
   const handlePressPlayButton = () => {
-    setIsPlaying(!isPlaying);
+    setIsPlaying((isPlaying) => !isPlaying);
+  };
+
+  const handleOnLikePodcast = () => {
+    setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
   };
 
   const handlePressPodcast = () => {
@@ -62,8 +66,8 @@ export default function Podcast({ isLastPodcast }: PodcastProps) {
       </TimeContainer>
       <OptionsContainer>
         <Options>
-          <Option>
-            <SmallHeart />
+          <Option onPress={handleOnLikePodcast}>
+            <Heart isLiked={isPodcastLiked} />
           </Option>
           <Option>
             <Download />
@@ -72,7 +76,7 @@ export default function Podcast({ isLastPodcast }: PodcastProps) {
             <Share />
           </Option>
           <Option>
-            <OptionsSvg />
+            <OptionsIcon />
           </Option>
         </Options>
 
