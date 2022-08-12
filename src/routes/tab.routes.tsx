@@ -13,9 +13,12 @@ const { Navigator, Screen } = createBottomTabNavigator();
 export default function TabRoutes() {
   const navigatorConfig = {
     initialRouteName: "Home",
+
     screenOptions: {
       headerShown: false,
+      tabBarHideOnKeyboard: true
     },
+
     tabBar: (props: BottomTabBarProps) => <TabBar {...props} />,
   };
 
@@ -23,7 +26,7 @@ export default function TabRoutes() {
     <Navigator {...navigatorConfig}>
       <Screen name="Home" component={HomeRoutes} />
       <Screen name="Programs" component={ProgramsRoutes} />
-      <Screen name="Biblioteca"  component={HomeRoutes} />
+      <Screen name="Biblioteca" component={HomeRoutes} />
     </Navigator>
   );
 }
