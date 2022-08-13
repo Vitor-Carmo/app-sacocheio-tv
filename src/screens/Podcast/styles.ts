@@ -1,14 +1,15 @@
 import styled from "styled-components/native";
 import { Platform } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-export const Container = styled.ScrollView`
+export const Container = styled(KeyboardAwareScrollView)`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
   /*  padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL}; */
-  padding-top: 70px;
 `;
 
 export const Head = styled.View`
+  margin-top: 70px;
   margin-bottom: 30px;
 `;
 
@@ -40,14 +41,14 @@ export const Options = styled.View`
   align-items: center;
 `;
 
-export const Option = styled.TouchableOpacity`
+export const Option = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.6,
+})`
   margin-right: 15px;
 `;
 
 export const Comments = styled.View`
-  /*  flex-direction: row; */
-  /* align-items: center; */
-  justify-content: space-between;
+  margin-bottom: 55px;
 `;
 
 export const CommentHeader = styled.View`
@@ -69,18 +70,51 @@ export const CommentContainer = styled.View`
   border-top-color: ${({ theme }) => theme.COLORS.BORDER};
 `;
 
-export const MyAvatar = styled.Image<{ color: string }>`
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+export const ProfileAvatar = styled.View<{ color: string; size: number }>`
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  border-radius: ${({ size }) => size / 2}px;
   background-color: ${({ color }) => color};
   margin-right: 10px;
 `;
 
-export const Comment = styled.TextInput`
+export const CommentInput = styled.TextInput`
   flex: 1;
   font-family: "Roboto_400Regular";
   font-size: 16px;
   padding: 20px 0;
   color: ${({ theme }) => theme.COLORS.TEXT};
+`;
+
+export const Comment = styled.View<{
+  isLastComment?: boolean;
+  paddingLeft?: string;
+}>`
+  flex-direction: row;
+  padding: 10px 0;
+  padding-left: ${({ theme, paddingLeft }) =>
+    paddingLeft || theme.DIMENSIONS.PADDING_VERTICAL};
+  padding-right: ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  border-bottom-width: ${({ isLastComment }) => (isLastComment ? "0" : "1px")};
+  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
+`;
+
+export const CommentContent = styled.View`
+  flex: 1;
+`;
+
+export const Answers = styled.Text`
+  font-family: "Poppins_600SemiBold";
+  font-size: 14px;
+  color: #3ea6ff;
+  margin-top: 15px;
+`;
+
+export const AnswerHeader = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
 `;

@@ -14,6 +14,7 @@ import Download from "./Download";
 import Heart from "./Heart";
 import Share from "./Share";
 import Options from "./Options";
+import Close from "./Close";
 
 export {
   Anchors,
@@ -32,4 +33,5 @@ export {
   Heart,
   Share,
   Options,
+  Close,
 };

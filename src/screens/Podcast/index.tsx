@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import { KeyboardAvoidingView, TouchableOpacity } from "react-native";
+import React, { useState, useRef } from "react";
+import { TouchableOpacity } from "react-native";
+import { Modalize } from "react-native-modalize";
+
 import { useTheme } from "styled-components/native";
-import { Pause, Play, Download, Heart, Share } from "../../components";
+import { Pause, Play, Download, Heart, Share, Close } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 
 import {
@@ -16,8 +18,12 @@ import {
   CommentHeader,
   CommentContainer,
   Group,
-  MyAvatar,
+  ProfileAvatar,
+  CommentInput,
   Comment,
+  CommentContent,
+  Answers,
+  AnswerHeader,
 } from "./styles";
 
 export default function Podcast() {
@@ -25,12 +31,32 @@ export default function Podcast() {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+
+  const answersModalizeRef = useRef<Modalize>(null);
+
+  const comments = [{}, {}, {}, {}, {}, {}, {}];
+  const answers = [{}, {}];
+
   const onPressPlayButton = () => {
     setIsPlaying((isPlaying) => !isPlaying);
   };
+
+  const onPressLikeButton = () => {
+    setIsLiked((isLiked) => !isLiked);
+  };
+
+  const onPressAnswers = () => {
+    answersModalizeRef.current?.open();
+  };
+
+  const onPressClose = () => {
+    answersModalizeRef.current?.close();
+  };
+
   return (
-    <Container>
-      <KeyboardAvoidingView behavior="height">
+    <>
+      <Container>
         <Group>
           <Head>
             <Avatar
@@ -52,8 +78,8 @@ export default function Podcast() {
                 <Option>
                   <Share size={18} />
                 </Option>
-                <Option>
-                  <Heart size={24} />
+                <Option onPress={onPressLikeButton}>
+                  <Heart size={24} isLiked={isLiked} />
                 </Option>
                 <Option>
                   <Download size={21} isDownloaded={isDownloaded} />
@@ -74,7 +100,6 @@ export default function Podcast() {
             </Subtitle>
           </Head>
         </Group>
-
         <Comments>
           <Group>
             <CommentHeader>
@@ -82,19 +107,101 @@ export default function Podcast() {
             </CommentHeader>
           </Group>
           <CommentContainer>
-            <MyAvatar
-              color="#56CCF2"
-              source={{
-                uri: "https://sacocheio.tv/img.png",
-              }}
-            />
-            <Comment
+            <ProfileAvatar size={50} color="#56CCF2" />
+            <CommentInput
               placeholder="Faça seu comentário medíocre"
               placeholderTextColor={COLORS.TEXT_40}
             />
           </CommentContainer>
+          {comments.map((comment, index) => (
+            <Comment key={index} isLastComment={comments.length - 1 === index}>
+              <ProfileAvatar size={40} color="#FF3D3D" />
+              <CommentContent>
+                <Title fontSize="14px" marginBottom="5px">
+                  Miguel Arcanjo • 03 jan 2021
+                </Title>
+
+                <Subtitle fontSize="12px" marginTop="0px">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+                  arcu ex, luctus placerat odio non, varius molestie erat.
+                  Integer porta vitae nisl vel varius. Phasellus tincidunt est
+                  nec congue gravida. Cras pharetra lorem eu porta vehicula.
+                  congue gravida. Cras
+                </Subtitle>
+
+                <TouchableOpacity onPress={onPressAnswers}>
+                  <Answers>23 RESPOSTAS</Answers>
+                </TouchableOpacity>
+              </CommentContent>
+            </Comment>
+          ))}
         </Comments>
-      </KeyboardAvoidingView>
-    </Container>
+      </Container>
+
+      <Modalize
+        ref={answersModalizeRef}
+        modalStyle={{
+          backgroundColor: COLORS.BACKGROUND,
+        }}
+        handleStyle={{
+          backgroundColor: COLORS.BACKGROUND,
+        }}
+      >
+        <Comments>
+          <AnswerHeader>
+            <Title fontSize="18px">Respostas</Title>
+            <TouchableOpacity onPress={onPressClose}>
+              <Close />
+            </TouchableOpacity>
+          </AnswerHeader>
+          <Comment>
+            <ProfileAvatar size={40} color="#FF3D3D" />
+            <CommentContent>
+              <Title fontSize="14px" marginBottom="5px">
+                Miguel Arcanjo • 03 jan 2021
+              </Title>
+
+              <Subtitle fontSize="12px" marginTop="0px">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+                arcu ex, luctus placerat odio non, varius molestie erat. Integer
+                porta vitae nisl vel varius. Phasellus tincidunt est nec congue
+                gravida. Cras pharetra lorem eu porta vehicula. congue gravida.
+                Cras
+              </Subtitle>
+            </CommentContent>
+          </Comment>
+
+          <CommentContainer>
+            <ProfileAvatar size={40} color="#56CCF2" />
+            <CommentInput
+              placeholder="Responda esse comentário medíocre"
+              placeholderTextColor={COLORS.TEXT_40}
+            />
+          </CommentContainer>
+          {answers.map((answer, index) => (
+            <Comment
+              key={index}
+              paddingLeft="30px"
+              isLastComment={answers.length - 1 === index}
+            >
+              <ProfileAvatar size={30} color="#FF3D3D" />
+              <CommentContent>
+                <Title fontSize="12px" marginBottom="5px">
+                  Miguel Arcanjo • 03 jan 2021
+                </Title>
+
+                <Subtitle fontSize="10px" marginTop="0px">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
+                  arcu ex, luctus placerat odio non, varius molestie erat.
+                  Integer porta vitae nisl vel varius. Phasellus tincidunt est
+                  nec congue gravida. Cras pharetra lorem eu porta vehicula.
+                  congue gravida. Cras
+                </Subtitle>
+              </CommentContent>
+            </Comment>
+          ))}
+        </Comments>
+      </Modalize>
+    </>
   );
 }

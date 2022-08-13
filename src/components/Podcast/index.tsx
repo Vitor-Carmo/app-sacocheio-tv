@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Title } from "../../styles/global";
 import { useNavigation } from "@react-navigation/native";
+import { useTheme } from "styled-components";
+import { Title } from "../../styles/global";
 import {
   Container,
   AvatarContainer,
@@ -30,7 +31,11 @@ export type PodcastProps = {
 export default function Podcast({ isLastPodcast }: PodcastProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPodcastLiked, setIsPodcastLiked] = useState(false);
+
+  const { COLORS } = useTheme();
+
   const navigation = useNavigation();
+
   const handlePressPlayButton = () => {
     setIsPlaying((isPlaying) => !isPlaying);
   };
@@ -51,7 +56,9 @@ export default function Podcast({ isLastPodcast }: PodcastProps) {
             uri: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
           }}
         />
-        <Title fontSize="16px">#152 - Licença Obesidade </Title>
+        <Title fontSize="16px" color={isPlaying ? COLORS.PRIMARY : null}>
+          #152 - Licença Obesidade
+        </Title>
       </AvatarContainer>
       <Description numberOfLines={2}>
         Olá! Hoje eu falo sobre panelas da POLISHOP, finalmente ter ido bem

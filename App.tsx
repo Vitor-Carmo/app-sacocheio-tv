@@ -1,6 +1,8 @@
 import React from "react";
 import { useFonts } from "expo-font";
 import { ThemeProvider } from "styled-components/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
 import {
   Poppins_600SemiBold,
   Poppins_300Light,
@@ -25,7 +27,7 @@ export default function App() {
     Poppins_700Bold,
     Roboto_400Regular,
     Roboto_500Medium,
-    Roboto_700Bold
+    Roboto_700Bold,
   });
 
   if (!fontsLoaded) {
@@ -34,7 +36,9 @@ export default function App() {
 
   return (
     <ThemeProvider theme={dark}>
-      <Routes />
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Routes />
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }
