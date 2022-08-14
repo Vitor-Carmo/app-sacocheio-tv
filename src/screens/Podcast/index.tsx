@@ -114,7 +114,11 @@ export default function Podcast() {
             />
           </CommentContainer>
           {comments.map((comment, index) => (
-            <Comment key={index} isLastComment={comments.length - 1 === index}>
+            <Comment
+              key={index}
+              paddingLeft="20px"
+              isLastComment={comments.length - 1 === index}
+            >
               <ProfileAvatar size={40} color="#FF3D3D" />
               <CommentContent>
                 <Title fontSize="14px" marginBottom="5px">
@@ -181,7 +185,7 @@ export default function Podcast() {
           {answers.map((answer, index) => (
             <Comment
               key={index}
-              paddingLeft="30px"
+              paddingLeft="20px"
               isLastComment={answers.length - 1 === index}
             >
               <ProfileAvatar size={30} color="#FF3D3D" />
