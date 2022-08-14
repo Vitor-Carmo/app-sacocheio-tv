@@ -94,6 +94,7 @@ export const ForgotYourPassword = styled.Text`
   font-size: 14px;
   color: #0083cd;
   margin-bottom: 30px;
+  align-self: flex-start;
 `;
 
 export const SignInButton = styled.TouchableOpacity.attrs({

@@ -75,9 +75,9 @@ export default function SignIn() {
         </TouchableChangePasswordStateButton>
       </PasswordContainerInput>
 
-      <TouchableOpacity onPress={handleForgotPassword}>
-        <ForgotYourPassword>Esqueceu sua senha?</ForgotYourPassword>
-      </TouchableOpacity>
+      <ForgotYourPassword onPress={handleForgotPassword}>
+        Esqueceu sua senha?
+      </ForgotYourPassword>
 
       <SignInButton onPress={handleSignIn}>
         <SignInText>Entrar</SignInText>
