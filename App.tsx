@@ -8,6 +8,7 @@ import {
   Poppins_300Light,
   Poppins_700Bold,
   Poppins_400Regular,
+  Poppins_500Medium,
 } from "@expo-google-fonts/poppins";
 
 import {
@@ -24,6 +25,7 @@ export default function App() {
     Poppins_300Light,
     Poppins_400Regular,
     Poppins_600SemiBold,
+    Poppins_500Medium,
     Poppins_700Bold,
     Roboto_400Regular,
     Roboto_500Medium,
