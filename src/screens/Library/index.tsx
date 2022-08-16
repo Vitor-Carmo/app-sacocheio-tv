@@ -13,7 +13,9 @@ export default function Library() {
       <Navigator
         screenOptions={{
           animation: "none",
-          header: (props) => <LibraryHeader {...props} />,
+          header: (props: any) => (
+            <LibraryHeader {...props} />
+          ),
         }}
       >
         {LIBRARY_SCREENS.map((screen, index) => (
