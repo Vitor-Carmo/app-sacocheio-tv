@@ -15,6 +15,7 @@ import Heart from "./Heart";
 import Share from "./Share";
 import Options from "./Options";
 import Close from "./Close";
+import LibraryHeader from "./LibraryHeader";
 
 export {
   Anchors,
@@ -34,4 +35,5 @@ export {
   Share,
   Options,
   Close,
+  LibraryHeader,
 };

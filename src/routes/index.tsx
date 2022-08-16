@@ -1,11 +1,7 @@
 import React from "react";
 import { StatusBar } from "expo-status-bar";
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 
 import { useTheme } from "styled-components/native";
 
@@ -21,13 +17,22 @@ export default function Routes() {
     initialRouteName: "LoginStack",
     screenOptions: {
       headerShown: false,
+      navigationBarHidden: true,
     },
   };
 
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: COLORS.BACKGROUND,
+    },
+  };
+  
   return (
     <>
-      <NavigationContainer>
-        <Navigator {...navigatorConfig}>
+      <NavigationContainer theme={MyTheme}>
+        <Navigator {...navigatorConfig}  >
           <Screen name="LoginStack" component={LoginRoutes} />
           <Screen name="AppStack" component={TabRoutes} />
         </Navigator>

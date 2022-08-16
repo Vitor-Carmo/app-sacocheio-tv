@@ -14,7 +14,6 @@ const { Navigator, Screen } = createBottomTabNavigator();
 export default function TabRoutes() {
   const navigatorConfig = {
     initialRouteName: "Home",
-
     screenOptions: {
       headerShown: false,
       tabBarHideOnKeyboard: true

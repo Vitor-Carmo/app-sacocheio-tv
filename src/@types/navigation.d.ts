@@ -13,6 +13,8 @@ export declare global {
       Program: undefined;
       Library: undefined;
       Podcast: undefined;
+      Downloads:  undefined;
+      Likes:  undefined;
     }
   }
 }
