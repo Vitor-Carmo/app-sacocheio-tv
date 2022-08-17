@@ -58,7 +58,9 @@ export default function TabRoutes() {
             tabBarLabel: label,
             tabBarActiveTintColor: COLORS.TEXT,
             tabBarInactiveTintColor: COLORS.TEXT_50,
-            tabBarButton: (props) => <TouchableOpacity {...props} />,
+            tabBarButton: (props) => (
+              <TouchableOpacity activeOpacity={0.7} {...props} />
+            ),
             tabBarLabelStyle: {
               fontFamily: "Poppins_400Regular",
               fontSize: 10,
