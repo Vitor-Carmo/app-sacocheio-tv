@@ -6,7 +6,7 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { useTheme } from "styled-components/native";
 
 import TabRoutes from "./tab.routes";
-import LoginRoutes from "./login.routes";
+import AuthenticationRoutes from "./authentication.routes";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -32,7 +32,7 @@ export default function Routes() {
             navigationBarColor: COLORS.BACKGROUND,
           }}
         >
-          <Screen name="AuthenticationStack" component={LoginRoutes} />
+          <Screen name="AuthenticationStack" component={AuthenticationRoutes} />
           <Screen name="AppStack" component={TabRoutes} />
         </Navigator>
       </NavigationContainer>

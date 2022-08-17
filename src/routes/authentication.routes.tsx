@@ -5,7 +5,7 @@ import SignIn from "../screens/SignIn";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
-export default function LoginRoutes() {
+export default function AuthenticationRoutes() {
   return (
     <Navigator
       initialRouteName="SignIn"
