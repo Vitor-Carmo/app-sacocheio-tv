@@ -40,7 +40,7 @@ export const EmailInput = styled.TextInput.attrs({
   font-size: 14px;
   color: ${({ theme }) => theme.COLORS.TEXT};
 
-  background-color: ${({ theme }) => theme.COLORS.FOREGROUND};
+  background-color: ${({ theme }) => theme.COLORS.TEXT_INPUT_BACKGROUND};
 
   width: 100%;
   height: 50px;
@@ -52,7 +52,7 @@ export const EmailInput = styled.TextInput.attrs({
 `;
 
 export const PasswordContainerInput = styled.View`
-  background-color: ${({ theme }) => theme.COLORS.FOREGROUND};
+  background-color: ${({ theme }) => theme.COLORS.TEXT_INPUT_BACKGROUND};
   width: 100%;
   height: 50px;
   flex-direction: row;
@@ -103,7 +103,7 @@ export const SignInButton = styled.TouchableOpacity.attrs({
   align-items: center;
   justify-content: center;
 
-  background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  background-color: ${({ theme }) => theme.COLORS.BUTTON_BACKGROUND};
 
   width: 100%;
   height: 50px;
@@ -116,5 +116,5 @@ export const SignInText = styled.Text`
   font-family: "Roboto_500Medium";
   font-size: 16px;
   text-align: center;
-  color: white;
+  color: ${({ theme }) => theme.COLORS.BUTTON_TEXT};
 `;

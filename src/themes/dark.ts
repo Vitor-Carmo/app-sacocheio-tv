@@ -28,6 +28,12 @@ export default {
     FILTER_BUTTON_TITLE: "#ffffff",
 
     TIMER_BACKGROUND: "#383332",
+
+    TEXT_INPUT_BACKGROUND: "#332F2E",
+
+    
+    BUTTON_BACKGROUND: "#FFC739",
+    BUTTON_TEXT: "#000",
   },
 
   DIMENSIONS: {
