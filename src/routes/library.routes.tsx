@@ -6,15 +6,13 @@ import Library from "../screens/Library";
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function LibraryRoutes() {
-  const navigatorConfig = {
-    initialRouteName: "Library",
-    screenOptions: {
-      headerShown: false,
-    },
-  };
-
   return (
-    <Navigator {...navigatorConfig}>
+    <Navigator
+      initialRouteName="Library"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Screen name="Library" component={Library} />
     </Navigator>
   );

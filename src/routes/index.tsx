@@ -13,27 +13,26 @@ const { Navigator, Screen } = createNativeStackNavigator();
 export default function Routes() {
   const { COLORS } = useTheme();
 
-  const navigatorConfig = {
-    initialRouteName: "LoginStack",
-    screenOptions: {
-      headerShown: false,
-      navigationBarHidden: true,
-    },
-  };
-
   const MyTheme = {
     ...DefaultTheme,
     colors: {
       ...DefaultTheme.colors,
       background: COLORS.BACKGROUND,
+      border: "transparent",
     },
   };
-  
+
   return (
     <>
       <NavigationContainer theme={MyTheme}>
-        <Navigator {...navigatorConfig}  >
-          <Screen name="LoginStack" component={LoginRoutes} />
+        <Navigator
+          initialRouteName="AuthenticationStack"
+          screenOptions={{
+            headerShown: false,
+            navigationBarColor: COLORS.BACKGROUND,
+          }}
+        >
+          <Screen name="AuthenticationStack" component={LoginRoutes} />
           <Screen name="AppStack" component={TabRoutes} />
         </Navigator>
       </NavigationContainer>

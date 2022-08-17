@@ -6,15 +6,13 @@ import SignIn from "../screens/SignIn";
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function LoginRoutes() {
-  const navigatorConfig = {
-    initialRouteName: "SignIn",
-    screenOptions: {
-      headerShown: false,
-    },
-  };
-
   return (
-    <Navigator {...navigatorConfig}>
+    <Navigator
+      initialRouteName="SignIn"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Screen name="SignIn" component={SignIn} />
     </Navigator>
   );

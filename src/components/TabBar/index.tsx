@@ -5,7 +5,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { SvgProps } from "react-native-svg";
 import Home from "../../assets/svg/home.svg";
 import Programs from "../../assets/svg/programas.svg";
-import Biblioteca from "../../assets/svg/biblioteca.svg";
+import Libraries from "../../assets/svg/biblioteca.svg";
 
 import { Container, Tab, TabTitle } from "./styles";
 
@@ -19,7 +19,7 @@ export default function TabBar({
   const icons: { [key: string]: FC<SvgProps> } = {
     Home,
     Programs,
-    Biblioteca,
+    Libraries,
   };
 
   return (
@@ -29,7 +29,7 @@ export default function TabBar({
         COLORS.TAB_BAR_OPACITY,
         COLORS.TAB_BAR_OPACITY,
         COLORS.TAB_BAR,
-      ]}
+      ]} 
     >
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];

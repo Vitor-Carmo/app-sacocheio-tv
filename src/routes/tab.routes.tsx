@@ -1,10 +1,10 @@
 import React from "react";
-import {
-  createBottomTabNavigator,
-  BottomTabBarProps,
-} from "@react-navigation/bottom-tabs";
+import { useTheme } from "styled-components";
+import { TouchableOpacity } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { TabBar } from "../components";
+import { HomeIcon, ProgramsIcon, LibraryIcon } from "../components";
+
 import HomeRoutes from "./home.routes";
 import ProgramsRoutes from "./programs.routes";
 import LibraryRoutes from "./library.routes";
@@ -12,21 +12,64 @@ import LibraryRoutes from "./library.routes";
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export default function TabRoutes() {
-  const navigatorConfig = {
-    initialRouteName: "Home",
-    screenOptions: {
-      headerShown: false,
-      tabBarHideOnKeyboard: true
-    },
+  const { COLORS } = useTheme();
 
-    tabBar: (props: BottomTabBarProps) => <TabBar {...props} />,
-  };
+  const screens = [
+    {
+      label: "Home",
+      name: "Home",
+      component: HomeRoutes,
+      icon: HomeIcon,
+    },
+    {
+      label: "Programas",
+      name: "Programs",
+      component: ProgramsRoutes,
+      icon: ProgramsIcon,
+    },
+    {
+      label: "Biblioteca",
+      name: "Libraries",
+      component: LibraryRoutes,
+      icon: LibraryIcon,
+    },
+  ];
 
   return (
-    <Navigator {...navigatorConfig}>
-      <Screen name="Home" component={HomeRoutes} />
-      <Screen name="Programs" component={ProgramsRoutes} />
-      <Screen name="Biblioteca" component={LibraryRoutes} />
+    <Navigator
+      initialRouteName="Home"
+      screenOptions={{
+        headerShown: false,
+        tabBarHideOnKeyboard: true,
+        tabBarStyle: {
+          height: 105,
+          backgroundColor: COLORS.BACKGROUND,
+          borderTopWidth: 1,
+          borderTopColor: COLORS.BORDER,
+        },
+      }}
+    >
+      {screens.map(({ name, component, icon, label }, index) => (
+        <Screen
+          key={index}
+          name={name}
+          component={component}
+          options={{
+            tabBarLabel: label,
+            tabBarActiveTintColor: COLORS.TEXT,
+            tabBarInactiveTintColor: COLORS.TEXT_50,
+            tabBarButton: (props) => <TouchableOpacity {...props} />,
+            tabBarLabelStyle: {
+              fontFamily: "Poppins_400Regular",
+              fontSize: 10,
+            },
+            tabBarIcon: ({ focused }) =>
+              icon({
+                opacity: focused ? 1 : 0.5,
+              }),
+          }}
+        />
+      ))}
     </Navigator>
   );
 }

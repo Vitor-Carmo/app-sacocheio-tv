@@ -2,7 +2,7 @@ import React from "react";
 import { useTheme } from "styled-components/native";
 import { TouchableOpacity } from "react-native";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { RouteProp } from "@react-navigation/native";
+import { Route } from "@react-navigation/native";
 import Play from "../Play";
 import { Title } from "../../styles/global";
 import LIBRARY_SCREENS from "../../constants/library_screens";
@@ -19,9 +19,8 @@ import {
   FilterButtonTitle,
 } from "./styles";
 
-
 type LibraryHeaderProps = NativeStackHeaderProps & {
-  route: RouteProp<{ params: { filterLabel: string } }, "params">;
+  route: Route<"params", { filterLabel: string }>;
 };
 
 export default function LibraryHeader({
@@ -44,11 +43,11 @@ export default function LibraryHeader({
             {LIBRARY_SCREENS.map((screen, index) => (
               <TouchableSection
                 key={index}
-                selected={screen.screen.name === route.name}
+                selected={screen.screen.name === route?.name}
                 onPress={() => handleChangeScreen(index)}
               >
                 <TouchableSectionText
-                  selected={screen.screen.name === route.name}
+                  selected={screen.screen.name === route?.name}
                 >
                   {screen.title}
                 </TouchableSectionText>

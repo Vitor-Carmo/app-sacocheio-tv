@@ -1,5 +1,4 @@
 import styled from "styled-components/native";
-import PlayListImage from "../../assets/image/playlist.jpeg";
 import { LinearGradient } from "expo-linear-gradient";
 
 export const Container = styled(LinearGradient)`

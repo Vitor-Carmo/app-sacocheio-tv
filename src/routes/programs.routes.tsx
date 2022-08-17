@@ -8,15 +8,13 @@ import Podcast from "../screens/Podcast";
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function ProgramsRoutes() {
-  const navigatorConfig = {
-    initialRouteName: "ProgramsList",
-    screenOptions: {
-      headerShown: false,
-    },
-  };
-
   return (
-    <Navigator {...navigatorConfig}>
+    <Navigator
+      initialRouteName="ProgramsList"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Screen name="ProgramsList" component={Programs} />
       <Screen name="Program" component={Program} />
       <Screen name="Podcast" component={Podcast} />

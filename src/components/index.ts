@@ -6,7 +6,6 @@ import FeaturedPodcast from "./FeaturedPodcast";
 import LikedEpisodes from "./LikedEpisodes";
 import Shows from "./Shows";
 import OfficialPlaylist from "./OfficialPlaylist";
-import TabBar from "./TabBar";
 import Podcast from "./Podcast";
 import Play from "./Play";
 import Pause from "./Pause";
@@ -17,6 +16,10 @@ import Options from "./Options";
 import Close from "./Close";
 import LibraryHeader from "./LibraryHeader";
 
+import HomeIcon from "./HomeIcon";
+import ProgramsIcon from "./ProgramsIcon";
+import LibraryIcon from "./LibraryIcon";
+
 export {
   Anchors,
   Anchor,
@@ -26,7 +29,6 @@ export {
   LikedEpisodes,
   Shows,
   OfficialPlaylist,
-  TabBar,
   Podcast,
   Play,
   Pause,
@@ -36,4 +38,7 @@ export {
   Options,
   Close,
   LibraryHeader,
+  HomeIcon,
+  ProgramsIcon,
+  LibraryIcon,
 };
