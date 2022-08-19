@@ -15,10 +15,10 @@ import Share from "./Share";
 import Options from "./Options";
 import Close from "./Close";
 import LibraryHeader from "./LibraryHeader";
-
 import HomeIcon from "./HomeIcon";
 import ProgramsIcon from "./ProgramsIcon";
 import LibraryIcon from "./LibraryIcon";
+import Toast from "./Toast";
 
 export {
   Anchors,
@@ -41,4 +41,5 @@ export {
   HomeIcon,
   ProgramsIcon,
   LibraryIcon,
+  Toast,
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import Toast from "./src/components/Toast";
 import { useFonts } from "expo-font";
 import { ThemeProvider } from "styled-components/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -24,8 +25,8 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     Poppins_300Light,
     Poppins_400Regular,
-    Poppins_600SemiBold,
     Poppins_500Medium,
+    Poppins_600SemiBold,
     Poppins_700Bold,
     Roboto_400Regular,
     Roboto_500Medium,
@@ -40,6 +41,7 @@ export default function App() {
     <ThemeProvider theme={dark}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Routes />
+        <Toast />
       </GestureHandlerRootView>
     </ThemeProvider>
   );

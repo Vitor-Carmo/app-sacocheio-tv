@@ -1,6 +1,7 @@
 import React from "react";
 import { Linking } from "react-native";
-import Clipboard from "@react-native-clipboard/clipboard";
+import Toast from "react-native-toast-message";
+import * as Clipboard from "expo-clipboard";
 
 import Anchor from "../Anchor";
 
@@ -14,6 +15,18 @@ import Youtube from "../../assets/svg/youtube.svg";
 import { Container, Row } from "./styles";
 
 const Anchors = () => {
+  const handleCopyValue = async (value: string): Promise<void> => {
+    Toast.hide();
+
+    await Clipboard.setStringAsync(value);
+
+    Toast.show({
+      type: "info",
+      text1: "Copiado com sucesso!",
+      text2: value,
+    });
+  };
+
   return (
     <Container>
       <Row marginBottom="8px">
@@ -26,7 +39,7 @@ const Anchors = () => {
 
         <Anchor
           Icon={Pix}
-          onPress={() => Clipboard.setString(ANCHORS.SACOCHEIO_TV_PIX.LINK)}
+          onPress={() => handleCopyValue(ANCHORS.SACOCHEIO_TV_PIX.LINK)}
           title="Ajude a construir o novo estúdio"
           color={ANCHORS.SACOCHEIO_TV_PIX.COLOR}
         />
@@ -35,7 +48,7 @@ const Anchors = () => {
       <Row>
         <Anchor
           title="URL do feed RSS"
-          onPress={() => Clipboard.setString(ANCHORS.SACOCHEIO_TV_RSS.LINK)}
+          onPress={() => handleCopyValue(ANCHORS.SACOCHEIO_TV_RSS.LINK)}
           Icon={Rss}
           color={ANCHORS.SACOCHEIO_TV_RSS.COLOR}
         />
@@ -49,8 +62,6 @@ const Anchors = () => {
       </Row>
     </Container>
   );
-}
-
-
+};
 
 export default Anchors;

@@ -34,6 +34,8 @@ export default {
     
     BUTTON_BACKGROUND: "#FFC739",
     BUTTON_TEXT: "#000",
+
+    TOAST_BACKGROUND: "#383332",
   },
 
   DIMENSIONS: {
