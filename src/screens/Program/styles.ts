@@ -1,13 +1,16 @@
 import styled from "styled-components/native";
+import Animated from "react-native-reanimated";
 
-export const Container = styled.ScrollView`
+import { HEADER_HEIGHT } from "../../constants";
+
+export const Container = styled(Animated.ScrollView)`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const ProgramContainer = styled.View`
   padding: 0 ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
-  padding-top: 45px;
+  padding-top: ${HEADER_HEIGHT}px;
   margin-bottom: 30px;
 `;
 

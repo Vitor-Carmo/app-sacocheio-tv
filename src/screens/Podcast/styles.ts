@@ -1,11 +1,11 @@
 import styled from "styled-components/native";
-import { Platform } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import Animated from "react-native-reanimated";
+import { HEADER_HEIGHT } from "../../constants";
 
-export const Container = styled(KeyboardAwareScrollView)`
+export const Container = styled(Animated.ScrollView)`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
-  /*  padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL}; */
+  padding-top: ${HEADER_HEIGHT / 2}px;
 `;
 
 export const Head = styled.View`

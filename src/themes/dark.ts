@@ -22,7 +22,7 @@ export default {
 
     BORDER: "rgba(255, 255, 255, 0.08)",
 
-    STATUSBAR: "rgba(32, 32, 32, 0.8)",
+    STATUSBAR: "rgba(32, 32, 32, 0.9)",
 
     FILTER_BUTTON_BACKGROUND: "#383332",
     FILTER_BUTTON_TITLE: "#ffffff",

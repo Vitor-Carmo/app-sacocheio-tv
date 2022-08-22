@@ -3,7 +3,16 @@ import { TouchableOpacity } from "react-native";
 import { Modalize } from "react-native-modalize";
 
 import { useTheme } from "styled-components/native";
-import { Pause, Play, Download, Heart, Share, Close } from "../../components";
+import {
+  Pause,
+  Play,
+  Download,
+  Heart,
+  Share,
+  Close,
+  Header,
+} from "../../components";
+import { useScrollAnimated } from "../../hooks";
 import { Title, Subtitle } from "../../styles/global";
 
 import {
@@ -28,6 +37,7 @@ import {
 
 export default function Podcast() {
   const { COLORS } = useTheme();
+  const { scrollHandler, scrollY } = useScrollAnimated();
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
@@ -56,7 +66,9 @@ export default function Podcast() {
 
   return (
     <>
-      <Container>
+      <Header title="#144 - Hitler era um cancelador" scrollY={scrollY} />
+
+      <Container onScroll={scrollHandler} scrollEventThrottle={16}>
         <Group>
           <Head>
             <Avatar

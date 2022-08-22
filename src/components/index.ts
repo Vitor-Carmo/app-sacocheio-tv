@@ -19,6 +19,8 @@ import HomeIcon from "./HomeIcon";
 import ProgramsIcon from "./ProgramsIcon";
 import LibraryIcon from "./LibraryIcon";
 import Toast from "./Toast";
+import Header from "./Header";
+import GoBack from "./GoBack";
 
 export {
   Anchors,
@@ -42,4 +44,6 @@ export {
   ProgramsIcon,
   LibraryIcon,
   Toast,
+  Header,
+  GoBack,
 };

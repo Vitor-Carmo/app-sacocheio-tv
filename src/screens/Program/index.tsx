@@ -1,5 +1,8 @@
 import React from "react";
-import { Podcast } from "../../components";
+
+import { useScrollAnimated } from "../../hooks";
+import { Podcast, Header } from "../../components";
+
 import { Title, Subtitle } from "../../styles/global";
 
 import {
@@ -16,48 +19,54 @@ import {
 } from "./styles";
 
 export default function Program() {
+  const { scrollY, scrollHandler } = useScrollAnimated();
+
   return (
-    <Container>
-      <ProgramContainer>
-        <Head>
-          <Avatar
-            source={{
-              uri: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-            }}
-          />
-          <HeadContent>
-            <Title marginBottom="15px">Podcast Saco Cheio</Title>
-            <Subtitle> Arthur Petry</Subtitle>
-          </HeadContent>
-        </Head>
+    <>
+      <Header title="Podcast Saco Cheio" scrollY={scrollY} />
 
-        <Description>
-          O programa é para ouvintes que não procuram cultura, informação ou
-          opiniões inteligentes. Durante uma hora e meia Arthur Petry reduz o
-          mundo inteiro ao seu próprio umbigo, interpretando tudo de forma
-          egoísta, ignorante e burra. Se você acha que existe certo e errado,
-          tem convicções e opiniões sobre tudo, não dê play. O QI máximo para
-          poder aproveitar esse podcast é 30.
-        </Description>
-      </ProgramContainer>
+      <Container onScroll={scrollHandler} scrollEventThrottle={16}>
+        <ProgramContainer>
+          <Head>
+            <Avatar
+              source={{
+                uri: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
+              }}
+            />
+            <HeadContent>
+              <Title marginBottom="15px">Podcast Saco Cheio</Title>
+              <Subtitle> Arthur Petry</Subtitle>
+            </HeadContent>
+          </Head>
 
-      <FilterContainer>
-        <Title fontSize="18px">Todos episódios</Title>
-        <FilterButton>
-          <FilterButtonTitle>Filtrar</FilterButtonTitle>
-        </FilterButton>
-      </FilterContainer>
+          <Description>
+            O programa é para ouvintes que não procuram cultura, informação ou
+            opiniões inteligentes. Durante uma hora e meia Arthur Petry reduz o
+            mundo inteiro ao seu próprio umbigo, interpretando tudo de forma
+            egoísta, ignorante e burra. Se você acha que existe certo e errado,
+            tem convicções e opiniões sobre tudo, não dê play. O QI máximo para
+            poder aproveitar esse podcast é 30.
+          </Description>
+        </ProgramContainer>
 
-      <PodcastListContent>
-        <Podcast />
-        <Podcast />
-        <Podcast />
-        <Podcast />
-        <Podcast />
-        <Podcast />
-        <Podcast />
-        <Podcast isLastPodcast />
-      </PodcastListContent>
-    </Container>
+        <FilterContainer>
+          <Title fontSize="18px">Todos episódios</Title>
+          <FilterButton>
+            <FilterButtonTitle>Filtrar</FilterButtonTitle>
+          </FilterButton>
+        </FilterContainer>
+
+        <PodcastListContent>
+          <Podcast />
+          <Podcast />
+          <Podcast />
+          <Podcast />
+          <Podcast />
+          <Podcast />
+          <Podcast />
+          <Podcast isLastPodcast />
+        </PodcastListContent>
+      </Container>
+    </>
   );
 }
