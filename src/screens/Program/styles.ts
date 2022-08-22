@@ -66,7 +66,3 @@ export const FilterButtonTitle = styled.Text`
   font-size: 14px;
   color: ${({ theme }) => theme.COLORS.FILTER_BUTTON_TITLE};
 `;
-
-export const PodcastListContent = styled.View`
-  margin-bottom: ${({ theme }) => theme.DIMENSIONS.MARGIN_BOTTOM_TO_TAB_BAR};
-`;

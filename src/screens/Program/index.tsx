@@ -15,7 +15,6 @@ import {
   FilterContainer,
   FilterButton,
   FilterButtonTitle,
-  PodcastListContent,
 } from "./styles";
 
 export default function Program() {
@@ -56,16 +55,14 @@ export default function Program() {
           </FilterButton>
         </FilterContainer>
 
-        <PodcastListContent>
-          <Podcast />
-          <Podcast />
-          <Podcast />
-          <Podcast />
-          <Podcast />
-          <Podcast />
-          <Podcast />
-          <Podcast isLastPodcast />
-        </PodcastListContent>
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast />
+        <Podcast isLastPodcast />
       </Container>
     </>
   );
