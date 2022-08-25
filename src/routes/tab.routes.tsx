@@ -3,7 +3,14 @@ import { useTheme } from "styled-components";
 import { TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { HomeIcon, ProgramsIcon, LibraryIcon } from "../components";
+import {
+  HomeIcon,
+  ProgramsIcon,
+  LibraryIcon,
+  AudioPlayer,
+} from "../components";
+
+import { AUDIO_PLAYER_HEIGHT } from "../constants";
 
 import HomeRoutes from "./home.routes";
 import ProgramsRoutes from "./programs.routes";
@@ -36,42 +43,46 @@ export default function TabRoutes() {
   ];
 
   return (
-    <Navigator
-      initialRouteName="Home"
-      screenOptions={{
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-        tabBarStyle: {
-          height: 105,
-          backgroundColor: COLORS.BACKGROUND,
-          borderTopWidth: 1,
-          borderTopColor: COLORS.BORDER,
-        },
-      }}
-    >
-      {screens.map(({ name, component, icon, label }, index) => (
-        <Screen
-          key={index}
-          name={name}
-          component={component}
-          options={{
-            tabBarLabel: label,
-            tabBarActiveTintColor: COLORS.TEXT,
-            tabBarInactiveTintColor: COLORS.TEXT_50,
-            tabBarButton: (props) => (
-              <TouchableOpacity activeOpacity={0.7} {...props} />
-            ),
-            tabBarLabelStyle: {
-              fontFamily: "Poppins_400Regular",
-              fontSize: 10,
-            },
-            tabBarIcon: ({ focused }) =>
-              icon({
-                opacity: focused ? 1 : 0.5,
-              }),
-          }}
-        />
-      ))}
-    </Navigator>
+    <>
+      <Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+          tabBarHideOnKeyboard: true,
+          tabBarStyle: {
+            height: 105,
+            backgroundColor: COLORS.BACKGROUND,
+            borderTopWidth: 1,
+            borderTopColor: COLORS.BORDER,
+            marginTop: AUDIO_PLAYER_HEIGHT,
+          },
+        }}
+      >
+        {screens.map(({ name, component, icon, label }, index) => (
+          <Screen
+            key={index}
+            name={name}
+            component={component}
+            options={{
+              tabBarLabel: label,
+              tabBarActiveTintColor: COLORS.TEXT,
+              tabBarInactiveTintColor: COLORS.TEXT_50,
+              tabBarButton: (props) => (
+                <TouchableOpacity activeOpacity={0.7} {...props} />
+              ),
+              tabBarLabelStyle: {
+                fontFamily: "Poppins_400Regular",
+                fontSize: 10,
+              },
+              tabBarIcon: ({ focused }) =>
+                icon({
+                  opacity: focused ? 1 : 0.5,
+                }),
+            }}
+          />
+        ))}
+      </Navigator>
+      <AudioPlayer />
+    </>
   );
 }

@@ -21,6 +21,7 @@ import LibraryIcon from "./LibraryIcon";
 import Toast from "./Toast";
 import Header from "./Header";
 import GoBack from "./GoBack";
+import AudioPlayer from "./AudioPlayer";
 
 export {
   Anchors,
@@ -46,4 +47,5 @@ export {
   Toast,
   Header,
   GoBack,
+  AudioPlayer,
 };
