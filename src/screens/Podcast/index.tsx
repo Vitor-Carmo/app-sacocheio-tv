@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Dimensions, StatusBar } from "react-native";
 import { Modalize } from "react-native-modalize";
 
 import { useTheme } from "styled-components/native";
@@ -37,6 +37,8 @@ import {
 
 export default function Podcast() {
   const { COLORS } = useTheme();
+  const { height } = Dimensions.get("window");
+  const { currentHeight: statusBarHeight } = StatusBar;
   const { scrollHandler, scrollY } = useScrollAnimated();
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -46,7 +48,7 @@ export default function Podcast() {
   const answersModalizeRef = useRef<Modalize>(null);
 
   const comments = [{}, {}, {}, {}, {}, {}, {}];
-  const answers = [{}, {}];
+  const answers = [{}, {}, {}, {}];
 
   const onPressPlayButton = () => {
     setIsPlaying((isPlaying) => !isPlaying);
@@ -156,6 +158,7 @@ export default function Podcast() {
 
       <Modalize
         ref={answersModalizeRef}
+        keyboardAvoidingBehavior="height"
         modalStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}

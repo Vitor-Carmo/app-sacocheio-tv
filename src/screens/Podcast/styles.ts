@@ -48,7 +48,7 @@ export const Option = styled.TouchableOpacity.attrs({
 `;
 
 export const Comments = styled.View`
-  margin-bottom: 55px;
+  margin-bottom: ${({ theme }) => theme.DIMENSIONS.MARGIN_BOTTOM_TO_TAB_BAR};
 `;
 
 export const CommentHeader = styled.View`
