@@ -22,6 +22,7 @@ import Toast from "./Toast";
 import Header from "./Header";
 import GoBack from "./GoBack";
 import AudioPlayer from "./AudioPlayer";
+import GradientContainer from "./GradientContainer";
 
 export {
   Anchors,
@@ -48,4 +49,5 @@ export {
   Header,
   GoBack,
   AudioPlayer,
+  GradientContainer,
 };

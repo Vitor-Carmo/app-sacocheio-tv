@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 import Constants from "expo-constants";
-import Animated from "react-native-reanimated";
+import Animated, { } from "react-native-reanimated";
 import { HEADER_HEIGHT } from "../../constants";
 
 export const Container = styled(Animated.View)`
@@ -12,10 +12,9 @@ export const Container = styled(Animated.View)`
   flex-direction: row;
   align-items: center;
 
-  margin-top: ${Constants.statusBarHeight}px;
+  padding-top: ${Constants.statusBarHeight}px;
 
-  height: ${HEADER_HEIGHT}px;
-  background-color: ${({ theme }) => theme.COLORS.STATUSBAR};
+  height: ${HEADER_HEIGHT + Constants.statusBarHeight}px;
   z-index: 1;
 `;
 

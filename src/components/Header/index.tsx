@@ -16,9 +16,14 @@ import { Container, Title, GoBackOpacity } from "./styles";
 interface HeaderProps {
   title?: string;
   scrollY: SharedValue<number>;
+  backgroundColor?: string;
 }
 
-export default function Header({ title, scrollY }: HeaderProps) {
+export default function Header({
+  title,
+  scrollY,
+  backgroundColor = "#202020",
+}: HeaderProps) {
   const { COLORS } = useTheme();
 
   const navigation = useNavigation();
@@ -28,7 +33,7 @@ export default function Header({ title, scrollY }: HeaderProps) {
       backgroundColor: interpolateColor(
         scrollY.value,
         [40, 150],
-        [`${COLORS.BACKGROUND}00`, COLORS.STATUSBAR]
+        [`${COLORS.BACKGROUND}00`, backgroundColor]
       ),
     };
   });

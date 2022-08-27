@@ -22,7 +22,8 @@ export default {
 
     BORDER: "rgba(255, 255, 255, 0.08)",
 
-    STATUSBAR: "rgba(32, 32, 32, 0.9)",
+   /*  STATUSBAR: "rgba(32, 32, 32, 0.8)", */
+    STATUSBAR: "rgba(0, 0, 0, 0.2)",
 
     FILTER_BUTTON_BACKGROUND: "#383332",
     FILTER_BUTTON_TITLE: "#ffffff",
@@ -31,7 +32,6 @@ export default {
 
     TEXT_INPUT_BACKGROUND: "#332F2E",
 
-    
     BUTTON_BACKGROUND: "#FFC739",
     BUTTON_TEXT: "#000",
 
@@ -41,6 +41,8 @@ export default {
   DIMENSIONS: {
     PADDING_VERTICAL: "15px",
     MARGIN_BOTTOM_TO_TAB_BAR: "20px",
+    HSL_LIGHTNESS: 10,
+    HSL_STATUSBAR_OPACITY: 0.9,
   },
 
   IMAGES: {

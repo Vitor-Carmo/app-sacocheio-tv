@@ -5,7 +5,6 @@ import { HEADER_HEIGHT } from "../../constants";
 
 export const Container = styled(Animated.ScrollView)`
   flex: 1;
-  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const ProgramContainer = styled.View`
@@ -46,7 +45,6 @@ export const FilterContainer = styled.View`
   justify-content: space-between;
   align-items: center;
   padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
-  background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 
 export const FilterButton = styled.TouchableOpacity.attrs({

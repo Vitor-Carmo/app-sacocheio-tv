@@ -21,6 +21,7 @@ export const Header = styled.View`
 
 export const HeadContent = styled.View`
   width: 75%;
+  padding-right: 10px;
 `;
 
 export const Podcast = styled.TouchableOpacity.attrs({

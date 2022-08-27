@@ -5,6 +5,7 @@ import {
   LikedEpisodes,
   Shows,
   OfficialPlaylist,
+  GradientContainer,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings } from "../../helpers";
@@ -19,24 +20,26 @@ import {
 export default function Home() {
   return (
     <Container>
-      <Head>
-        <Title>{greetings()}, Jegue! 🐯🏹</Title>
-        <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
-      </Head>
+      <GradientContainer>
+        <Head>
+          <Title>{greetings()}, Jegue! 🐯🏹</Title>
+          <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
+        </Head>
 
-      <AnchorContainer>
-        <Anchors />
-      </AnchorContainer>
+        <AnchorContainer>
+          <Anchors />
+        </AnchorContainer>
 
-      <LatestPodcastsContainer>
-        <LatestPodcasts />
-      </LatestPodcastsContainer>
+        <LatestPodcastsContainer>
+          <LatestPodcasts />
+        </LatestPodcastsContainer>
 
-      <LikedEpisodes />
+        <LikedEpisodes />
 
-      <Shows />
+        <Shows />
 
-      <OfficialPlaylist />
+        <OfficialPlaylist />
+      </GradientContainer>
     </Container>
   );
 }
