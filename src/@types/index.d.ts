@@ -1,4 +1,5 @@
 declare module "*.png";
+declare module "*.jpeg";
 
 // Language: typescript
 // Path: src/@types/index.d.ts

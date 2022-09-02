@@ -1,30 +1,42 @@
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { useTheme } from "styled-components/native";
 
-import Login from "../screens/Login";
-import Home from "../screens/Home";
+
+import TabRoutes from "./tab.routes";
+import AuthenticationRoutes from "./authentication.routes";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
 export default function Routes() {
-  const navigatorConfig = {
-    initialRouteName: "Home",
-    navigationOptions: {
-      headerShown: false,
+  const { COLORS } = useTheme();
+
+  const MyTheme = {
+    ...DefaultTheme,
+    colors: {
+      ...DefaultTheme.colors,
+      background: COLORS.BACKGROUND,
+      border: "transparent",
     },
-    screenOptions: {},
   };
 
   return (
-    <NavigationContainer>
-      <Navigator
-        initialRouteName={navigatorConfig.initialRouteName}
-        screenOptions={navigatorConfig.navigationOptions}
-      >
-        <Screen name="Login" component={Login} />
-        <Screen name="Home" component={Home} />
-      </Navigator>
-    </NavigationContainer>
+    <>
+      <NavigationContainer theme={MyTheme}>
+        <Navigator
+          initialRouteName="AuthenticationStack"
+          screenOptions={{
+            headerShown: false,
+            navigationBarColor: COLORS.BACKGROUND,
+            statusBarColor: COLORS.STATUSBAR,
+            statusBarAnimation: "slide",
+          }}
+        >
+          <Screen name="AuthenticationStack" component={AuthenticationRoutes} />
+          <Screen name="AppStack" component={TabRoutes} />
+        </Navigator>
+      </NavigationContainer>
+    </>
   );
 }

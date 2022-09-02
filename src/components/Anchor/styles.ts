@@ -33,5 +33,5 @@ export const Title = styled.Text`
   font-size: 10px;
   text-align: center;
   line-height: 14px;
-  color: ${({ theme }) => theme.COLORS.TEXT_COLOR};
+  color: ${({ theme }) => theme.COLORS.TEXT};
 `;

@@ -1,16 +1,36 @@
 import React from "react";
+import Toast from "./src/components/Toast";
 import { useFonts } from "expo-font";
-import { Text } from "react-native";
 import { ThemeProvider } from "styled-components/native";
-import { Poppins_600SemiBold } from "@expo-google-fonts/poppins";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import {
+  Poppins_600SemiBold,
+  Poppins_300Light,
+  Poppins_700Bold,
+  Poppins_400Regular,
+  Poppins_500Medium,
+} from "@expo-google-fonts/poppins";
+
+import {
+  Roboto_400Regular,
+  Roboto_700Bold,
+  Roboto_500Medium,
+} from "@expo-google-fonts/roboto";
 
 import dark from "./src/themes/dark";
-
-import AppStack from "./src/routes";
+import Routes from "./src/routes";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
+    Poppins_300Light,
+    Poppins_400Regular,
+    Poppins_500Medium,
     Poppins_600SemiBold,
+    Poppins_700Bold,
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_700Bold,
   });
 
   if (!fontsLoaded) {
@@ -19,7 +39,10 @@ export default function App() {
 
   return (
     <ThemeProvider theme={dark}>
-      <AppStack></AppStack>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Routes />
+        <Toast />
+      </GestureHandlerRootView>
     </ThemeProvider>
   );
 }

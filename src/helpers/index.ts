@@ -1,3 +1,4 @@
 import greetings from "./greetings";
+import HexToHSL from "./HexToHSL";
 
-export { greetings };
+export { greetings, HexToHSL };
