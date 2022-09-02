@@ -23,6 +23,8 @@ import Header from "./Header";
 import GoBack from "./GoBack";
 import AudioPlayer from "./AudioPlayer";
 import GradientContainer from "./GradientContainer";
+import Arrow from "./Arrow";
+import Repeat from "./Repeat";
 
 export {
   Anchors,
@@ -50,4 +52,6 @@ export {
   GoBack,
   AudioPlayer,
   GradientContainer,
+  Arrow,
+  Repeat,
 };

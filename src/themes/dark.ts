@@ -10,6 +10,7 @@ export default {
     SECONDARY: "#806E42",
     TEXT: "#FFFFFF",
 
+    TEXT_20: "rgba(255, 255, 255, 0.2)",
     TEXT_30: "rgba(255, 255, 255, 0.3)",
     TEXT_40: "rgba(255, 255, 255, 0.4)",
     TEXT_50: "rgba(255, 255, 255, 0.5)",

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { TouchableOpacity, Dimensions } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
 
@@ -39,7 +39,6 @@ import { HexToHSL } from "../../helpers";
 
 export default function Podcast() {
   const { COLORS, DIMENSIONS } = useTheme();
-  const { height } = Dimensions.get("window");
   const { scrollHandler, scrollY } = useScrollAnimated();
 
   const [isPlaying, setIsPlaying] = useState(false);
