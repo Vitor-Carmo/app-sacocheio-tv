@@ -25,6 +25,7 @@ import AudioPlayer from "./AudioPlayer";
 import GradientContainer from "./GradientContainer";
 import Arrow from "./Arrow";
 import Repeat from "./Repeat";
+import * as Loading from "./Loading";
 
 export {
   Anchors,
@@ -54,4 +55,5 @@ export {
   GradientContainer,
   Arrow,
   Repeat,
+  Loading
 };

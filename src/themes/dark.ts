@@ -23,7 +23,7 @@ export default {
 
     BORDER: "rgba(255, 255, 255, 0.08)",
 
-   /*  STATUSBAR: "rgba(32, 32, 32, 0.8)", */
+    /*  STATUSBAR: "rgba(32, 32, 32, 0.8)", */
     STATUSBAR: "rgba(0, 0, 0, 0.2)",
 
     FILTER_BUTTON_BACKGROUND: "#383332",
@@ -37,6 +37,8 @@ export default {
     BUTTON_TEXT: "#000",
 
     TOAST_BACKGROUND: "#383332",
+
+    SHIMMER_DEFAULT_COLOR: "#333333",
   },
 
   DIMENSIONS: {
