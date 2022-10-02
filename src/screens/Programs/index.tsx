@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { GradientContainer } from "../../components";
-import { IPodcast } from "../../interfaces";
 import { Title, Subtitle } from "../../styles/global";
 
 import {
