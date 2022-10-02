@@ -1,4 +1,7 @@
 import ANCHORS from "./anchors";
+import ERROS from "./errors";
+import SUCCESS from "./success";
+import REGEX from "./regex";
 
 const SACOCHEIO_TV_SITE = "https://www.sacocheio.tv";
 const SPOTIFY_PLAYLIST =
@@ -13,4 +16,7 @@ export {
   ANCHORS,
   HEADER_HEIGHT,
   AUDIO_PLAYER_HEIGHT,
+  ERROS,
+  SUCCESS,
+  REGEX,
 };
