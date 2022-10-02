@@ -26,6 +26,7 @@ import GradientContainer from "./GradientContainer";
 import Arrow from "./Arrow";
 import Repeat from "./Repeat";
 import * as Loading from "./Loading";
+import Spinner from "./Spinner";
 
 export {
   Anchors,
@@ -55,5 +56,6 @@ export {
   GradientContainer,
   Arrow,
   Repeat,
-  Loading
+  Loading,
+  Spinner,
 };
