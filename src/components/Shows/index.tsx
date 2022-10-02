@@ -3,7 +3,6 @@ import { useTheme } from "styled-components/native";
 
 import AnchorButton from "../AnchorButton";
 import { LoadingShows } from "../Loading";
-import { IShow } from "../../interfaces";
 
 import { Title, Subtitle } from "../../styles/global";
 
@@ -28,7 +27,7 @@ export default function Shows() {
       try {
         const {
           data: { data },
-        } = await api.get("/shows/get");
+        } = await api.get<ShowsResponse>("/shows/get");
         setShows(data);
       } catch (error) {
         console.error(error);
@@ -49,7 +48,7 @@ export default function Shows() {
         <Subtitle color={COLORS.PRIMARY}> Bill Hicks</Subtitle>,
         <Subtitle color={COLORS.PRIMARY}> Patrice O'neal</Subtitle>,
         <Subtitle color={COLORS.PRIMARY}> Doug Stanhope</Subtitle>,
-        <Subtitle color={COLORS.PRIMARY}> Kaio D{'\u2019'}elaqua</Subtitle> e
+        <Subtitle color={COLORS.PRIMARY}> Kaio D{"\u2019"}elaqua</Subtitle> e
         <Subtitle color={COLORS.PRIMARY}> Bruna Louise</Subtitle>
       </Subtitle>
       <AnchorButton width="120px" marginBottom="30px">
