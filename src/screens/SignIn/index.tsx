@@ -1,10 +1,22 @@
 import React, { useState } from "react";
-import { TouchableOpacity, Linking } from "react-native";
+import { useDispatch } from "react-redux";
+import { Linking } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
+import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { FORGOT_PASSWORD_LINK } from "../../constants";
+import api from "../../services/api";
+import { signIn } from "../../store/duck/auth";
+import {
+  FORGOT_PASSWORD_LINK,
+  ERROS,
+  SUCCESS,
+  REGEX,
+  ASYNC_STORAGE_KEYS,
+} from "../../constants";
 import { Title } from "../../styles/global";
+import { Spinner } from "../../components";
 
 import {
   Container,
@@ -24,7 +36,9 @@ export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassWord] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
+  const dispatch = useDispatch();
   const navigation = useNavigation();
 
   const { IMAGES, COLORS } = useTheme();
@@ -37,8 +51,62 @@ export default function SignIn() {
     Linking.openURL(FORGOT_PASSWORD_LINK);
   };
 
-  const handleSignIn = () => {
-    navigation.navigate("AppStack");
+  const handleSignIn = async () => {
+    if (!email.match(REGEX.EMAIL)) {
+      Toast.show({
+        type: "error",
+        text1: "Erro!",
+        text2: ERROS.INVALID_EMAIL_ERROR,
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const {
+        data: {
+          data: { id, token, userName },
+        },
+      } = await api.post<SignInResponse>("/user/login", {
+        email: email,
+        senha: password,
+      });
+
+      if (!!token && !!id && !!userName) {
+        AsyncStorage.setItem(
+          ASYNC_STORAGE_KEYS.USER_DATA,
+          JSON.stringify({ id, token, userName })
+        ).then(() => {
+          dispatch({
+            type: signIn.type,
+            payload: { id, token, userName },
+          });
+        });
+
+        Toast.show({
+          type: "success",
+          text1: "Autenticação feita com sucesso",
+          text2: SUCCESS.AUTHENTICATION_SUCCESS,
+        });
+
+        setEmail("");
+        setPassWord("");
+        return;
+      }
+      Toast.show({
+        type: "error",
+        text1: "Falha na autenticação",
+        text2: ERROS.AUTHENTICATION_ERROR,
+      });
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Erro!",
+        text2: ERROS.UNKNOWN_AUTHENTICATION_ERROR,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,8 +147,12 @@ export default function SignIn() {
         Esqueceu sua senha?
       </ForgotYourPassword>
 
-      <SignInButton onPress={handleSignIn}>
-        <SignInText>Entrar</SignInText>
+      <SignInButton disabled={loading} onPress={handleSignIn}>
+        {!loading ? (
+          <SignInText>Entrar</SignInText>
+        ) : (
+          <Spinner color={COLORS.FOREGROUND} size={26} />
+        )}
       </SignInButton>
     </Container>
   );

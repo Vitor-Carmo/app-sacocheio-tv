@@ -7,11 +7,8 @@ interface BaseResponse {
 
 export declare global {
   interface SignInResponse extends BaseResponse {
-    data: {
+    data: IUser & {
       mensagem?: string;
-      token?: boolean | string;
-      id?: number;
-      userName?: string;
       error?: string;
     };
   }

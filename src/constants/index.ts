@@ -2,6 +2,7 @@ import ANCHORS from "./anchors";
 import ERROS from "./errors";
 import SUCCESS from "./success";
 import REGEX from "./regex";
+import ASYNC_STORAGE_KEYS from "./asyncStorageKeys";
 
 const SACOCHEIO_TV_SITE = "https://www.sacocheio.tv";
 const SPOTIFY_PLAYLIST =
@@ -19,4 +20,5 @@ export {
   ERROS,
   SUCCESS,
   REGEX,
+  ASYNC_STORAGE_KEYS,
 };

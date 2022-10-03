@@ -10,4 +10,10 @@ export declare global {
     date: string;
     hour: string;
   }
+
+  interface IUser {
+    id: number;
+    token: boolean | string;
+    userName: string;
+  }
 }

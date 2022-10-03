@@ -1,8 +1,11 @@
 import React from "react";
 import Toast from "./src/components/Toast";
 import { useFonts } from "expo-font";
+import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+
+import store from "./src/store";
 
 import {
   Poppins_600SemiBold,
@@ -40,8 +43,10 @@ export default function App() {
   return (
     <ThemeProvider theme={dark}>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <Routes />
-        <Toast />
+        <Provider store={store}>
+          <Routes />
+          <Toast />
+        </Provider>
       </GestureHandlerRootView>
     </ThemeProvider>
   );
