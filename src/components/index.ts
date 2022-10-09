@@ -27,6 +27,7 @@ import Arrow from "./Arrow";
 import Repeat from "./Repeat";
 import * as Loading from "./Loading";
 import Spinner from "./Spinner";
+import AppLoading from "./AppLoading";
 
 export {
   Anchors,
@@ -58,4 +59,5 @@ export {
   Repeat,
   Loading,
   Spinner,
+  AppLoading,
 };

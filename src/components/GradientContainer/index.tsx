@@ -1,5 +1,4 @@
 import React, { ReactNode, useEffect } from "react";
-import { StatusBar, setStatusBarBackgroundColor } from "expo-status-bar";
 import { ViewProps } from "react-native";
 import { useTheme } from "styled-components";
 
@@ -10,7 +9,7 @@ import { Container } from "./styles";
 interface GradientContainerProps extends ViewProps {
   children?: ReactNode;
   color?: string;
-  opacity?: number
+  opacity?: number;
 }
 
 export default function GradientContainer({
