@@ -28,6 +28,7 @@ import Repeat from "./Repeat";
 import * as Loading from "./Loading";
 import Spinner from "./Spinner";
 import AppLoading from "./AppLoading";
+import Logout from "./Logout";
 
 export {
   Anchors,
@@ -60,4 +61,5 @@ export {
   Loading,
   Spinner,
   AppLoading,
+  Logout,
 };

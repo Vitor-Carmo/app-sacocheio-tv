@@ -15,7 +15,7 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Provider store={store}>
           <Routes />
-          {/* <Toast /> */}
+          <Toast />
         </Provider>
       </GestureHandlerRootView>
     </ThemeProvider>
