@@ -3,12 +3,12 @@ import { Linking } from "react-native";
 
 import { Title, Subtitle } from "../../styles/global";
 import { Container, Playlist, Image, Content } from "./styles";
-import { SPOTIFY_PLAYLIST } from "../../constants";
+import { LINKS } from "../../constants";
 
 export default function OfficialPlaylist() {
   const handleGoToPlaylist = () => {
-    Linking.openURL(SPOTIFY_PLAYLIST);
-  }
+    Linking.openURL(LINKS.SPOTIFY_PLAYLIST);
+  };
 
   return (
     <Container>
@@ -22,9 +22,7 @@ export default function OfficialPlaylist() {
           <Title fontSize="14px" marginBottom="5px">
             🌈 Músicas que dão vontade de dar uma liberada
           </Title>
-          <Subtitle>
-            Envie sua sugestão pelo Instagram @radiosacocheio
-          </Subtitle>
+          <Subtitle>Envie sua sugestão pelo Instagram @radiosacocheio</Subtitle>
         </Content>
       </Playlist>
     </Container>

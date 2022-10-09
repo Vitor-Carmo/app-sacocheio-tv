@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import Slider from "@react-native-community/slider";
 import { Dimensions } from "react-native";
 import { Title as GBTitle } from "../../styles/global";
-import { AUDIO_PLAYER_HEIGHT } from "../../constants";
+import { DIMENSIONS } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
@@ -11,7 +11,7 @@ export const Container = styled.View`
   bottom: 105px;
 
   width: 100%;
-  height: ${AUDIO_PLAYER_HEIGHT}px;
+  height: ${DIMENSIONS.AUDIO_PLAYER_HEIGHT}px;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
 `;
 

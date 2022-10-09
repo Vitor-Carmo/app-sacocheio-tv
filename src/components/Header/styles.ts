@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 import Constants from "expo-constants";
-import Animated, { } from "react-native-reanimated";
-import { HEADER_HEIGHT } from "../../constants";
+import Animated from "react-native-reanimated";
+import { DIMENSIONS } from "../../constants";
 
 export const Container = styled(Animated.View)`
   position: absolute;
@@ -14,7 +14,7 @@ export const Container = styled(Animated.View)`
 
   padding-top: ${Constants.statusBarHeight}px;
 
-  height: ${HEADER_HEIGHT + Constants.statusBarHeight}px;
+  height: ${DIMENSIONS.HEADER_HEIGHT + Constants.statusBarHeight}px;
   z-index: 1;
 `;
 

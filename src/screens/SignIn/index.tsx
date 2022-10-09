@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Linking } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import api from "../../services/api";
 import { signIn } from "../../store/duck/auth";
 import {
-  FORGOT_PASSWORD_LINK,
+  LINKS,
   ERROS,
   SUCCESS,
   REGEX,
@@ -39,7 +38,6 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const { IMAGES, COLORS } = useTheme();
 
@@ -48,7 +46,7 @@ export default function SignIn() {
   };
 
   const handleForgotPassword = () => {
-    Linking.openURL(FORGOT_PASSWORD_LINK);
+    Linking.openURL(LINKS.FORGOT_PASSWORD);
   };
 
   const handleSignIn = async () => {
