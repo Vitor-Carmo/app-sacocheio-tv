@@ -7,8 +7,6 @@ export const Container = styled.ScrollView`
 `;
 
 export const Head = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
   padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
   padding-top: 45px;
 `;
@@ -17,15 +15,18 @@ export const TouchableOptions = styled.TouchableOpacity.attrs({
   activeOpacity: 0.5,
 })`
   align-items: center;
-  width: 25px;
-  height: 50%;
-  padding-top: 10px;
-  padding-right: 10px;
+  justify-content: center;
+  position: absolute;
+  top: 45px;
+  right: ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  width: 40px;
+  height: 40px;
+  z-index: 2;
 `;
 
 export const OptionsContainerList = styled(Animated.View)`
   position: absolute;
-  top: 85px;
+  top: 90px;
   right: ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
   background-color: ${({ theme }) => theme.COLORS.FOREGROUND};
   width: 250px;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch } from "react-redux";
@@ -21,11 +20,9 @@ import {
   GradientContainer,
   Options,
   Logout,
-  Close,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings } from "../../helpers";
-import { ASYNC_STORAGE_KEYS } from "../../constants";
 
 import {
   Container,
@@ -43,6 +40,7 @@ export default function Home() {
   const [showOptionModal, setShowOptionModal] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  
   const options = [
     {
       icon: Logout({ size: 20 }),
@@ -96,11 +94,11 @@ export default function Home() {
   useEffect(() => {
     optionModalTranslateX.value = showOptionModal
       ? withTiming(0, {
-          duration: 300,
+          duration: 250,
           easing: Easing.inOut(Easing.quad),
         })
       : withTiming(100, {
-          duration: 300,
+          duration: 250,
           easing: Easing.inOut(Easing.quad),
         });
   }, [showOptionModal]);
@@ -112,30 +110,34 @@ export default function Home() {
 
     return unsubscribe;
   }, [navigation]);
-  
+
   return (
     <Container>
-      <GradientContainer>
+      <TouchableOptions onPress={handleOnPressOptions}>
+        <Options size={4} />
+      </TouchableOptions>
+      <OptionsContainerList style={optionsContainerListStyle}>
+        {options.map((option, index) => (
+          <TouchableOption
+            key={index}
+            onPress={option.onPress}
+            disabled={!showOptionModal}
+          >
+            {option.icon}
+            <OptionListText>{option.title}</OptionListText>
+          </TouchableOption>
+        ))}
+      </OptionsContainerList>
+
+      <GradientContainer
+        onStartShouldSetResponder={(evt) => true}
+        onMoveShouldSetResponder={(evt) => true}
+        onResponderGrant={() => setShowOptionModal(false)}
+        onResponderMove={() => setShowOptionModal(false)}
+      >
         <Head>
-          <View>
-            <Title>{greetings()}, Jegue! 🐯🏹</Title>
-            <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
-          </View>
-          <TouchableOptions onPress={handleOnPressOptions}>
-            {!showOptionModal ? <Options size={4} /> : <Close size={18} />}
-          </TouchableOptions>
-          <OptionsContainerList style={optionsContainerListStyle}>
-            {options.map((option, index) => (
-              <TouchableOption
-                key={index}
-                onPress={option.onPress}
-                disabled={!showOptionModal}
-              >
-                {option.icon}
-                <OptionListText>{option.title}</OptionListText>
-              </TouchableOption>
-            ))}
-          </OptionsContainerList>
+          <Title>{greetings()}, Jegue! 🐯🏹</Title>
+          <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
         </Head>
 
         <AnchorContainer>
