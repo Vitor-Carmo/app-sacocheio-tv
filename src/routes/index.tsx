@@ -27,6 +27,7 @@ import { RootState } from "../store";
 import { ASYNC_STORAGE_KEYS } from "../constants";
 import { signIn } from "../store/duck/auth";
 import { useNavigationTheme } from "../hooks";
+import api from "../services/api";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -57,7 +58,7 @@ export default function Routes() {
 
         if (asyncUserData) {
           const data: IUser = JSON.parse(asyncUserData);
-
+          api.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
           dispatch({
             type: signIn.type,
             payload: data,

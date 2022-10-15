@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { SvgUri } from "react-native-svg";
+
 import { Title } from "../../styles/global";
 import {
   Container,
@@ -13,7 +15,7 @@ import {
 import Heart from "../Heart";
 
 interface IFeaturedPodcastProps {
-  marginRight?: string;
+  marginRight?: string | null;
   podcastIcon: string;
   episodePhoto: string;
   podcastTitle: string;
@@ -35,12 +37,10 @@ export default function FeaturedPodcast({
   return (
     <Container marginRight={marginRight}>
       <Info>
-        <Avatar
-          source={{
-            uri: podcastIcon,
-          }}
-        />
-        <Title fontSize="10px">{podcastTitle}</Title>
+        <Avatar>
+          <SvgUri width={45} height={45} uri={podcastIcon} />
+        </Avatar>
+        <Title fontSize="12px">{podcastTitle}</Title>
       </Info>
 
       <Episode source={{ uri: episodePhoto }}>

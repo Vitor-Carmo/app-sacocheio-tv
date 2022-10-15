@@ -13,7 +13,11 @@ export declare global {
     };
   }
 
-  interface ShowsResponse {
+  interface ShowsResponse extends BaseResponse {
     data: IShow[];
+  }
+
+  interface LatestEpisodesResponse extends BaseResponse {
+    data: IEpisode[];
   }
 }

@@ -1,7 +1,8 @@
 import axios from "axios";
+import { LINKS } from "../constants";
 
 const api = axios.create({
-  baseURL: "https://api-sacocheio-tv.000webhostapp.com/api/",
+  baseURL: `${LINKS.MIDDLEWARE_API}/api/`,
 });
 
 export default api;
