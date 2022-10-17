@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { SvgUri } from "react-native-svg";
+import { useNavigation } from "@react-navigation/native";
 
 import { Title, Subtitle } from "../../styles/global";
 import {
@@ -19,8 +20,13 @@ import api from "../../services/api";
 import { podcastIcon, formateDate } from "../../helpers";
 
 export default function LikedEpisodes() {
+  const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [likedEpisodes, setLikedEpisodes] = useState<IFavoriteEpisode[]>([]);
+
+  const handlePressNavigateToAllLiked = () => {
+    navigation.navigate("Likes");
+  };
 
   useEffect(() => {
     const handleFetchLikedEpisodes = async () => {
@@ -52,7 +58,9 @@ export default function LikedEpisodes() {
                 Veja os episódios que você mais gostou da plataforma.
               </Subtitle>
             </HeadContent>
-            <AnchorButton>Veja todos</AnchorButton>
+            <AnchorButton onPress={handlePressNavigateToAllLiked}>
+              Veja todos
+            </AnchorButton>
           </Header>
           <View>
             {likedEpisodes.map((podcast, index) => (
