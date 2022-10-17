@@ -18,7 +18,7 @@ export default function LatestPodcasts() {
   const navigate = useNavigation();
 
   const handleNavigateToPrograms = () => {
-    navigate.navigate("ProgramsList");
+    navigate.navigate("Programs");
   };
 
   useEffect(() => {
