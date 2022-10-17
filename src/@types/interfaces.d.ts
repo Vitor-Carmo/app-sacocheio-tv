@@ -1,8 +1,26 @@
 export declare global {
-  interface IPodcast {
-    image: string;
-    title: string;
-    description: string;
+  interface IProgram {
+    nome: string;
+    titulo: string;
+    id: number;
+    horario: string;
+    url: string;
+    apresentador: string;
+    descricao: string;
+    qtdEps: number;
+    grupoUrl?: string;
+    rssFeedURl?: string;
+  }
+
+  interface IEpisode {
+    titulo: string;
+    data: string;
+    descricao: string;
+    id: number;
+    thumbnail: string;
+    slug: string;
+    isFavorite: boolean;
+    podcastName?: string;
   }
 
   interface IShow {
@@ -17,37 +35,11 @@ export declare global {
     userName: string;
   }
 
-  interface ILatestEpisode {
-    nome: string;
-    id: number;
-    horario: string;
-    url: string;
-    apresentador: string;
-    descricao: string;
-    qtdEps: number;
-    grupoUrl: string;
-    rssFeedURl: string;
+  interface ILatestEpisode extends IPodcast {
     latest_episode: IEpisode;
   }
 
-  interface IEpisode {
-    titulo: string;
-    data: string;
-    descricao: string;
-    id: number;
-    thumbnail: string;
-    slug: string;
-    isFavorite: boolean;
-    podcastName?: string;
-  }
-
-  interface IFavoriteEpisode {
-    titulo: string;
-    apresentador: string;
-    qtdEps: number;
-    email: string;
-    descricao: string;
-    id: number;
+  interface IFavoriteEpisode extends IProgram {
     episode: IEpisode;
   }
 }

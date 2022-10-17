@@ -1,55 +1,49 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { GradientContainer } from "../../components";
+import { SvgUri } from "react-native-svg";
+
+import { GradientContainer, Loading } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
+import api from "../../services/api";
 
 import {
   Container,
   Head,
   Podcast,
-  PodcastImage,
+  PodcastContainer,
   PodcastContent,
   Content,
 } from "./styles";
-
+import { podcastIcon } from "../../helpers";
 export default function Programs() {
   const navigation = useNavigation();
-  const podcasts: IPodcast[] = [
-    {
-      image: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-      title: "Podcast Saco Cheio",
-      description:
-        "O programa é para ouvintes que não procuram cultura, informação ou opiniões inteligentes. Durante uma hora que não procuram cultura, que não procuram cultura.",
-    },
-    {
-      image: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-      title: "Podcast Saco Cheio",
-      description:
-        "O programa é para ouvintes que não procuram cultura, informação ou opiniões inteligentes. Durante uma hora que não procuram cultura, que não procuram cultura.",
-    },
-    {
-      image: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-      title: "Podcast Saco Cheio",
-      description:
-        "O programa é para ouvintes que não procuram cultura, informação ou opiniões inteligentes. Durante uma hora que não procuram cultura, que não procuram cultura.",
-    },
-    {
-      image: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-      title: "Podcast Saco Cheio",
-      description:
-        "O programa é para ouvintes que não procuram cultura, informação ou opiniões inteligentes. Durante uma hora que não procuram cultura, que não procuram cultura.",
-    },
-    {
-      image: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-      title: "Podcast Saco Cheio",
-      description:
-        "O programa é para ouvintes que não procuram cultura, informação ou opiniões inteligentes. Durante uma hora que não procuram cultura, que não procuram cultura.",
-    },
-  ];
+  const [programs, setPrograms] = useState<IProgram[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleGoToProgram = (podcast: IPodcast) => {
+  const { LoadingPrograms } = Loading;
+
+  const handlePressNavigateProgram = (name: string) => {
     navigation.navigate("Program");
   };
+
+  useEffect(() => {
+    const handleFetchPrograms = async () => {
+      setLoading(true);
+      try {
+        const {
+          data: { data },
+        } = await api.get("/podcast/podcasts");
+
+        setPrograms(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleFetchPrograms();
+  }, []);
 
   return (
     <Container>
@@ -63,27 +57,42 @@ export default function Programs() {
         </Head>
 
         <Content>
-          {podcasts.map((podcast, index) => (
-            <Podcast
-              key={index}
-              isItTheLatestPodcastItem={index === podcasts.length - 1}
-              onPress={() => handleGoToProgram(podcast)}
-            >
-              <PodcastImage
-                source={{
-                  uri: podcast.image,
-                }}
-              />
-              <PodcastContent>
-                <Title fontSize="16px" marginBottom="5px">
-                  {podcast.title}
-                </Title>
-                <Subtitle fontSize="12px" numberOfLines={4}>
-                  {podcast.description}
-                </Subtitle>
-              </PodcastContent>
-            </Podcast>
-          ))}
+          <>
+            {!loading ? (
+              <>
+                {programs.map((podcast, index) => (
+                  <Podcast
+                    key={podcast.id}
+                    isItTheLatestPodcastItem={index === programs.length - 1}
+                    onPress={() => handlePressNavigateProgram(podcast.nome)}
+                  >
+                    <PodcastContainer>
+                      <SvgUri
+                        width={120}
+                        height={120}
+                        uri={podcastIcon(podcast.id)}
+                      />
+                    </PodcastContainer>
+                    <PodcastContent>
+                      <Title fontSize="16px" marginBottom="5px">
+                        {podcast.nome}
+                      </Title>
+                      <Subtitle fontSize="12px" numberOfLines={4}>
+                        {podcast.descricao}
+                      </Subtitle>
+                    </PodcastContent>
+                  </Podcast>
+                ))}
+              </>
+            ) : (
+              <>
+                <LoadingPrograms />
+                <LoadingPrograms />
+                <LoadingPrograms />
+                <LoadingPrograms isItTheLatestPodcastItem />
+              </>
+            )}
+          </>
         </Content>
       </GradientContainer>
     </Container>

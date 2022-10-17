@@ -24,4 +24,8 @@ export declare global {
   interface FavoritesEpisodeResponse extends BaseResponse {
     data: IFavoriteEpisode[];
   }
+
+  interface ProgramsResponse extends BaseResponse {
+    data: IProgram[];
+  }
 }

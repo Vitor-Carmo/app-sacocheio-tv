@@ -35,12 +35,13 @@ export const Podcast = styled.TouchableOpacity.attrs({
   `}
 `;
 
-export const PodcastImage = styled.Image`
+export const PodcastContainer = styled.View`
   width: 120px;
   height: 120px;
   border-radius: 10px;
   margin-right: 15px;
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
 `;
 
 export const PodcastContent = styled.View`
