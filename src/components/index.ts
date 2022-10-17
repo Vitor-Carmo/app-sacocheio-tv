@@ -29,6 +29,7 @@ import * as Loading from "./Loading";
 import Spinner from "./Spinner";
 import AppLoading from "./AppLoading";
 import Logout from "./Logout";
+import ApplicationContainer from "./ApplicationContainer";
 
 export {
   Anchors,
@@ -62,4 +63,5 @@ export {
   Spinner,
   AppLoading,
   Logout,
+  ApplicationContainer,
 };

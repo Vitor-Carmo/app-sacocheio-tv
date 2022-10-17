@@ -3,7 +3,7 @@ import { Toast } from "./src/components";
 import { Provider } from "react-redux";
 import { ThemeProvider } from "styled-components/native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-
+import { ApplicationContainer } from "./src/components";
 import store from "./src/store";
 
 import dark from "./src/themes/dark";
@@ -14,7 +14,9 @@ export default function App() {
     <ThemeProvider theme={dark}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <Provider store={store}>
-          <Routes />
+          <ApplicationContainer>
+            <Routes />
+          </ApplicationContainer>
           <Toast />
         </Provider>
       </GestureHandlerRootView>
