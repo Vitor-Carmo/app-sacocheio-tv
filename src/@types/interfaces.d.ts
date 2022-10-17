@@ -17,7 +17,7 @@ export declare global {
     userName: string;
   }
 
-  interface IEpisode {
+  interface ILatestEpisode {
     nome: string;
     id: number;
     horario: string;
@@ -27,14 +27,27 @@ export declare global {
     qtdEps: number;
     grupoUrl: string;
     rssFeedURl: string;
-    latest_episode: {
-      titulo: string;
-      data: string;
-      descricao: string;
-      id: number;
-      thumbnail: string;
-      slug: "00-tarja-preta-fm";
-      isFavorite: boolean;
-    };
+    latest_episode: IEpisode;
+  }
+
+  interface IEpisode {
+    titulo: string;
+    data: string;
+    descricao: string;
+    id: number;
+    thumbnail: string;
+    slug: string;
+    isFavorite: boolean;
+    podcastName?: string;
+  }
+
+  interface IFavoriteEpisode {
+    titulo: string;
+    apresentador: string;
+    qtdEps: number;
+    email: string;
+    descricao: string;
+    id: number;
+    episode: IEpisode;
   }
 }

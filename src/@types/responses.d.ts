@@ -18,6 +18,10 @@ export declare global {
   }
 
   interface LatestEpisodesResponse extends BaseResponse {
-    data: IEpisode[];
+    data: ILatestEpisode[];
+  }
+
+  interface FavoritesEpisodeResponse extends BaseResponse {
+    data: IFavoriteEpisode[];
   }
 }

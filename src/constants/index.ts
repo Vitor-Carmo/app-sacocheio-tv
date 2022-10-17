@@ -5,7 +5,7 @@ import ANCHORS from "./anchors";
 import SUCCESS from "./success";
 import DIMENSIONS from "./dimensions";
 import ASYNC_STORAGE_KEYS from "./asyncStorageKeys";
-
+import MONTHS from "./months";
 
 export {
   ANCHORS,
@@ -15,4 +15,5 @@ export {
   SUCCESS,
   REGEX,
   ASYNC_STORAGE_KEYS,
+  MONTHS,
 };

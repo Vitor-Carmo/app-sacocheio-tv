@@ -10,9 +10,10 @@ import { LatestPodcasts as LatestPodcastsLoading } from "../Loading";
 
 import { Title, Subtitle } from "../../styles/global";
 import { Container, Header, Content, ScrollHorizontal } from "./styles";
+import { podcastIcon } from "../../helpers";
 
 export default function LatestPodcasts() {
-  const [podcasts, setPodcasts] = useState<IEpisode[]>([]);
+  const [podcasts, setPodcasts] = useState<ILatestEpisode[]>([]);
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigation();
@@ -23,6 +24,7 @@ export default function LatestPodcasts() {
 
   useEffect(() => {
     const handleFetchLatestEpisodes = async () => {
+      setLoading(true);
       try {
         const {
           data: { data },
@@ -58,7 +60,7 @@ export default function LatestPodcasts() {
             {podcasts.map((podcast, index) => (
               <FeaturedPodcast
                 key={podcast.id}
-                podcastIcon={`${LINKS.SACOCHEIO_TV_PORTAL}/assets/home/podcasts/${podcast.id}.svg`}
+                podcastIcon={podcastIcon(podcast.id)}
                 episodePhoto={`${LINKS.MIDDLEWARE_API}/public/images/latest-episodes/${podcast.id}.png`}
                 podcastTitle={podcast.nome}
                 episodeTitle={podcast.latest_episode.titulo}
