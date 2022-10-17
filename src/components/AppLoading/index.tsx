@@ -25,7 +25,7 @@ export default function AppLoading() {
   useEffect(() => {
     translateXPosition.value = withRepeat(
       withSequence(
-        withTiming(15, {
+        withTiming(10, {
           duration: 800,
           easing: Easing.inOut(Easing.quad),
         }),
