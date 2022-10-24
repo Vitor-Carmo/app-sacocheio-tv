@@ -61,15 +61,21 @@ export default function SignIn() {
 
     setLoading(true);
     try {
-      const {
-        data: {
-          data: { id, token, userName },
-        },
-      } = await api.post<SignInResponse>("/user/login", {
+      const { data } = await api.post<SignInResponse>("/user/login", {
         email: email,
         senha: password,
       });
 
+      if (!data.status) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.data.error,
+        });
+        return;
+      }
+
+      const { token, id, userName } = data.data;
       if (!!token && !!id && !!userName) {
         AsyncStorage.setItem(
           ASYNC_STORAGE_KEYS.USER_DATA,
@@ -102,6 +108,8 @@ export default function SignIn() {
         text1: "Erro!",
         text2: ERROS.UNKNOWN_AUTHENTICATION_ERROR,
       });
+
+      console.error(error);
     } finally {
       setLoading(false);
     }
