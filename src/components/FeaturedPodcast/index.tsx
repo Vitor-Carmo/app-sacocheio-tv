@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { SvgUri } from "react-native-svg";
 
 import { Title } from "../../styles/global";
 import {
@@ -12,6 +11,7 @@ import {
   Like,
 } from "./styles";
 
+import CachedSvgUri from "../CachedSvgUri";
 import Heart from "../Heart";
 
 interface IFeaturedPodcastProps {
@@ -38,7 +38,7 @@ export default function FeaturedPodcast({
     <Container marginRight={marginRight}>
       <Info>
         <Avatar>
-          <SvgUri width={45} height={45} uri={podcastIcon} />
+          <CachedSvgUri width={45} height={45} uri={podcastIcon} />
         </Avatar>
         <Title fontSize="12px">{podcastTitle}</Title>
       </Info>

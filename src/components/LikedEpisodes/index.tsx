@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { SvgUri } from "react-native-svg";
 import { useNavigation } from "@react-navigation/native";
 
 import { Title, Subtitle } from "../../styles/global";
@@ -14,6 +13,7 @@ import {
 } from "./styles";
 
 import AnchorButton from "../AnchorButton";
+import CachedSvgUri from "../CachedSvgUri";
 import { LoadingLikedEpisodes } from "../Loading";
 
 import api from "../../services/api";
@@ -75,7 +75,7 @@ export default function LikedEpisodes() {
                   }  .  ${formateDate(podcast.episode.data)}`}</Subtitle>
                 </PodcastContent>
                 <PodcastContainer>
-                  <SvgUri
+                  <CachedSvgUri
                     width={120}
                     height={120}
                     uri={podcastIcon(podcast.id)}
