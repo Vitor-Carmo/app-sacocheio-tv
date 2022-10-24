@@ -1559,7 +1559,7 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@react-native-async-storage/async-storage@^1.17.10":
+"@react-native-async-storage/async-storage@^1.13.4", "@react-native-async-storage/async-storage@^1.17.10":
   version "1.17.10"
   resolved "https://registry.yarnpkg.com/@react-native-async-storage/async-storage/-/async-storage-1.17.10.tgz#8d6a4771912be8454a9e215eebd469b1b8e2e638"
   integrity sha512-KrR021BmBLsA0TT1AAsfH16bHYy0MSbhdAeBAqpriak3GS1T2alFcdTUvn13p0ZW6FKRD6Bd3ryU2zhU/IYYJQ==
@@ -6039,6 +6039,13 @@ react-is@^18.0.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.2.0.tgz#199431eeaaa2e09f86427efbb4f1473edb47609b"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
+
+react-native-cache@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-cache/-/react-native-cache-2.0.2.tgz#4a41a46f41548fabb6b8040e0d57126a84629113"
+  integrity sha512-mnffhIBjjLLU19jUjLFnfHbiZhXgMiuXXswYEhfAYsQLpWu2gObwUmYv9y6FbnRxsnxuqc1wmZDxzy9309rn2Q==
+  dependencies:
+    "@react-native-async-storage/async-storage" "^1.13.4"
 
 react-native-codegen@^0.0.17:
   version "0.0.17"
