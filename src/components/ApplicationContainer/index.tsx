@@ -20,6 +20,7 @@ import {
 import AppLoading from "../AppLoading";
 import { ASYNC_STORAGE_KEYS } from "../../constants";
 import { signIn } from "../../store/duck/auth";
+import { cache } from "../../services/cache";
 import api from "../../services/api";
 
 interface ApplicationContainerProps {
@@ -66,6 +67,14 @@ export default function ApplicationContainer({
     };
 
     getToken();
+  }, []);
+
+  useEffect(() => {
+    const clearCache = async () => {
+      await cache.clearAll();
+    };
+
+    clearCache();
   }, []);
 
   return loadingApp || !fontsLoaded ? <AppLoading /> : <>{children}</>;
