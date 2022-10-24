@@ -6,10 +6,13 @@ export declare global {
     horario: string;
     url: string;
     apresentador: string;
+    email: string;
     descricao: string;
     qtdEps: number;
     grupoUrl?: string;
     rssFeedURl?: string;
+    next?: boolean;
+    episodes: IEpisode[];
   }
 
   interface IEpisode {
@@ -35,7 +38,7 @@ export declare global {
     userName: string;
   }
 
-  interface ILatestEpisode extends IPodcast {
+  interface ILatestEpisode extends IProgram {
     latest_episode: IEpisode;
   }
 

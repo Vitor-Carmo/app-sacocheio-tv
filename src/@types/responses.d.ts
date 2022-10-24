@@ -28,4 +28,8 @@ export declare global {
   interface ProgramsResponse extends BaseResponse {
     data: IProgram[];
   }
+
+  interface ProgramResponse extends BaseResponse {
+    data: IProgram;
+  }
 }

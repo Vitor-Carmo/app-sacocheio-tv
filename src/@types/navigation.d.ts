@@ -10,11 +10,11 @@ export declare global {
       SignIn: undefined;
       HomeScreen: undefined;
       ProgramsList: undefined;
-      Program: undefined;
+      Program: { podcast: IProgram };
       Library: undefined;
       Podcast: undefined;
-      Downloads:  undefined;
-      Likes:  undefined;
+      Downloads: undefined;
+      Likes: undefined;
     }
   }
 }
