@@ -1,8 +1,8 @@
 import React from "react";
-0;
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
 import GoBack from "../GoBack";
+import Options from "../Options";
 import {
   useAnimatedStyle,
   interpolateColor,
@@ -11,7 +11,13 @@ import {
   Extrapolate,
 } from "react-native-reanimated";
 
-import { Container, Title, GoBackOpacity } from "./styles";
+import {
+  Container,
+  Title,
+  GoBackOpacity,
+  OptionsContainer,
+  OpacityTouchable,
+} from "./styles";
 
 interface HeaderProps {
   title?: string;
@@ -38,7 +44,7 @@ export default function Header({
     };
   });
 
-  const titleStyle = useAnimatedStyle(() => {
+  const opacityStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
         scrollY.value,
@@ -60,7 +66,13 @@ export default function Header({
       <GoBackOpacity onPress={handlePressGoBack}>
         <GoBack size={20} />
       </GoBackOpacity>
-      <Title style={titleStyle}>{title}</Title>
+      <Title style={opacityStyle}>{title}</Title>
+
+      <OptionsContainer style={opacityStyle}>
+        <OpacityTouchable>
+          <Options borderColor={COLORS.TEXT} size={3.8} />
+        </OpacityTouchable>
+      </OptionsContainer>
     </Container>
   );
 }
