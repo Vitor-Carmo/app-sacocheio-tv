@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { SvgUri } from "react-native-svg";
 
-import { GradientContainer, Loading } from "../../components";
+import { GradientContainer, Loading, CachedSvgUri } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import api from "../../services/api";
 
@@ -22,8 +21,10 @@ export default function Programs() {
 
   const { LoadingPrograms } = Loading;
 
-  const handlePressNavigateProgram = (name: string) => {
-    navigation.navigate("Program");
+  const handlePressNavigateProgram = (podcast: IProgram) => {
+    navigation.navigate("Program", {
+      podcast: { ...podcast, episodes: [] },
+    });
   };
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function Programs() {
 
   return (
     <Container>
-      <GradientContainer>
+      <GradientContainer backgroundColorGradientCount={1}>
         <Head>
           <Title marginBottom="5px">Programação da Rádio Saco Cheio TV</Title>
           <Subtitle fontSize="14px">
@@ -55,46 +56,51 @@ export default function Programs() {
             TV
           </Subtitle>
         </Head>
-
-        <Content>
-          <>
-            {!loading ? (
-              <>
-                {programs.map((podcast, index) => (
-                  <Podcast
-                    key={podcast.id}
-                    isItTheLatestPodcastItem={index === programs.length - 1}
-                    onPress={() => handlePressNavigateProgram(podcast.nome)}
-                  >
-                    <PodcastContainer>
-                      <SvgUri
-                        width={120}
-                        height={120}
-                        uri={podcastIcon(podcast.id)}
-                      />
-                    </PodcastContainer>
-                    <PodcastContent>
-                      <Title fontSize="16px" marginBottom="5px">
-                        {podcast.nome}
-                      </Title>
-                      <Subtitle fontSize="12px" numberOfLines={4}>
-                        {podcast.descricao}
-                      </Subtitle>
-                    </PodcastContent>
-                  </Podcast>
-                ))}
-              </>
-            ) : (
-              <>
-                <LoadingPrograms />
-                <LoadingPrograms />
-                <LoadingPrograms />
-                <LoadingPrograms isItTheLatestPodcastItem />
-              </>
-            )}
-          </>
-        </Content>
       </GradientContainer>
+      <Content>
+        <>
+          {!loading ? (
+            <>
+              {programs.map((podcast, index) => (
+                <Podcast
+                  key={podcast.id}
+                  isItTheLatestPodcastItem={index === programs.length - 1}
+                  onPress={() => handlePressNavigateProgram(podcast)}
+                >
+                  <PodcastContainer>
+                    <CachedSvgUri
+                      width={120}
+                      height={120}
+                      uri={podcastIcon(podcast.id)}
+                    />
+                  </PodcastContainer>
+                  <PodcastContent>
+                    <Title fontSize="16px" marginBottom="5px">
+                      {podcast.nome}
+                    </Title>
+                    <Subtitle fontSize="12px" numberOfLines={3}>
+                      {podcast.descricao}
+                    </Subtitle>
+                  </PodcastContent>
+                </Podcast>
+              ))}
+            </>
+          ) : (
+            <>
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms />
+              <LoadingPrograms isItTheLatestPodcastItem />
+            </>
+          )}
+        </>
+      </Content>
     </Container>
   );
 }
