@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { useFonts } from "expo-font";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 import {
   Poppins_600SemiBold,
@@ -47,7 +47,7 @@ export default function ApplicationContainer({
   useEffect(() => {
     const getToken = async () => {
       try {
-        const asyncUserData = await AsyncStorage.getItem(
+        const asyncUserData = await SecureStore.getItemAsync(
           ASYNC_STORAGE_KEYS.USER_DATA
         );
 

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { Linking } from "react-native";
 import { useTheme } from "styled-components";
 import Toast from "react-native-toast-message";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
 
 import api from "../../services/api";
 import { signIn } from "../../store/duck/auth";
@@ -77,7 +77,7 @@ export default function SignIn() {
 
       const { token, id, userName } = data.data;
       if (!!token && !!id && !!userName) {
-        AsyncStorage.setItem(
+        SecureStore.setItemAsync(
           ASYNC_STORAGE_KEYS.USER_DATA,
           JSON.stringify({ id, token, userName })
         ).then(() => {

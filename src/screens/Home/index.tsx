@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import { useDispatch } from "react-redux";
 import {
   useAnimatedStyle,
@@ -23,6 +24,7 @@ import {
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings } from "../../helpers";
+import { ASYNC_STORAGE_KEYS } from "../../constants";
 
 import {
   Container,
@@ -40,13 +42,16 @@ export default function Home() {
   const [showOptionModal, setShowOptionModal] = useState(false);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  
+
   const options = [
     {
       icon: Logout({ size: 20 }),
       title: "Sair",
       onPress: () => {
-        AsyncStorage.clear().then(() => {
+        Promise.all([
+          SecureStore.deleteItemAsync(ASYNC_STORAGE_KEYS.USER_DATA),
+          AsyncStorage.clear(),
+        ]).then(() => {
           dispatch(signOut());
         });
       },
