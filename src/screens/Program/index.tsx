@@ -112,7 +112,6 @@ export default function Program() {
     const source = axios.CancelToken.source();
     const handleFetchProgram = async () => {
       setLoading(true);
-      return;
       try {
         const {
           data: { data },
