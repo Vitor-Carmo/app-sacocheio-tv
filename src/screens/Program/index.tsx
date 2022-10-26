@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRoute, RouteProp } from "@react-navigation/native";
-import { NativeScrollEvent } from "react-native";
-
+import { NativeScrollEvent, Dimensions } from "react-native";
 import { useScrollAnimated } from "../../hooks";
 import {
   Podcast,
@@ -47,17 +46,12 @@ export default function Program() {
   const { scrollY, scrollHandler } = useScrollAnimated();
   const { LoadingPodcast } = Loading;
 
-  const isCloseToBottom = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }: NativeScrollEvent) => {
-    const paddingToBottom = 20;
+  const isCloseToBottom = (nativeEvent: NativeScrollEvent) => {
+    const windowHeight = Dimensions.get("window").height;
+    const height = nativeEvent.contentSize.height;
+    const offset = nativeEvent.contentOffset.y;
 
-    return (
-      layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom
-    );
+    return windowHeight + offset >= height;
   };
 
   const handleFetchMorePodcasts = async () => {
