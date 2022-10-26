@@ -21,11 +21,11 @@ export const Head = styled.View`
   margin-bottom: 15px;
 `;
 
-export const HeadContent = styled.View`
+export const HeadContent = styled(Animated.View)`
   flex: 1;
 `;
 
-export const Avatar = styled.View`
+export const Avatar = styled(Animated.View)`
   width: 150px;
   height: 150px;
   border-radius: 15px;

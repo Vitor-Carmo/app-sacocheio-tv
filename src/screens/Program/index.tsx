@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { NativeScrollEvent, Dimensions } from "react-native";
+import axios from "axios";
+import {
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+} from "react-native-reanimated";
+
 import { useScrollAnimated } from "../../hooks";
 import {
   Podcast,
@@ -30,7 +37,6 @@ import {
 } from "./styles";
 import { useTheme } from "styled-components";
 import cachingRequest from "../../services/cache";
-import axios from "axios";
 
 export default function Program() {
   const {
@@ -45,6 +51,31 @@ export default function Program() {
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollY, scrollHandler } = useScrollAnimated();
   const { LoadingPodcast } = Loading;
+
+  const avatarStyle = useAnimatedStyle(() => {
+    const animationSize = interpolate(
+      scrollY.value,
+      [0, 110],
+      [150, 100],
+      Extrapolate.CLAMP
+    );
+
+    return {
+      width: animationSize,
+      height: animationSize,
+    };
+  });
+
+  const opacityStyle = useAnimatedStyle(() => {
+    return {
+      opacity: interpolate(
+        scrollY.value,
+        [0, 110],
+        [1, 0],
+        Extrapolate.CLAMP
+      ),
+    };
+  });
 
   const isCloseToBottom = (nativeEvent: NativeScrollEvent) => {
     const windowHeight = Dimensions.get("window").height;
@@ -81,6 +112,7 @@ export default function Program() {
     const source = axios.CancelToken.source();
     const handleFetchProgram = async () => {
       setLoading(true);
+      return;
       try {
         const {
           data: { data },
@@ -132,14 +164,14 @@ export default function Program() {
         >
           <ProgramContainer>
             <Head>
-              <Avatar>
-                <CachedSvgUri
+              <Avatar style={[avatarStyle, opacityStyle]}>
+                  <CachedSvgUri
                   uri={podcastIcon(program.id)}
-                  width={150}
-                  height={150}
+                  width="100%"
+                  height="100%"
                 />
               </Avatar>
-              <HeadContent>
+              <HeadContent style={opacityStyle}>
                 <Title fontSize="22px" marginBottom="15px">
                   {program.nome ?? program.titulo}
                 </Title>
