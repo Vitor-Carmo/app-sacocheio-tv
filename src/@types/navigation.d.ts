@@ -12,7 +12,7 @@ export declare global {
       ProgramsList: undefined;
       Program: { podcast: IProgram };
       Library: undefined;
-      Podcast: undefined;
+      Podcast: { podcast: IPodcast };
       Downloads: undefined;
       Likes: undefined;
     }

@@ -16,14 +16,20 @@ export declare global {
   }
 
   interface IEpisode {
+    id: number;
     titulo: string;
+    title?: string;
     data: string;
     descricao: string;
-    id: number;
+    description?: string;
     thumbnail: string;
     slug: string;
     isFavorite: boolean;
     podcastName?: string;
+    urlMp4?: string;
+    urlMp3?: string;
+    time?: string;
+    audio?: string;
   }
 
   interface IShow {
@@ -44,5 +50,23 @@ export declare global {
 
   interface IFavoriteEpisode extends IProgram {
     episode: IEpisode;
+  }
+
+  interface IComment {
+    cod: number;
+    usuario: number;
+    comentario: string;
+    data: string;
+    resposta: string;
+    nome: string;
+    respostas: IComment[];
+  }
+
+  interface IPodcast extends IProgram {
+    episode: IEpisode;
+    comments: {
+      data: IComment[];
+      length: number;
+    };
   }
 }

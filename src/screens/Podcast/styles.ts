@@ -5,24 +5,25 @@ import { DIMENSIONS } from "../../constants";
 export const Container = styled(Animated.ScrollView)`
   flex: 1;
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
-  padding-top: ${DIMENSIONS.HEADER_HEIGHT / 2}px;
 `;
 
 export const Head = styled.View`
   margin-top: 70px;
   margin-bottom: 30px;
+  padding-top: ${DIMENSIONS.HEADER_HEIGHT / 2}px;
 `;
 
 export const Group = styled.View`
   padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
 `;
 
-export const Avatar = styled.Image`
+export const Avatar = styled.View`
   width: 80px;
   height: 80px;
   border-radius: 10px;
-  margin-bottom: 30px;
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
+  margin-bottom: 15px;
 `;
 
 export const InfoText = styled.Text`
@@ -71,6 +72,9 @@ export const CommentContainer = styled.View`
 `;
 
 export const ProfileAvatar = styled.View<{ color: string; size: number }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: ${({ size }) => size / 2}px;
@@ -91,7 +95,7 @@ export const Comment = styled.View<{
   paddingLeft?: string;
 }>`
   flex-direction: row;
-  padding: 10px 0;
+  padding: 16px 0;
   padding-left: ${({ theme, paddingLeft }) =>
     paddingLeft || theme.DIMENSIONS.PADDING_VERTICAL};
   padding-right: ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};

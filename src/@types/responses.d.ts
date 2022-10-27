@@ -32,4 +32,8 @@ export declare global {
   interface ProgramResponse extends BaseResponse {
     data: IProgram;
   }
+
+  interface PodcastResponse extends BaseResponse {
+    data: IPodcast;
+  }
 }

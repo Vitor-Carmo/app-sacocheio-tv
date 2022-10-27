@@ -204,6 +204,7 @@ export default function Program() {
                   slug={episode.slug}
                   podcastName={episode.podcastName}
                   thumbnail={episode.thumbnail}
+                  podcastUrl={podcast.url}
                   isLastPodcast={program.episodes.length - 1 === index}
                 />
               ))}

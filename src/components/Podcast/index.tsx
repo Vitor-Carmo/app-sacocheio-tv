@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
+
 import { Title } from "../../styles/global";
 import {
   Container,
@@ -23,11 +24,15 @@ import Download from "../Download";
 import Heart from "../Heart";
 import Share from "../Share";
 import OptionsIcon from "../Options";
+import Spinner from "../Spinner";
 import CachedSvgUri from "../CachedSvgUri";
 import { podcastIcon } from "../../helpers";
+import api from "../../services/api";
+import cachingRequest from "../../services/cache";
 
 export interface PodcastProps extends IEpisode {
   podcastId: number;
+  podcastUrl: string;
   isLastPodcast?: boolean;
 }
 
@@ -35,6 +40,7 @@ export default function Podcast({
   podcastId,
   id,
   titulo,
+  podcastUrl,
   data,
   descricao,
   slug,
@@ -43,6 +49,7 @@ export default function Podcast({
   podcastName,
   isLastPodcast,
 }: PodcastProps) {
+  const [loading, setLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPodcastLiked, setIsPodcastLiked] = useState(false);
 
@@ -58,17 +65,38 @@ export default function Podcast({
     setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
   };
 
-  const handlePressPodcast = () => {
-    navigation.navigate("Podcast");
+  const handlePressPodcast = async () => {
+    setLoading(true);
+    try {
+      const {
+        data: { data },
+      } = await cachingRequest(slug, async () =>
+        api.get<PodcastResponse>(`/podcast/episode/${podcastUrl}/${slug}`)
+      );
+      navigation.navigate("Podcast", { podcast: data });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Container isLastPodcast={isLastPodcast} onPress={handlePressPodcast}>
+    <Container
+      isLastPodcast={isLastPodcast}
+      onPress={handlePressPodcast}
+      disabled={loading}
+    >
       <AvatarContainer>
         <Avatar>
           <CachedSvgUri uri={podcastIcon(podcastId)} width={60} height={60} />
         </Avatar>
-        <Title flex={1} numberOfLines={2} fontSize="18px" color={isPlaying ? COLORS.PRIMARY : null}>
+        <Title
+          flex={1}
+          numberOfLines={2}
+          fontSize="18px"
+          color={isPlaying ? COLORS.PRIMARY : null}
+        >
           {titulo}
         </Title>
       </AvatarContainer>
@@ -96,7 +124,11 @@ export default function Podcast({
         </Options>
 
         <PlayButton onPress={handlePressPlayButton}>
-          {isPlaying ? <Pause /> : <Play />}
+          {loading ? (
+            <Spinner size={20} color="#9E9E9E" borderWidth={1.5} />
+          ) : (
+            <>{isPlaying ? <Pause /> : <Play />}</>
+          )}
         </PlayButton>
       </OptionsContainer>
     </Container>

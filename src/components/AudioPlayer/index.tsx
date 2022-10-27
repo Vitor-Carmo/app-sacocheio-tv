@@ -38,7 +38,7 @@ import { Subtitle } from "../../styles/global";
 export default function AudioPlayer() {
   const playerRef = useRef<Modalize>(null);
   const { COLORS } = useTheme();
-  const { height } = Dimensions.get("window");
+  const { height } = Dimensions.get("screen");
 
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
