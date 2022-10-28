@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Podcast, Loading } from "../../components";
+import Podcast from "../../components/Podcast";
+import * as Loading from "../../components/Loading";
+
 import api from "../../services/api";
 
 import { Container } from "./styles";
