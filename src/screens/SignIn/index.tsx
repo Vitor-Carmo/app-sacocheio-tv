@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Linking } from "react-native";
+import * as Linking from "expo-linking";
 import { useTheme } from "styled-components";
 import Toast from "react-native-toast-message";
 import * as SecureStore from 'expo-secure-store';

@@ -23,12 +23,14 @@ interface HeaderProps {
   title?: string;
   scrollY: SharedValue<number>;
   backgroundColor?: string;
+  onPressGoBack?: () => void;
 }
 
 export default function Header({
   title,
   scrollY,
   backgroundColor = "#202020",
+  onPressGoBack,
 }: HeaderProps) {
   const { COLORS } = useTheme();
 
@@ -56,9 +58,15 @@ export default function Header({
   });
 
   const handlePressGoBack = () => {
+    if (onPressGoBack) {
+      onPressGoBack();
+      return;
+    }
+
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
+   
   };
 
   return (

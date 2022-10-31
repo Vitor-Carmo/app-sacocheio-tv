@@ -15,7 +15,7 @@ import {
 import AnchorButton from "../AnchorButton";
 import CachedSvgUri from "../CachedSvgUri";
 import { LoadingLikedEpisodes } from "../Loading";
-
+import cachingRequest from "../../services/cache";
 import api from "../../services/api";
 import { podcastIcon, formateDate } from "../../helpers";
 
@@ -23,9 +23,36 @@ export default function LikedEpisodes() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [likedEpisodes, setLikedEpisodes] = useState<IFavoriteEpisode[]>([]);
+  const [loadingEpisode, setLoadingEpisode] = useState(false);
 
   const handlePressNavigateToAllLiked = () => {
-    navigation.navigate("Likes");
+    navigation.navigate("Libraries", {
+      screen: "Library",
+      params: {
+        screen: "Likes",
+      },
+      initial: false,
+    });
+  };
+
+  const handlePressPodcast = async (url: string | undefined, slug: string) => {
+    setLoadingEpisode(true);
+    try {
+      const {
+        data: { data },
+      } = await cachingRequest(slug, async () =>
+        api.get<PodcastResponse>(`/podcast/episode/${url}/${slug}`)
+      );
+      navigation.navigate("Programs", {
+        screen: "Podcast",
+        params: { podcast: data },
+        initial: false,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingEpisode(false);
+    }
   };
 
   useEffect(() => {
@@ -67,6 +94,13 @@ export default function LikedEpisodes() {
               <Podcast
                 lastEpisode={likedEpisodes.length - 1 === index}
                 key={podcast.episode.id}
+                disabled={loadingEpisode}
+                onPress={() =>
+                  handlePressPodcast(
+                    podcast.episode.podcastName,
+                    podcast.episode.slug
+                  )
+                }
               >
                 <PodcastContent>
                   <Title fontSize="16px">{podcast.episode.titulo}</Title>

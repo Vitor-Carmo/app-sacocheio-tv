@@ -73,7 +73,11 @@ export default function Podcast({
       } = await cachingRequest(slug, async () =>
         api.get<PodcastResponse>(`/podcast/episode/${podcastUrl}/${slug}`)
       );
-      navigation.navigate("Podcast", { podcast: data });
+      navigation.navigate("Programs", {
+        screen: "Podcast",
+        params: { podcast: data },
+        initial: false,
+      });
     } catch (error) {
       console.error(error);
     } finally {

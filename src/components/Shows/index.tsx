@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as Linking from "expo-linking";
 import { useTheme } from "styled-components/native";
 
 import AnchorButton from "../AnchorButton";
@@ -51,7 +52,7 @@ export default function Shows() {
         <Subtitle color={COLORS.PRIMARY}> Kaio D{"\u2019"}elaqua</Subtitle> e
         <Subtitle color={COLORS.PRIMARY}> Bruna Louise</Subtitle>
       </Subtitle>
-      <AnchorButton width="120px" marginBottom="30px">
+      <AnchorButton width="120px" marginBottom="30px" onPress={() => Linking.openURL("https://www.arthurpetry.com/agenda.php")}>
         agenda completa
       </AnchorButton>
       {!isLoading ? (

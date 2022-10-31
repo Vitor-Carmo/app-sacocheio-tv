@@ -1,5 +1,5 @@
 import React from "react";
-import { Linking } from "react-native";
+import * as Linking from "expo-linking";
 
 import { Title, Subtitle } from "../../styles/global";
 import { Container, Playlist, Image, Content } from "./styles";

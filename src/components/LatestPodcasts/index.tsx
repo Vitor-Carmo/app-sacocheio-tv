@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-
 import { LINKS } from "../../constants";
 import api from "../../services/api";
-
 import FeaturedPodcast from "../FeaturedPodcast";
 import AnchorButton from "../AnchorButton";
 import { LatestPodcasts as LatestPodcastsLoading } from "../Loading";
@@ -16,10 +14,10 @@ export default function LatestPodcasts() {
   const [podcasts, setPodcasts] = useState<ILatestEpisode[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const navigate = useNavigation();
+  const navigation = useNavigation();
 
   const handleNavigateToPrograms = () => {
-    navigate.navigate("Programs");
+    navigation.navigate("Programs");
   };
 
   useEffect(() => {
@@ -65,6 +63,9 @@ export default function LatestPodcasts() {
                 podcastTitle={podcast.nome}
                 episodeTitle={podcast.latest_episode.titulo}
                 marginRight={podcasts.length - 1 === index ? "30px" : null}
+                podcast={podcast}
+                url={podcast.url}
+                slug={podcast.latest_episode.slug}
               />
             ))}
           </ScrollHorizontal>

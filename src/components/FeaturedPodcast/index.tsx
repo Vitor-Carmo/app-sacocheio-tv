@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
+import api from "../../services/api";
+import cachingRequest from "../../services/cache";
 import { Title } from "../../styles/global";
+
 import {
   Container,
   Episode,
@@ -13,6 +17,7 @@ import {
 
 import CachedSvgUri from "../CachedSvgUri";
 import Heart from "../Heart";
+import Spinner from "../Spinner";
 
 interface IFeaturedPodcastProps {
   marginRight?: string | null;
@@ -20,6 +25,9 @@ interface IFeaturedPodcastProps {
   episodePhoto: string;
   podcastTitle: string;
   episodeTitle: string;
+  podcast: ILatestEpisode;
+  slug: string;
+  url: string;
 }
 export default function FeaturedPodcast({
   podcastIcon,
@@ -27,16 +35,50 @@ export default function FeaturedPodcast({
   marginRight,
   podcastTitle,
   episodeTitle,
+  podcast,
+  slug,
+  url,
 }: IFeaturedPodcastProps) {
   const [liked, setLiked] = useState(false);
+  const [loadingEpisode, setLoadingEpisode] = useState(false);
+
+  const navigation = useNavigation();
 
   const handleLike = () => {
     setLiked((liked) => !liked);
   };
 
+  const handlePressProgram = async () => {
+    navigation.navigate("Programs", {
+      screen: "Program",
+      params: { podcast: { ...podcast, episodes: [] } },
+      initial: false,
+    });
+  };
+
+  const handlePressEpisode = async () => {
+    setLoadingEpisode(true);
+    try {
+      const {
+        data: { data },
+      } = await cachingRequest(slug, async () =>
+        api.get<PodcastResponse>(`/podcast/episode/${url}/${slug}`)
+      );
+      navigation.navigate("Programs", {
+        screen: "Podcast",
+        params: { podcast: data },
+        initial: false,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoadingEpisode(false);
+    }
+  };
+
   return (
     <Container marginRight={marginRight}>
-      <Info>
+      <Info onPress={() => handlePressProgram()}>
         <Avatar>
           <CachedSvgUri width={45} height={45} uri={podcastIcon} />
         </Avatar>
@@ -44,14 +86,18 @@ export default function FeaturedPodcast({
       </Info>
 
       <Episode source={{ uri: episodePhoto }}>
-        <Content>
-          <Like onPress={handleLike}>
-            <Heart
-              isLiked={liked}
-              size={28}
-              borderColor="#fff"
-              backgroundColor={liked ? "#fff" : "transparent"}
-            />
+        <Content disabled={loadingEpisode} onPress={() => handlePressEpisode()}>
+          <Like onPress={handleLike} disabled={loadingEpisode}>
+            {loadingEpisode ? (
+              <Spinner size={28} color="#fff" />
+            ) : (
+              <Heart
+                isLiked={liked}
+                size={28}
+                borderColor="#fff"
+                backgroundColor={liked ? "#fff" : "transparent"}
+              />
+            )}
           </Like>
           <LinearGradient>
             <Title fontSize="20px">{episodeTitle}</Title>

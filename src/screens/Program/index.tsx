@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  useRoute,
+  RouteProp,
+  useNavigation,
+} from "@react-navigation/native";
 import { NativeScrollEvent, Dimensions } from "react-native";
 import axios from "axios";
 import {
@@ -50,6 +54,7 @@ export default function Program() {
 
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollY, scrollHandler } = useScrollAnimated();
+
   const { LoadingPodcast } = Loading;
 
   const avatarStyle = useAnimatedStyle(() => {
@@ -68,12 +73,7 @@ export default function Program() {
 
   const opacityStyle = useAnimatedStyle(() => {
     return {
-      opacity: interpolate(
-        scrollY.value,
-        [0, 110],
-        [1, 0],
-        Extrapolate.CLAMP
-      ),
+      opacity: interpolate(scrollY.value, [0, 110], [1, 0], Extrapolate.CLAMP),
     };
   });
 
@@ -132,11 +132,13 @@ export default function Program() {
         setLoading(false);
       }
     };
+
+    setProgram(podcast);
     handleFetchProgram();
     return () => {
       source.cancel();
     };
-  }, []);
+  }, [podcast]);
 
   return (
     <>
@@ -164,7 +166,7 @@ export default function Program() {
           <ProgramContainer>
             <Head>
               <Avatar style={[avatarStyle, opacityStyle]}>
-                  <CachedSvgUri
+                <CachedSvgUri
                   uri={podcastIcon(program.id)}
                   width="100%"
                   height="100%"
