@@ -18,34 +18,34 @@ import {
 import CachedSvgUri from "../CachedSvgUri";
 import Heart from "../Heart";
 import Spinner from "../Spinner";
-
+import { likeEpisode, podcastIcon } from "../../helpers";
+import { LINKS } from "../../constants";
 interface IFeaturedPodcastProps {
   marginRight?: string | null;
-  podcastIcon: string;
-  episodePhoto: string;
-  podcastTitle: string;
-  episodeTitle: string;
   podcast: ILatestEpisode;
-  slug: string;
-  url: string;
 }
 export default function FeaturedPodcast({
-  podcastIcon,
-  episodePhoto,
   marginRight,
-  podcastTitle,
-  episodeTitle,
   podcast,
-  slug,
-  url,
 }: IFeaturedPodcastProps) {
   const [liked, setLiked] = useState(false);
-  const [loadingEpisode, setLoadingEpisode] = useState(false);
+  const [loadingEpisode, setLoadingEpisode] = useState(
+    podcast.latest_episode.isFavorite
+  );
 
   const navigation = useNavigation();
 
-  const handleLike = () => {
-    setLiked((liked) => !liked);
+  const handleLike = async () => {
+    setLoadingEpisode(true);
+
+    try {
+      const result = await likeEpisode(podcast.latest_episode.id);
+      if (result) setLiked((liked) => !liked);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingEpisode(false);
+    }
   };
 
   const handlePressProgram = async () => {
@@ -61,8 +61,10 @@ export default function FeaturedPodcast({
     try {
       const {
         data: { data },
-      } = await cachingRequest(slug, async () =>
-        api.get<PodcastResponse>(`/podcast/episode/${url}/${slug}`)
+      } = await cachingRequest(podcast.latest_episode.slug, async () =>
+        api.get<PodcastResponse>(
+          `/podcast/episode/${podcast.url}/${podcast.latest_episode.slug}`
+        )
       );
       navigation.navigate("Programs", {
         screen: "Podcast",
@@ -80,12 +82,16 @@ export default function FeaturedPodcast({
     <Container marginRight={marginRight}>
       <Info onPress={() => handlePressProgram()}>
         <Avatar>
-          <CachedSvgUri width={45} height={45} uri={podcastIcon} />
+          <CachedSvgUri width={45} height={45} uri={podcastIcon(podcast.id)} />
         </Avatar>
-        <Title fontSize="12px">{podcastTitle}</Title>
+        <Title fontSize="12px">{podcast.nome}</Title>
       </Info>
 
-      <Episode source={{ uri: episodePhoto }}>
+      <Episode
+        source={{
+          uri: `${LINKS.MIDDLEWARE_API}/public/images/latest-episodes/${podcast.id}.png`,
+        }}
+      >
         <Content disabled={loadingEpisode} onPress={() => handlePressEpisode()}>
           <Like onPress={handleLike} disabled={loadingEpisode}>
             {loadingEpisode ? (
@@ -100,7 +106,7 @@ export default function FeaturedPodcast({
             )}
           </Like>
           <LinearGradient>
-            <Title fontSize="20px">{episodeTitle}</Title>
+            <Title fontSize="20px">{podcast.latest_episode.titulo}</Title>
           </LinearGradient>
         </Content>
       </Episode>

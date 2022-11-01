@@ -4,6 +4,7 @@ import podcastIcon from "./podcastIcon";
 import formateDate from "./formateDate";
 import podcastColor from "./podcastColor";
 import getRadomColor from "./getRadomColor";
+import likeEpisode from "./likeEpisode";
 
 export {
   greetings,
@@ -12,4 +13,5 @@ export {
   formateDate,
   podcastColor,
   getRadomColor,
+  likeEpisode,
 };

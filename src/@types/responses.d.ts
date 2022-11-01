@@ -36,4 +36,10 @@ export declare global {
   interface PodcastResponse extends BaseResponse {
     data: IPodcast;
   }
+
+  interface SetFavoriteToggleResponse extends BaseResponse {
+    data: {
+      result: boolean;
+    };
+  }
 }
