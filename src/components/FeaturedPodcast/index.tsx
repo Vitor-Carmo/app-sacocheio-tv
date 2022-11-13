@@ -28,23 +28,21 @@ export default function FeaturedPodcast({
   marginRight,
   podcast,
 }: IFeaturedPodcastProps) {
-  const [liked, setLiked] = useState(false);
-  const [loadingEpisode, setLoadingEpisode] = useState(
-    podcast.latest_episode.isFavorite
-  );
+  const [liked, setLiked] = useState(podcast.latest_episode.isFavorite);
+  const [loadingEpisode, setLoadingEpisode] = useState(false);
 
   const navigation = useNavigation();
 
   const handleLike = async () => {
-    setLoadingEpisode(true);
-
+    setLiked((liked) => !liked);
     try {
-      const result = await likeEpisode(podcast.latest_episode.id);
-      if (result) setLiked((liked) => !liked);
+      const result = await likeEpisode(podcast.latest_episode.id, podcast.id);
+      if (!result) {
+        setLiked((liked) => !liked);
+      }
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoadingEpisode(false);
+      setLiked((liked) => !liked);
     }
   };
 

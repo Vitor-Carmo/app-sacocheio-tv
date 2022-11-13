@@ -2,20 +2,18 @@ import Toast from "react-native-toast-message";
 import api from "../services/api";
 import { ERROS } from "../constants";
 
-export default async function (episodeId: number) {
+export default async function (episodeId: number, podcastId: number) {
   try {
     const {
-      data: {
-        data: { result },
-      },
+      data: { data },
     } = await api.post<SetFavoriteToggleResponse>(
       "/podcast/set_favorite_toggle",
       {
-        episodeId: Number(episodeId),
+        episodeId,
+        podcastId,
       }
     );
-
-    if (!result) {
+    if (!data.result) {
       Toast.show({
         type: "error",
         text1: "Erro",
@@ -30,7 +28,7 @@ export default async function (episodeId: number) {
       text1: "Erro",
       text2: ERROS.UNKNOWN_ERROR,
     });
-    console.error(error);
+    console.log(error);
     return false;
   }
 }
