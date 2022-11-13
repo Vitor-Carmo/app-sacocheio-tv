@@ -26,7 +26,7 @@ import Share from "../Share";
 import OptionsIcon from "../Options";
 import Spinner from "../Spinner";
 import CachedSvgUri from "../CachedSvgUri";
-import { podcastIcon } from "../../helpers";
+import { podcastIcon, likeEpisode } from "../../helpers";
 import api from "../../services/api";
 import cachingRequest from "../../services/cache";
 
@@ -51,7 +51,7 @@ export default function Podcast({
 }: PodcastProps) {
   const [loading, setLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isPodcastLiked, setIsPodcastLiked] = useState(false);
+  const [isPodcastLiked, setIsPodcastLiked] = useState(isFavorite);
 
   const { COLORS } = useTheme();
 
@@ -61,8 +61,17 @@ export default function Podcast({
     setIsPlaying((isPlaying) => !isPlaying);
   };
 
-  const handleOnLikePodcast = () => {
+  const handleOnLikePodcast = async () => {
     setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+    try {
+      const result = await likeEpisode(id, podcastId);
+      if (!result) {
+        setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+      }
+    } catch (error) {
+      console.log(error);
+      setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+    }
   };
 
   const handlePressPodcast = async () => {
