@@ -4,10 +4,12 @@ export interface TitleProps {
   fontSize?: string;
   marginBottom?: string;
   color?: string | null;
+  flex?: "none" | number;
 }
 
 export const Title = styled.Text<TitleProps>`
   font-family: "Poppins_600SemiBold";
+  flex: ${({ flex }) => flex ?? "none"};
   font-size: ${({ fontSize }) => fontSize ?? "24px"};
   color: ${({ theme, color }) => color ?? theme.COLORS.TEXT};
   margin-bottom: ${({ marginBottom }) => marginBottom ?? "0px"};

@@ -10,7 +10,7 @@ import {
   AudioPlayer,
 } from "../components";
 
-import { AUDIO_PLAYER_HEIGHT } from "../constants";
+import { DIMENSIONS } from "../constants";
 
 import HomeRoutes from "./home.routes";
 import ProgramsRoutes from "./programs.routes";
@@ -54,7 +54,7 @@ export default function TabRoutes() {
             backgroundColor: COLORS.BACKGROUND,
             borderTopWidth: 1,
             borderTopColor: COLORS.BORDER,
-            marginTop: AUDIO_PLAYER_HEIGHT,
+            marginTop: DIMENSIONS.AUDIO_PLAYER_HEIGHT,
           },
         }}
       >

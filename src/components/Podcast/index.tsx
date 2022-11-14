@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
+
 import { Title } from "../../styles/global";
 import {
   Container,
@@ -23,14 +24,36 @@ import Download from "../Download";
 import Heart from "../Heart";
 import Share from "../Share";
 import OptionsIcon from "../Options";
+import Spinner from "../Spinner";
+import CachedSvgUri from "../CachedSvgUri";
+import { podcastIcon, likeEpisode } from "../../helpers";
+import api from "../../services/api";
+import cachingRequest from "../../services/cache";
 
-export type PodcastProps = {
+export interface PodcastProps extends IEpisode {
+  podcastId: number;
+  podcastUrl: string;
   isLastPodcast?: boolean;
-};
+  onLikedEpisode?: () => void;
+}
 
-export default function Podcast({ isLastPodcast }: PodcastProps) {
+export default function Podcast({
+  podcastId,
+  id,
+  titulo,
+  podcastUrl,
+  data,
+  descricao,
+  slug,
+  thumbnail,
+  isFavorite,
+  podcastName,
+  isLastPodcast,
+  onLikedEpisode = () => {},
+}: PodcastProps) {
+  const [loading, setLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isPodcastLiked, setIsPodcastLiked] = useState(false);
+  const [isPodcastLiked, setIsPodcastLiked] = useState(isFavorite);
 
   const { COLORS } = useTheme();
 
@@ -40,31 +63,61 @@ export default function Podcast({ isLastPodcast }: PodcastProps) {
     setIsPlaying((isPlaying) => !isPlaying);
   };
 
-  const handleOnLikePodcast = () => {
+  const handleOnLikePodcast = async () => {
     setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+    try {
+      const result = await likeEpisode(id, podcastId);
+      if (!result) {
+        setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+      } else {
+        onLikedEpisode();
+      }
+    } catch (error) {
+      console.log(error);
+      setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+    }
   };
 
-  const handlePressPodcast = () => {
-    navigation.navigate("Podcast");
+  const handlePressPodcast = async () => {
+    setLoading(true);
+    try {
+      const {
+        data: { data },
+      } = await cachingRequest(slug, async () =>
+        api.get<PodcastResponse>(`/podcast/episode/${podcastUrl}/${slug}`)
+      );
+      navigation.navigate("Programs", {
+        screen: "Podcast",
+        params: { podcast: data },
+        initial: false,
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Container isLastPodcast={isLastPodcast} onPress={handlePressPodcast}>
+    <Container
+      isLastPodcast={isLastPodcast}
+      onPress={handlePressPodcast}
+      disabled={loading}
+    >
       <AvatarContainer>
-        <Avatar
-          source={{
-            uri: "https://www.sacocheio.tv/static/media/1-banner.7320bd94.jpg",
-          }}
-        />
-        <Title fontSize="16px" color={isPlaying ? COLORS.PRIMARY : null}>
-          #152 - Licença Obesidade
+        <Avatar>
+          <CachedSvgUri uri={podcastIcon(podcastId)} width={60} height={60} />
+        </Avatar>
+        <Title
+          flex={1}
+          numberOfLines={2}
+          fontSize="18px"
+          color={isPlaying ? COLORS.PRIMARY : null}
+        >
+          {titulo}
         </Title>
       </AvatarContainer>
-      <Description numberOfLines={2}>
-        Olá! Hoje eu falo sobre panelas da POLISHOP, finalmente ter ido bem
-        abrindo o show do Padilha, médicos que fazem exame demissional, lidar
-        com uma família
-      </Description>
+      <Description numberOfLines={2}>{descricao}</Description>
       <TimeContainer>
         <Time>57 min restantes</Time>
         <TimerContainer>
@@ -88,7 +141,11 @@ export default function Podcast({ isLastPodcast }: PodcastProps) {
         </Options>
 
         <PlayButton onPress={handlePressPlayButton}>
-          {isPlaying ? <Pause /> : <Play />}
+          {loading ? (
+            <Spinner size={20} color="#9E9E9E" borderWidth={1.5} />
+          ) : (
+            <>{isPlaying ? <Pause /> : <Play />}</>
+          )}
         </PlayButton>
       </OptionsContainer>
     </Container>

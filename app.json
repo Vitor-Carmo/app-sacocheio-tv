@@ -7,9 +7,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#202020"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,7 +19,7 @@
       "supportsTablet": true
     },
     "android": {
-      "softwareKeyboardLayoutMode":"pan",
+      "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -29,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
-  }
+    },
+    "sdkVersion": "45.0.0"
+  },
+  "name": "app-sacocheio-tv"
 }

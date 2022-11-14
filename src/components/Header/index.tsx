@@ -1,8 +1,8 @@
 import React from "react";
-0;
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
 import GoBack from "../GoBack";
+import Options from "../Options";
 import {
   useAnimatedStyle,
   interpolateColor,
@@ -11,18 +11,26 @@ import {
   Extrapolate,
 } from "react-native-reanimated";
 
-import { Container, Title, GoBackOpacity } from "./styles";
+import {
+  Container,
+  Title,
+  GoBackOpacity,
+  OptionsContainer,
+  OpacityTouchable,
+} from "./styles";
 
 interface HeaderProps {
   title?: string;
   scrollY: SharedValue<number>;
   backgroundColor?: string;
+  onPressGoBack?: () => void;
 }
 
 export default function Header({
   title,
   scrollY,
   backgroundColor = "#202020",
+  onPressGoBack,
 }: HeaderProps) {
   const { COLORS } = useTheme();
 
@@ -38,7 +46,7 @@ export default function Header({
     };
   });
 
-  const titleStyle = useAnimatedStyle(() => {
+  const opacityStyle = useAnimatedStyle(() => {
     return {
       opacity: interpolate(
         scrollY.value,
@@ -50,9 +58,15 @@ export default function Header({
   });
 
   const handlePressGoBack = () => {
+    if (onPressGoBack) {
+      onPressGoBack();
+      return;
+    }
+
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
+   
   };
 
   return (
@@ -60,7 +74,13 @@ export default function Header({
       <GoBackOpacity onPress={handlePressGoBack}>
         <GoBack size={20} />
       </GoBackOpacity>
-      <Title style={titleStyle}>{title}</Title>
+      <Title style={opacityStyle}>{title}</Title>
+
+      <OptionsContainer style={opacityStyle}>
+        <OpacityTouchable>
+          <Options borderColor={COLORS.TEXT} size={3.8} />
+        </OpacityTouchable>
+      </OptionsContainer>
     </Container>
   );
 }

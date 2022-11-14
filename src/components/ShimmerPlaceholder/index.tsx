@@ -10,7 +10,9 @@ interface ShimmerPlaceholderProps extends RNShimmerPlaceholderProps {
   height?: number | string;
   borderRadius?: number;
   marginBottom?: number;
-
+  marginRight?: number;
+  marginLeft?: number;
+  marginTop?: number;
 }
 
 export default function ShimmerPlaceholder({
@@ -18,6 +20,9 @@ export default function ShimmerPlaceholder({
   height = "auto",
   borderRadius = 0,
   marginBottom = 0,
+  marginTop = 0,
+  marginRight = 0,
+  marginLeft = 0,
   ...props
 }: ShimmerPlaceholderProps) {
   const {
@@ -26,7 +31,15 @@ export default function ShimmerPlaceholder({
   const ShimmerPlaceholder = createShimmerPlaceholder(LinearGradient);
   return (
     <ShimmerPlaceholder
-      style={{ width, borderRadius, height, marginBottom }}
+      style={{
+        width,
+        borderRadius,
+        height,
+        marginTop,
+        marginLeft,
+        marginRight,
+        marginBottom,
+      }}
       shimmerColors={[SHIMMER_DEFAULT_COLOR, STATUSBAR, SHIMMER_DEFAULT_COLOR]}
       {...props}
     />

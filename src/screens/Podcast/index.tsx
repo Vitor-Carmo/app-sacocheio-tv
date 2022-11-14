@@ -1,8 +1,10 @@
-import React, { useState, useRef } from "react";
-import { TouchableOpacity } from "react-native";
+import React, { useState, useRef, useMemo } from "react";
+import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
+import { useRoute, RouteProp } from "@react-navigation/native";
 
+import { RootState, useTypedSelector } from "../../store";
 import {
   Pause,
   Play,
@@ -12,6 +14,7 @@ import {
   Close,
   Header,
   GradientContainer,
+  CachedSvgUri,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { useScrollAnimated } from "../../hooks";
@@ -35,20 +38,40 @@ import {
   Answers,
   AnswerHeader,
 } from "./styles";
-import { HexToHSL } from "../../helpers";
+import {
+  HexToHSL,
+  podcastColor,
+  podcastIcon,
+  formateDate,
+  getRadomColor,
+} from "../../helpers";
 
 export default function Podcast() {
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollHandler, scrollY } = useScrollAnimated();
+  const {
+    params: { podcast },
+  }: RouteProp<{ params: { podcast: IPodcast } }, "params"> = useRoute();
+
+  const userName = useTypedSelector((state: RootState) => state.auth.userName);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
-  const answersModalizeRef = useRef<Modalize>(null);
+  const [answer, setAnswer] = useState<IComment>({
+    nome: "",
+    comentario: "",
+    data: "",
+    cod: 0,
+    resposta: "",
+    respostas: [],
+    usuario: 0,
+  });
+  const [answers, setAnswers] = useState<IComment[]>([]);
 
-  const comments = [{}, {}, {}, {}, {}, {}, {}];
-  const answers = [{}, {}, {}, {}];
+  const answersModalizeRef = useRef<Modalize>(null);
+  const { height } = Dimensions.get("window");
 
   const onPressPlayButton = () => {
     setIsPlaying((isPlaying) => !isPlaying);
@@ -58,37 +81,77 @@ export default function Podcast() {
     setIsLiked((isLiked) => !isLiked);
   };
 
-  const onPressAnswers = () => {
+  const onPressAnswers = (answer: IComment, answers: IComment[]) => {
+    setAnswer(answer);
+    setAnswers(answers);
     answersModalizeRef.current?.open();
   };
 
   const onPressClose = () => {
+    setAnswer({
+      nome: "",
+      comentario: "",
+      data: "",
+      cod: 0,
+      resposta: "",
+      respostas: [],
+      usuario: 0,
+    });
+    setAnswers([]);
     answersModalizeRef.current?.close();
   };
 
+  const formateLocalDate = (data: string) => {
+    const date = new Date(data);
+
+    return formateDate(
+      `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+    );
+  };
+
+  const getArrayColor = useMemo(
+    () => podcast.comments.data.map(() => getRadomColor()),
+    []
+  );
+
+  const getColor = useMemo(() => getRadomColor(), []);
+
+  const getFistLetterFromUserName = (name: string | null) => {
+    const [firstLetter] = (name ?? "").trim();
+    return firstLetter;
+  };
   return (
     <>
       <Header
-        title="#144 - Hitler era um cancelador"
+        title={podcast.titulo}
         scrollY={scrollY}
-        backgroundColor={HexToHSL("#9B9F46", DIMENSIONS.HSL_LIGHTNESS, 0.9)}
+        backgroundColor={HexToHSL(
+          podcastColor(podcast.id),
+          DIMENSIONS.HSL_LIGHTNESS,
+          0.9
+        )}
       />
 
       <Container onScroll={scrollHandler} scrollEventThrottle={16}>
-        <GradientContainer color="#9B9F46">
+        <GradientContainer
+          color={podcastColor(podcast.id)}
+          backgroundColorGradientCount={2}
+        >
           <Group>
             <Head>
-              <Avatar
-                source={{
-                  uri: "https://sacocheio.tv/img.png",
-                }}
-              />
+              <Avatar>
+                <CachedSvgUri
+                  width="100%"
+                  height="100%"
+                  uri={podcastIcon(podcast.id)}
+                />
+              </Avatar>
               <Title fontSize="28px" marginBottom="10px">
-                #144 - Hitler era um cancelador
+                {podcast.episode.title}
               </Title>
               <Subtitle fontSize="12px" marginTop="0px" marginBottom="10px">
-                <InfoText>Podcast Saco Cheio</InfoText> por{" "}
-                <InfoText>Arthur Petry</InfoText>
+                <InfoText>{podcast.titulo}</InfoText> por{" "}
+                <InfoText>{podcast.apresentador}</InfoText>
               </Subtitle>
               <Subtitle>1 hr 20 min</Subtitle>
 
@@ -112,59 +175,68 @@ export default function Podcast() {
                   )}
                 </TouchableOpacity>
               </PodcastActions>
-              <Subtitle fontSize="12px">
-                O programa é para ouvintes que não procuram cultura, informação
-                ou opiniões inteligentes. Durante uma hora e meia Arthur Petry
-                reduz o mundo inteiro ao seu ...
-              </Subtitle>
+              <Subtitle fontSize="12px">{podcast.episode.description}</Subtitle>
             </Head>
           </Group>
-          <Comments>
-            <Group>
-              <CommentHeader>
-                <Title fontSize="16px">Comentários</Title>
-              </CommentHeader>
-            </Group>
-            <CommentContainer>
-              <ProfileAvatar size={50} color="#56CCF2" />
-              <CommentInput
-                placeholder="Faça seu comentário medíocre"
-                placeholderTextColor={COLORS.TEXT_40}
-              />
-            </CommentContainer>
-            {comments.map((comment, index) => (
-              <Comment
-                key={index}
-                paddingLeft="20px"
-                isLastComment={comments.length - 1 === index}
-              >
-                <ProfileAvatar size={40} color="#FF3D3D" />
-                <CommentContent>
-                  <Title fontSize="14px" marginBottom="5px">
-                    Miguel Arcanjo • 03 jan 2021
-                  </Title>
-
-                  <Subtitle fontSize="12px" marginTop="0px">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Cras arcu ex, luctus placerat odio non, varius molestie
-                    erat. Integer porta vitae nisl vel varius. Phasellus
-                    tincidunt est nec congue gravida. Cras pharetra lorem eu
-                    porta vehicula. congue gravida. Cras
-                  </Subtitle>
-
-                  <TouchableOpacity onPress={onPressAnswers}>
-                    <Answers>23 RESPOSTAS</Answers>
-                  </TouchableOpacity>
-                </CommentContent>
-              </Comment>
-            ))}
-          </Comments>
         </GradientContainer>
+        <Comments>
+          <Group>
+            <CommentHeader>
+              <Title fontSize="16px">
+                Comentários ({podcast.comments.length})
+              </Title>
+            </CommentHeader>
+          </Group>
+          <CommentContainer>
+            <ProfileAvatar size={50} color={getColor}>
+              <Title>{getFistLetterFromUserName(userName)}</Title>
+            </ProfileAvatar>
+            <CommentInput
+              placeholder="Faça seu comentário medíocre"
+              placeholderTextColor={COLORS.TEXT_40}
+            />
+          </CommentContainer>
+          {podcast.comments.data.map((comment, index) => (
+            <Comment
+              key={index}
+              paddingLeft="20px"
+              isLastComment={podcast.comments.length - 1 === index}
+            >
+              <ProfileAvatar size={40} color={getArrayColor[index]}>
+                <Title fontSize="24px" color="white">
+                  {getFistLetterFromUserName(comment.nome)}
+                </Title>
+              </ProfileAvatar>
+              <CommentContent>
+                <Title fontSize="14px" marginBottom="3px">
+                  {comment.nome} • {formateLocalDate(comment.data)}
+                </Title>
+
+                <Subtitle fontSize="12px" marginTop="0px">
+                  {comment.comentario}
+                </Subtitle>
+                {comment.respostas.length ? (
+                  <TouchableOpacity
+                    onPress={() => onPressAnswers(comment, comment.respostas)}
+                  >
+                    <Answers>
+                      {comment.respostas.length} RESPOSTA
+                      {comment.respostas.length !== 1 ? "S" : ""}
+                    </Answers>
+                  </TouchableOpacity>
+                ) : (
+                  <></>
+                )}
+              </CommentContent>
+            </Comment>
+          ))}
+        </Comments>
       </Container>
 
       <Modalize
         ref={answersModalizeRef}
         keyboardAvoidingBehavior="height"
+        modalHeight={height * .73}
         modalStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}
@@ -180,24 +252,28 @@ export default function Podcast() {
             </TouchableOpacity>
           </AnswerHeader>
           <Comment>
-            <ProfileAvatar size={40} color="#FF3D3D" />
+            <ProfileAvatar size={40} color={getRadomColor()}>
+              <Title fontSize="24px" color="white">
+                {getFistLetterFromUserName(answer.nome)}
+              </Title>
+            </ProfileAvatar>
             <CommentContent>
               <Title fontSize="14px" marginBottom="5px">
-                Miguel Arcanjo • 03 jan 2021
+                {answer.nome} • {formateLocalDate(answer.data)}
               </Title>
 
               <Subtitle fontSize="12px" marginTop="0px">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                arcu ex, luctus placerat odio non, varius molestie erat. Integer
-                porta vitae nisl vel varius. Phasellus tincidunt est nec congue
-                gravida. Cras pharetra lorem eu porta vehicula. congue gravida.
-                Cras
+                {answer.comentario}
               </Subtitle>
             </CommentContent>
           </Comment>
 
           <CommentContainer>
-            <ProfileAvatar size={40} color="#56CCF2" />
+            <ProfileAvatar size={40} color={getRadomColor()}>
+              <Title fontSize="24px" color="white">
+                {getFistLetterFromUserName(userName)}
+              </Title>
+            </ProfileAvatar>
             <CommentInput
               placeholder="Responda esse comentário medíocre"
               placeholderTextColor={COLORS.TEXT_40}
@@ -209,18 +285,18 @@ export default function Podcast() {
               paddingLeft="20px"
               isLastComment={answers.length - 1 === index}
             >
-              <ProfileAvatar size={30} color="#FF3D3D" />
+              <ProfileAvatar size={30} color={getRadomColor()}>
+                <Title fontSize="16px" color="white">
+                  {getFistLetterFromUserName(answer.nome)}
+                </Title>
+              </ProfileAvatar>
               <CommentContent>
                 <Title fontSize="12px" marginBottom="5px">
-                  Miguel Arcanjo • 03 jan 2021
+                  {answer.nome} • {formateLocalDate(answer.data)}
                 </Title>
 
                 <Subtitle fontSize="10px" marginTop="0px">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras
-                  arcu ex, luctus placerat odio non, varius molestie erat.
-                  Integer porta vitae nisl vel varius. Phasellus tincidunt est
-                  nec congue gravida. Cras pharetra lorem eu porta vehicula.
-                  congue gravida. Cras
+                  {answer.comentario}
                 </Subtitle>
               </CommentContent>
             </Comment>

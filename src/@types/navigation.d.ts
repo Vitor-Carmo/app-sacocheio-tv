@@ -7,14 +7,15 @@ export declare global {
       Home: NavigatorScreenParams<any, any> | undefined;
       Programs: NavigatorScreenParams<any, any> | undefined;
       Bibliotecas: NavigatorScreenParams<any, any> | undefined;
+      Libraries:  NavigatorScreenParams<any, any> | undefined;
       SignIn: undefined;
       HomeScreen: undefined;
       ProgramsList: undefined;
-      Program: undefined;
+      Program: { podcast: IProgram };
       Library: undefined;
-      Podcast: undefined;
-      Downloads:  undefined;
-      Likes:  undefined;
+      Podcast: { podcast: IPodcast };
+      Downloads: undefined;
+      Likes: undefined;
     }
   }
 }

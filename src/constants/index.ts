@@ -1,24 +1,19 @@
-import ANCHORS from "./anchors";
+import LINKS from "./links";
 import ERROS from "./errors";
-import SUCCESS from "./success";
 import REGEX from "./regex";
+import ANCHORS from "./anchors";
+import SUCCESS from "./success";
+import DIMENSIONS from "./dimensions";
 import ASYNC_STORAGE_KEYS from "./asyncStorageKeys";
-
-const SACOCHEIO_TV_SITE = "https://www.sacocheio.tv";
-const SPOTIFY_PLAYLIST =
-  "https://open.spotify.com/playlist/3aEIIBiCY3mwEjf2juG6f7";
-const FORGOT_PASSWORD_LINK = `${SACOCHEIO_TV_SITE}/recuperarSenha`;
-const HEADER_HEIGHT = 60;
-const AUDIO_PLAYER_HEIGHT = 50;
+import MONTHS from "./months";
 
 export {
-  SPOTIFY_PLAYLIST,
-  FORGOT_PASSWORD_LINK,
   ANCHORS,
-  HEADER_HEIGHT,
-  AUDIO_PLAYER_HEIGHT,
+  DIMENSIONS,
+  LINKS,
   ERROS,
   SUCCESS,
   REGEX,
   ASYNC_STORAGE_KEYS,
+  MONTHS,
 };

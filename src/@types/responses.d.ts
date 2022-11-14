@@ -13,7 +13,33 @@ export declare global {
     };
   }
 
-  interface ShowsResponse {
+  interface ShowsResponse extends BaseResponse {
     data: IShow[];
+  }
+
+  interface LatestEpisodesResponse extends BaseResponse {
+    data: ILatestEpisode[];
+  }
+
+  interface FavoritesEpisodeResponse extends BaseResponse {
+    data: IFavoriteEpisode[];
+  }
+
+  interface ProgramsResponse extends BaseResponse {
+    data: IProgram[];
+  }
+
+  interface ProgramResponse extends BaseResponse {
+    data: IProgram;
+  }
+
+  interface PodcastResponse extends BaseResponse {
+    data: IPodcast;
+  }
+
+  interface SetFavoriteToggleResponse extends BaseResponse {
+    data: {
+      result: boolean;
+    };
   }
 }

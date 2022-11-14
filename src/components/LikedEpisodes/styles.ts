@@ -39,9 +39,11 @@ export const PodcastContent = styled.View`
   padding: 10px 0;
 `;
 
-export const PodcastImage = styled.Image`
+export const PodcastContainer = styled.View`
   width: 120px;
   height: 120px;
   border-radius: 10px;
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  margin-left: 15px;
+  overflow: hidden;
 `;

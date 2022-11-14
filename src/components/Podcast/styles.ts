@@ -7,6 +7,7 @@ type IContainerProps = {
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })<IContainerProps>`
+  flex: 1;
   padding: 15px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
   border-bottom-width: ${({ isLastPodcast }) =>
     isLastPodcast ? "0px" : "1px"};
@@ -20,7 +21,7 @@ export const AvatarContainer = styled.View`
   margin-bottom: 10px;
 `;
 
-export const Avatar = styled.Image`
+export const Avatar = styled.View`
   width: 60px;
   height: 60px;
   border-radius: 5px;
@@ -52,6 +53,7 @@ export const TimerContainer = styled.View`
   height: 6px;
   background-color: ${({ theme }) => theme.COLORS.TIMER_BACKGROUND};
   border-radius: 6px;
+  overflow: hidden;
 `;
 
 export const TimerRange = styled.View<{ width: number }>`
@@ -84,5 +86,5 @@ export const Option = styled.TouchableOpacity.attrs({
 export const PlayButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
-  padding: 10px 15px;
+  padding: 10px 0;
 `;

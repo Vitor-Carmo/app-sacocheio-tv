@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { Linking } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import * as Linking from "expo-linking";
 import { useTheme } from "styled-components";
 import Toast from "react-native-toast-message";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from 'expo-secure-store';
 
 import api from "../../services/api";
 import { signIn } from "../../store/duck/auth";
 import {
-  FORGOT_PASSWORD_LINK,
+  LINKS,
   ERROS,
   SUCCESS,
   REGEX,
@@ -39,7 +38,6 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const { IMAGES, COLORS } = useTheme();
 
@@ -48,7 +46,7 @@ export default function SignIn() {
   };
 
   const handleForgotPassword = () => {
-    Linking.openURL(FORGOT_PASSWORD_LINK);
+    Linking.openURL(LINKS.FORGOT_PASSWORD);
   };
 
   const handleSignIn = async () => {
@@ -63,17 +61,23 @@ export default function SignIn() {
 
     setLoading(true);
     try {
-      const {
-        data: {
-          data: { id, token, userName },
-        },
-      } = await api.post<SignInResponse>("/user/login", {
+      const { data } = await api.post<SignInResponse>("/user/login", {
         email: email,
         senha: password,
       });
 
+      if (!data.status) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: data.data.error,
+        });
+        return;
+      }
+
+      const { token, id, userName } = data.data;
       if (!!token && !!id && !!userName) {
-        AsyncStorage.setItem(
+        SecureStore.setItemAsync(
           ASYNC_STORAGE_KEYS.USER_DATA,
           JSON.stringify({ id, token, userName })
         ).then(() => {
@@ -104,6 +108,8 @@ export default function SignIn() {
         text1: "Erro!",
         text2: ERROS.UNKNOWN_AUTHENTICATION_ERROR,
       });
+
+      console.error(error);
     } finally {
       setLoading(false);
     }

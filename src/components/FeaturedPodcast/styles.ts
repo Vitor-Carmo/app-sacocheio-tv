@@ -3,7 +3,7 @@ import { ImageBackground } from "react-native";
 //import RNLinearGradient from "react-native-linear-gradient";
 import { LinearGradient as RNLinearGradient } from "expo-linear-gradient";
 
-export const Container = styled.View<{ marginRight?: string }>`
+export const Container = styled.View<{ marginRight?: string | null }>`
   width: 258px;
   height: 452px;
   margin-right: ${({ marginRight }) => marginRight ?? "15px"};
@@ -17,12 +17,13 @@ export const Info = styled.TouchableOpacity.attrs({
   margin-bottom: 15px;
 `;
 
-export const Avatar = styled.Image`
+export const Avatar = styled.View`
   width: 45px;
   height: 45px;
   border-radius: 5px;
   margin-right: 5px;
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
 `;
 
 export const Episode = styled(ImageBackground)`
