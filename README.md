@@ -39,7 +39,7 @@ this APP was developed using the following technologies:
 - Redux
 
  
- ## 🤔 Como contribuir
+ ## 🤔 How to contribute
 
 - Fork this repository;
 - Create a branch with your feature: `git checkout -b my-feature`;
