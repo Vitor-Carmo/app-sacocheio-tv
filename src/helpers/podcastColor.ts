@@ -30,7 +30,7 @@ export default function podcastColor(podcastId: number) {
     case PODCASTS_ID.FEAT_BEATRIZ:
       return "#3d051c";
     case PODCASTS_ID.NOTAS_SOBRE_NOTAS:
-      return "#f8efde";
+      return "#e0d8c7";
     case PODCASTS_ID.ACERVO_PODCAST_SACO_CHEIO:
       return "#ffc739";
     default:
