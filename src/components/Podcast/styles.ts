@@ -86,5 +86,5 @@ export const Option = styled.TouchableOpacity.attrs({
 export const PlayButton = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
-  padding: 10px 15px;
+  padding: 10px 0;
 `;
