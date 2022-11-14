@@ -34,6 +34,7 @@ export interface PodcastProps extends IEpisode {
   podcastId: number;
   podcastUrl: string;
   isLastPodcast?: boolean;
+  onLikedEpisode?: () => void;
 }
 
 export default function Podcast({
@@ -48,6 +49,7 @@ export default function Podcast({
   isFavorite,
   podcastName,
   isLastPodcast,
+  onLikedEpisode = () => {},
 }: PodcastProps) {
   const [loading, setLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -67,6 +69,8 @@ export default function Podcast({
       const result = await likeEpisode(id, podcastId);
       if (!result) {
         setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
+      } else {
+        onLikedEpisode();
       }
     } catch (error) {
       console.log(error);
