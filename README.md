@@ -15,14 +15,14 @@ If you want to see the layout made by me, it is available at this [link](https:/
 ## 📱 Some screens
 <table>
   <tr>
-    <td><img src="https://user-images.githubusercontent.com/56807155/201567534-85e28d56-c3a7-4b5a-93e5-0808be52820a.png" width=270 height=480></td>
-    <td><img src="https://user-images.githubusercontent.com/56807155/201567567-cc7e65ff-e156-41e7-bd2d-ac3b39daeda8.png" width=270 height=480></td>
-    <td><img src="https://user-images.githubusercontent.com/56807155/201567674-35ac830b-7f06-48c2-9c61-d95a868164f8.png" width=270 height=480></td>
+    <td><img src="https://user-images.githubusercontent.com/56807155/201567534-85e28d56-c3a7-4b5a-93e5-0808be52820a.png" width=270 height="auto"></td>
+    <td><img src="https://user-images.githubusercontent.com/56807155/201567567-cc7e65ff-e156-41e7-bd2d-ac3b39daeda8.png" width=270 height="auto"></td>
+    <td><img src="https://user-images.githubusercontent.com/56807155/201567674-35ac830b-7f06-48c2-9c61-d95a868164f8.png" width=270 height="auto"></td>
   </tr>
   <tr>
-    <td><img src="https://user-images.githubusercontent.com/56807155/201567728-44620af6-e8a0-40e2-8876-336d3deeff20.png" width=270 height=480></td>
-    <td><img src="https://user-images.githubusercontent.com/56807155/201567878-f2e10ada-f5ee-4ee4-8374-d3c48a2982b2.png" width=270 height=480></td>
-    <td><img src="https://user-images.githubusercontent.com/56807155/201567616-4cca1369-5c2c-4980-a294-8e792c2ffd33.png" width=270 height=480></td>
+    <td><img src="https://user-images.githubusercontent.com/56807155/201567728-44620af6-e8a0-40e2-8876-336d3deeff20.png" width=270 height="auto"></td>
+    <td><img src="https://user-images.githubusercontent.com/56807155/201567878-f2e10ada-f5ee-4ee4-8374-d3c48a2982b2.png" width=270 height="auto"></td>
+    <td><img src="https://user-images.githubusercontent.com/56807155/201567616-4cca1369-5c2c-4980-a294-8e792c2ffd33.png" width=270 height="auto"></td>
   </tr>
  </table>
  
