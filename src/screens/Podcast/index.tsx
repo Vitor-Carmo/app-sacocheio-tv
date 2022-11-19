@@ -3,6 +3,7 @@ import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
 import { useRoute, RouteProp } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 import { RootState, useTypedSelector } from "../../store";
 import {
@@ -15,6 +16,7 @@ import {
   Header,
   GradientContainer,
   CachedSvgUri,
+  Spinner,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { useScrollAnimated } from "../../hooks";
@@ -46,18 +48,26 @@ import {
   getRadomColor,
 } from "../../helpers";
 
+import api from "../../services/api";
+
+import { ERROS } from "../../constants";
+
 export default function Podcast() {
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollHandler, scrollY } = useScrollAnimated();
   const {
-    params: { podcast },
+    params: { podcast: podcast__ },
   }: RouteProp<{ params: { podcast: IPodcast } }, "params"> = useRoute();
 
   const userName = useTypedSelector((state: RootState) => state.auth.userName);
+  const userId = useTypedSelector((state: RootState) => state.auth.id);
 
+  const [comment, setComment] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+  const [loadingComment, setLoadingComment] = useState(false);
+  const [podcast, setPodcast] = useState<IPodcast>(podcast__);
 
   const [answer, setAnswer] = useState<IComment>({
     nome: "",
@@ -111,7 +121,7 @@ export default function Podcast() {
 
   const getArrayColor = useMemo(
     () => podcast.comments.data.map(() => getRadomColor()),
-    []
+    [podcast]
   );
 
   const getColor = useMemo(() => getRadomColor(), []);
@@ -120,6 +130,43 @@ export default function Podcast() {
     const [firstLetter] = (name ?? "").trim();
     return firstLetter;
   };
+
+  const sendComment = async () => {
+    try {
+      setLoadingComment(true);
+
+      const {
+        data: {
+          data: { result },
+        },
+      } = await api.post<SendCommentResponse>("/podcast/send_comment", {
+        comment: comment,
+        episodeId: podcast.episode.id,
+      });
+
+      if (!result) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: ERROS.UNKNOWN_SEND_COMMENT_ERROR,
+        });
+      }
+      const {
+        data: { data },
+      } = await api.get<CommentsResponse>(
+        `/podcast/comments/${podcast.episode.id}`
+      );
+
+      setPodcast((podcast) => ({ ...podcast, comments: data }));
+
+      setComment("");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingComment(false);
+    }
+  };
+
   return (
     <>
       <Header
@@ -194,7 +241,14 @@ export default function Podcast() {
             <CommentInput
               placeholder="Faça seu comentário medíocre"
               placeholderTextColor={COLORS.TEXT_40}
+              onSubmitEditing={sendComment}
+              value={comment}
+              editable={!loadingComment}
+              onChangeText={(text) => setComment(text)}
             />
+            {loadingComment && (
+              <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
+            )}
           </CommentContainer>
           {podcast.comments.data.map((comment, index) => (
             <Comment
@@ -236,7 +290,7 @@ export default function Podcast() {
       <Modalize
         ref={answersModalizeRef}
         keyboardAvoidingBehavior="height"
-        modalHeight={height * .73}
+        modalHeight={height * 0.73}
         modalStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}
