@@ -1,8 +1,9 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
 import { useRoute, RouteProp } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 import { RootState, useTypedSelector } from "../../store";
 import {
@@ -15,6 +16,7 @@ import {
   Header,
   GradientContainer,
   CachedSvgUri,
+  Spinner,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { useScrollAnimated } from "../../hooks";
@@ -46,29 +48,35 @@ import {
   getRadomColor,
 } from "../../helpers";
 
+import api from "../../services/api";
+
+import { ERROS } from "../../constants";
+
 export default function Podcast() {
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollHandler, scrollY } = useScrollAnimated();
   const {
-    params: { podcast },
+    params: { podcast: podcast__ },
   }: RouteProp<{ params: { podcast: IPodcast } }, "params"> = useRoute();
 
   const userName = useTypedSelector((state: RootState) => state.auth.userName);
+  const userId = useTypedSelector((state: RootState) => state.auth.id);
+
+  const [comment, setComment] = useState("");
+  const [answer, setAnswer] = useState("");
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
-  const [answer, setAnswer] = useState<IComment>({
-    nome: "",
-    comentario: "",
-    data: "",
-    cod: 0,
-    resposta: "",
-    respostas: [],
-    usuario: 0,
-  });
-  const [answers, setAnswers] = useState<IComment[]>([]);
+  const [loadingComment, setLoadingComment] = useState(false);
+  const [loadingAnswerComment, setLoadingAnswerComment] = useState(false);
+
+  const [podcast, setPodcast] = useState<IPodcast>(podcast__);
+
+  const [selectedCommentIndex, setSelectedCommentIndex] = useState<
+    number | null
+  >(null);
 
   const answersModalizeRef = useRef<Modalize>(null);
   const { height } = Dimensions.get("window");
@@ -81,23 +89,13 @@ export default function Podcast() {
     setIsLiked((isLiked) => !isLiked);
   };
 
-  const onPressAnswers = (answer: IComment, answers: IComment[]) => {
-    setAnswer(answer);
-    setAnswers(answers);
+  const onPressAnswers = (index: number) => {
+    setSelectedCommentIndex(index);
     answersModalizeRef.current?.open();
   };
 
   const onPressClose = () => {
-    setAnswer({
-      nome: "",
-      comentario: "",
-      data: "",
-      cod: 0,
-      resposta: "",
-      respostas: [],
-      usuario: 0,
-    });
-    setAnswers([]);
+    setSelectedCommentIndex(null);
     answersModalizeRef.current?.close();
   };
 
@@ -111,7 +109,19 @@ export default function Podcast() {
 
   const getArrayColor = useMemo(
     () => podcast.comments.data.map(() => getRadomColor()),
-    []
+    [podcast]
+  );
+
+  const getArrayAnswersColor = useMemo(
+    () =>
+      [
+        ...(selectedCommentIndex !== null
+          ? podcast.comments.data[selectedCommentIndex].respostas
+          : []),
+        {},
+        {},
+      ].map(() => getRadomColor()),
+    [podcast, selectedCommentIndex]
   );
 
   const getColor = useMemo(() => getRadomColor(), []);
@@ -120,6 +130,80 @@ export default function Podcast() {
     const [firstLetter] = (name ?? "").trim();
     return firstLetter;
   };
+
+  const sendComment = async () => {
+    try {
+      setLoadingComment(true);
+
+      const {
+        data: {
+          data: { result },
+        },
+      } = await api.post<SendCommentResponse>("/podcast/send_comment", {
+        comment: comment,
+        episodeId: podcast.episode.id,
+      });
+
+      if (!result) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: ERROS.UNKNOWN_SEND_COMMENT_ERROR,
+        });
+      }
+      const {
+        data: { data },
+      } = await api.get<CommentsResponse>(
+        `/podcast/comments/${podcast.episode.id}`
+      );
+
+      setPodcast((podcast) => ({ ...podcast, comments: data }));
+
+      setComment("");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingComment(false);
+    }
+  };
+
+  const answerComment = async (comment_id: number) => {
+    try {
+      setLoadingAnswerComment(true);
+
+      const {
+        data: {
+          data: { result },
+        },
+      } = await api.post<SendCommentResponse>("/podcast/answer_comment", {
+        comment: answer,
+        episodeId: podcast.episode.id,
+        answerId: comment_id,
+      });
+
+      if (!result) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: ERROS.UNKNOWN_SEND_COMMENT_ERROR,
+        });
+      }
+      const {
+        data: { data },
+      } = await api.get<CommentsResponse>(
+        `/podcast/comments/${podcast.episode.id}`
+      );
+
+      setPodcast((podcast) => ({ ...podcast, comments: data }));
+
+      setAnswer("");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingAnswerComment(false);
+    }
+  };
+
   return (
     <>
       <Header
@@ -194,7 +278,14 @@ export default function Podcast() {
             <CommentInput
               placeholder="Faça seu comentário medíocre"
               placeholderTextColor={COLORS.TEXT_40}
+              onSubmitEditing={sendComment}
+              value={comment}
+              editable={!loadingComment}
+              onChangeText={(text) => setComment(text)}
             />
+            {loadingComment && (
+              <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
+            )}
           </CommentContainer>
           {podcast.comments.data.map((comment, index) => (
             <Comment
@@ -207,7 +298,7 @@ export default function Podcast() {
                   {getFistLetterFromUserName(comment.nome)}
                 </Title>
               </ProfileAvatar>
-              <CommentContent>
+              <CommentContent onPress={() => onPressAnswers(index)}>
                 <Title fontSize="14px" marginBottom="3px">
                   {comment.nome} • {formateLocalDate(comment.data)}
                 </Title>
@@ -216,14 +307,10 @@ export default function Podcast() {
                   {comment.comentario}
                 </Subtitle>
                 {comment.respostas.length ? (
-                  <TouchableOpacity
-                    onPress={() => onPressAnswers(comment, comment.respostas)}
-                  >
-                    <Answers>
-                      {comment.respostas.length} RESPOSTA
-                      {comment.respostas.length !== 1 ? "S" : ""}
-                    </Answers>
-                  </TouchableOpacity>
+                  <Answers>
+                    {comment.respostas.length} RESPOSTA
+                    {comment.respostas.length !== 1 ? "S" : ""}
+                  </Answers>
                 ) : (
                   <></>
                 )}
@@ -236,71 +323,112 @@ export default function Podcast() {
       <Modalize
         ref={answersModalizeRef}
         keyboardAvoidingBehavior="height"
-        modalHeight={height * .73}
+        modalHeight={height * 0.73}
         modalStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}
         handleStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}
-      >
-        <Comments>
+        HeaderComponent={
           <AnswerHeader>
             <Title fontSize="18px">Respostas</Title>
             <TouchableOpacity onPress={onPressClose}>
               <Close />
             </TouchableOpacity>
           </AnswerHeader>
-          <Comment>
-            <ProfileAvatar size={40} color={getRadomColor()}>
-              <Title fontSize="24px" color="white">
-                {getFistLetterFromUserName(answer.nome)}
-              </Title>
-            </ProfileAvatar>
-            <CommentContent>
-              <Title fontSize="14px" marginBottom="5px">
-                {answer.nome} • {formateLocalDate(answer.data)}
-              </Title>
+        }
+      >
+        <Comments>
+          {selectedCommentIndex !== null ? (
+            <>
+              <Comment>
+                <ProfileAvatar
+                  size={40}
+                  color={getArrayAnswersColor[getArrayAnswersColor.length - 1]}
+                >
+                  <Title fontSize="24px" color="white">
+                    {getFistLetterFromUserName(
+                      podcast.comments.data[selectedCommentIndex].nome
+                    )}
+                  </Title>
+                </ProfileAvatar>
+                <CommentContent>
+                  <Title fontSize="14px" marginBottom="5px">
+                    {podcast.comments.data[selectedCommentIndex].nome} •{" "}
+                    {formateLocalDate(
+                      podcast.comments.data[selectedCommentIndex].data
+                    )}
+                  </Title>
 
-              <Subtitle fontSize="12px" marginTop="0px">
-                {answer.comentario}
-              </Subtitle>
-            </CommentContent>
-          </Comment>
+                  <Subtitle fontSize="12px" marginTop="0px">
+                    {podcast.comments.data[selectedCommentIndex].comentario}
+                  </Subtitle>
+                </CommentContent>
+              </Comment>
 
-          <CommentContainer>
-            <ProfileAvatar size={40} color={getRadomColor()}>
-              <Title fontSize="24px" color="white">
-                {getFistLetterFromUserName(userName)}
-              </Title>
-            </ProfileAvatar>
-            <CommentInput
-              placeholder="Responda esse comentário medíocre"
-              placeholderTextColor={COLORS.TEXT_40}
-            />
-          </CommentContainer>
-          {answers.map((answer, index) => (
-            <Comment
-              key={index}
-              paddingLeft="20px"
-              isLastComment={answers.length - 1 === index}
-            >
-              <ProfileAvatar size={30} color={getRadomColor()}>
-                <Title fontSize="16px" color="white">
-                  {getFistLetterFromUserName(answer.nome)}
-                </Title>
-              </ProfileAvatar>
-              <CommentContent>
-                <Title fontSize="12px" marginBottom="5px">
-                  {answer.nome} • {formateLocalDate(answer.data)}
-                </Title>
+              <CommentContainer>
+                <ProfileAvatar
+                  size={40}
+                  color={getArrayAnswersColor[getArrayAnswersColor.length - 2]}
+                >
+                  <Title fontSize="24px" color="white">
+                    {getFistLetterFromUserName(userName)}
+                  </Title>
+                </ProfileAvatar>
+                <CommentInput
+                  placeholder="Responda esse comentário medíocre"
+                  placeholderTextColor={COLORS.TEXT_40}
+                  onSubmitEditing={() =>
+                    answerComment(
+                      podcast.comments.data[selectedCommentIndex].cod
+                    )
+                  }
+                  value={answer}
+                  editable={!loadingAnswerComment}
+                  onChangeText={(text) => setAnswer(text)}
+                />
 
-                <Subtitle fontSize="10px" marginTop="0px">
-                  {answer.comentario}
-                </Subtitle>
-              </CommentContent>
-            </Comment>
-          ))}
+                {loadingAnswerComment && (
+                  <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
+                )}
+              </CommentContainer>
+              {podcast.comments.data[selectedCommentIndex].respostas.map(
+                (answer, index) => (
+                  <Comment
+                    key={index}
+                    paddingLeft="20px"
+                    isLastComment={
+                      podcast.comments.data[selectedCommentIndex].respostas
+                        .length -
+                        1 ===
+                      index
+                    }
+                  >
+                    <ProfileAvatar
+                      size={30}
+                      color={getArrayAnswersColor[index]}
+                    >
+                      <Title fontSize="16px" color="white">
+                        {getFistLetterFromUserName(answer.nome)}
+                      </Title>
+                    </ProfileAvatar>
+                    <CommentContent>
+                      <Title fontSize="12px" marginBottom="5px">
+                        {answer.nome} • {formateLocalDate(answer.data)}
+                      </Title>
+
+                      <Subtitle fontSize="10px" marginTop="0px">
+                        {answer.comentario}
+                      </Subtitle>
+                    </CommentContent>
+                  </Comment>
+                )
+              )}
+            </>
+          ) : (
+            <></>
+          )}
         </Comments>
       </Modalize>
     </>

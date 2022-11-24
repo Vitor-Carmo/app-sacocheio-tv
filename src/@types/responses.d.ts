@@ -42,4 +42,17 @@ export declare global {
       result: boolean;
     };
   }
+
+  interface SendCommentResponse extends BaseResponse {
+    data: {
+      result: boolean;
+    };
+  }
+
+  interface CommentsResponse extends BaseResponse {
+    data: {
+      data: IComment[];
+      length: number;
+    };
+  }
 }
