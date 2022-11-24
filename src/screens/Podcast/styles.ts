@@ -103,7 +103,9 @@ export const Comment = styled.View<{
   border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
 `;
 
-export const CommentContent = styled.View`
+export const CommentContent = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
+})`
   flex: 1;
 `;
 
