@@ -10,6 +10,7 @@ export default function podcastColor(podcastId: number) {
     FEAT_BEATRIZ: 4099,
     NOTAS_SOBRE_NOTAS: 11977,
     ACERVO_PODCAST_SACO_CHEIO: 3962,
+    COPA_DO_MUNDO_2022: 13918,
   };
 
   switch (podcastId) {
@@ -33,6 +34,8 @@ export default function podcastColor(podcastId: number) {
       return "#e0d8c7";
     case PODCASTS_ID.ACERVO_PODCAST_SACO_CHEIO:
       return "#ffc739";
+    case PODCASTS_ID.COPA_DO_MUNDO_2022:
+      return "#8e0e33";
     default:
       return "#9B9F46";
   }
