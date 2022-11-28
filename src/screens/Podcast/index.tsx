@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
@@ -17,6 +17,7 @@ import {
   GradientContainer,
   CachedSvgUri,
   Spinner,
+  Comment,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { useScrollAnimated } from "../../hooks";
@@ -35,9 +36,6 @@ import {
   Group,
   ProfileAvatar,
   CommentInput,
-  Comment,
-  CommentContent,
-  Answers,
   AnswerHeader,
 } from "./styles";
 import {
@@ -98,31 +96,6 @@ export default function Podcast() {
     setSelectedCommentIndex(null);
     answersModalizeRef.current?.close();
   };
-
-  const formateLocalDate = (data: string) => {
-    const date = new Date(data);
-
-    return formateDate(
-      `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-    );
-  };
-
-  const getArrayColor = useMemo(
-    () => podcast.comments.data.map(() => getRadomColor()),
-    [podcast]
-  );
-
-  const getArrayAnswersColor = useMemo(
-    () =>
-      [
-        ...(selectedCommentIndex !== null
-          ? podcast.comments.data[selectedCommentIndex].respostas
-          : []),
-        {},
-        {},
-      ].map(() => getRadomColor()),
-    [podcast, selectedCommentIndex]
-  );
 
   const getColor = useMemo(() => getRadomColor(), []);
 
@@ -287,35 +260,13 @@ export default function Podcast() {
               <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
             )}
           </CommentContainer>
-          {podcast.comments.data.map((comment, index) => (
+          {podcast.comments.data.map((comment: IComment, index) => (
             <Comment
               key={index}
-              paddingLeft="20px"
+              comment={comment}
+              onPressComment={() => onPressAnswers(index)}
               isLastComment={podcast.comments.length - 1 === index}
-            >
-              <ProfileAvatar size={40} color={getArrayColor[index]}>
-                <Title fontSize="24px" color="white">
-                  {getFistLetterFromUserName(comment.nome)}
-                </Title>
-              </ProfileAvatar>
-              <CommentContent onPress={() => onPressAnswers(index)}>
-                <Title fontSize="14px" marginBottom="3px">
-                  {comment.nome} • {formateLocalDate(comment.data)}
-                </Title>
-
-                <Subtitle fontSize="12px" marginTop="0px">
-                  {comment.comentario}
-                </Subtitle>
-                {comment.respostas.length ? (
-                  <Answers>
-                    {comment.respostas.length} RESPOSTA
-                    {comment.respostas.length !== 1 ? "S" : ""}
-                  </Answers>
-                ) : (
-                  <></>
-                )}
-              </CommentContent>
-            </Comment>
+            />
           ))}
         </Comments>
       </Container>
@@ -342,36 +293,15 @@ export default function Podcast() {
         <Comments>
           {selectedCommentIndex !== null ? (
             <>
-              <Comment>
-                <ProfileAvatar
-                  size={40}
-                  color={getArrayAnswersColor[getArrayAnswersColor.length - 1]}
-                >
-                  <Title fontSize="24px" color="white">
-                    {getFistLetterFromUserName(
-                      podcast.comments.data[selectedCommentIndex].nome
-                    )}
-                  </Title>
-                </ProfileAvatar>
-                <CommentContent>
-                  <Title fontSize="14px" marginBottom="5px">
-                    {podcast.comments.data[selectedCommentIndex].nome} •{" "}
-                    {formateLocalDate(
-                      podcast.comments.data[selectedCommentIndex].data
-                    )}
-                  </Title>
-
-                  <Subtitle fontSize="12px" marginTop="0px">
-                    {podcast.comments.data[selectedCommentIndex].comentario}
-                  </Subtitle>
-                </CommentContent>
-              </Comment>
-
+              <Comment
+                disabledCommentPress
+                showAnswers={false}
+                comment={
+                  podcast.comments.data[selectedCommentIndex] as IComment
+                }
+              />
               <CommentContainer>
-                <ProfileAvatar
-                  size={40}
-                  color={getArrayAnswersColor[getArrayAnswersColor.length - 2]}
-                >
+                <ProfileAvatar size={40} color={getColor}>
                   <Title fontSize="24px" color="white">
                     {getFistLetterFromUserName(userName)}
                   </Title>
@@ -393,36 +323,21 @@ export default function Podcast() {
                   <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
                 )}
               </CommentContainer>
+
               {podcast.comments.data[selectedCommentIndex].respostas.map(
                 (answer, index) => (
                   <Comment
                     key={index}
-                    paddingLeft="20px"
+                    comment={answer as IComment}
+                    disabledCommentPress
+                    showAnswers={false}
                     isLastComment={
                       podcast.comments.data[selectedCommentIndex].respostas
                         .length -
                         1 ===
                       index
                     }
-                  >
-                    <ProfileAvatar
-                      size={30}
-                      color={getArrayAnswersColor[index]}
-                    >
-                      <Title fontSize="16px" color="white">
-                        {getFistLetterFromUserName(answer.nome)}
-                      </Title>
-                    </ProfileAvatar>
-                    <CommentContent>
-                      <Title fontSize="12px" marginBottom="5px">
-                        {answer.nome} • {formateLocalDate(answer.data)}
-                      </Title>
-
-                      <Subtitle fontSize="10px" marginTop="0px">
-                        {answer.comentario}
-                      </Subtitle>
-                    </CommentContent>
-                  </Comment>
+                  />
                 )
               )}
             </>

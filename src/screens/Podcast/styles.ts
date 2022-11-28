@@ -90,32 +90,6 @@ export const CommentInput = styled.TextInput`
   color: ${({ theme }) => theme.COLORS.TEXT};
 `;
 
-export const Comment = styled.View<{
-  isLastComment?: boolean;
-  paddingLeft?: string;
-}>`
-  flex-direction: row;
-  padding: 16px 0;
-  padding-left: ${({ theme, paddingLeft }) =>
-    paddingLeft || theme.DIMENSIONS.PADDING_VERTICAL};
-  padding-right: ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
-  border-bottom-width: ${({ isLastComment }) => (isLastComment ? "0" : "1px")};
-  border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
-`;
-
-export const CommentContent = styled.TouchableOpacity.attrs({
-  activeOpacity: 0.8,
-})`
-  flex: 1;
-`;
-
-export const Answers = styled.Text`
-  font-family: "Poppins_600SemiBold";
-  font-size: 14px;
-  color: #3ea6ff;
-  margin-top: 15px;
-`;
-
 export const AnswerHeader = styled.View`
   flex-direction: row;
   align-items: center;
