@@ -32,6 +32,8 @@ import Logout from "./Logout";
 import ApplicationContainer from "./ApplicationContainer";
 import SeeMore from "./SeeMore";
 import CachedSvgUri from "./CachedSvgUri";
+import Comment from "./Comment";
+import Trash from "./Trash";
 
 export {
   Anchors,
@@ -68,4 +70,6 @@ export {
   ApplicationContainer,
   SeeMore,
   CachedSvgUri,
+  Comment,
+  Trash,
 };

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
@@ -17,6 +17,8 @@ import {
   GradientContainer,
   CachedSvgUri,
   Spinner,
+  Comment,
+  Trash,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { useScrollAnimated } from "../../hooks";
@@ -35,16 +37,15 @@ import {
   Group,
   ProfileAvatar,
   CommentInput,
-  Comment,
-  CommentContent,
-  Answers,
   AnswerHeader,
+  CommentOptionTouchable,
+  CommentOptionContent,
+  CommentOptionTitle,
 } from "./styles";
 import {
   HexToHSL,
   podcastColor,
   podcastIcon,
-  formateDate,
   getRadomColor,
 } from "../../helpers";
 
@@ -60,10 +61,11 @@ export default function Podcast() {
   }: RouteProp<{ params: { podcast: IPodcast } }, "params"> = useRoute();
 
   const userName = useTypedSelector((state: RootState) => state.auth.userName);
-  const userId = useTypedSelector((state: RootState) => state.auth.id);
 
   const [comment, setComment] = useState("");
   const [answer, setAnswer] = useState("");
+
+  const [selectedCod, setSelectedCode] = useState<number>(0);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
@@ -71,6 +73,9 @@ export default function Podcast() {
 
   const [loadingComment, setLoadingComment] = useState(false);
   const [loadingAnswerComment, setLoadingAnswerComment] = useState(false);
+  const [loadingRemovingComment, setLoadingRemovingComment] = useState(false);
+
+  const [isAnswerModalizeOpen, setIsAnswerModalizeOpen] = useState(false);
 
   const [podcast, setPodcast] = useState<IPodcast>(podcast__);
 
@@ -79,6 +84,8 @@ export default function Podcast() {
   >(null);
 
   const answersModalizeRef = useRef<Modalize>(null);
+  const commentOptionModalizeRef = useRef<Modalize>(null);
+
   const { height } = Dimensions.get("window");
 
   const onPressPlayButton = () => {
@@ -94,35 +101,15 @@ export default function Podcast() {
     answersModalizeRef.current?.open();
   };
 
-  const onPressClose = () => {
+  const onPressCloseAnswers = () => {
     setSelectedCommentIndex(null);
     answersModalizeRef.current?.close();
   };
 
-  const formateLocalDate = (data: string) => {
-    const date = new Date(data);
-
-    return formateDate(
-      `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-    );
+  const onPressComment = (cod: number) => {
+    setSelectedCode(cod);
+    commentOptionModalizeRef.current?.open();
   };
-
-  const getArrayColor = useMemo(
-    () => podcast.comments.data.map(() => getRadomColor()),
-    [podcast]
-  );
-
-  const getArrayAnswersColor = useMemo(
-    () =>
-      [
-        ...(selectedCommentIndex !== null
-          ? podcast.comments.data[selectedCommentIndex].respostas
-          : []),
-        {},
-        {},
-      ].map(() => getRadomColor()),
-    [podcast, selectedCommentIndex]
-  );
 
   const getColor = useMemo(() => getRadomColor(), []);
 
@@ -204,6 +191,45 @@ export default function Podcast() {
     }
   };
 
+  const removeComment = async () => {
+    setLoadingRemovingComment(true);
+
+    try {
+      const {
+        data: {
+          data: { result },
+        },
+      } = await api.post<RemoveCommentResponse>("/podcast/remove_comment", {
+        commentId: selectedCod,
+        episodeId: podcast.episode.id,
+      });
+
+      if (!result) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: ERROS.UNKNOWN_REMOVE_COMMENT_ERROR,
+        });
+      }
+      const {
+        data: { data },
+      } = await api.get<CommentsResponse>(
+        `/podcast/comments/${podcast.episode.id}`
+      );
+
+      setPodcast((podcast) => ({ ...podcast, comments: data }));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingRemovingComment(false);
+      commentOptionModalizeRef.current?.close();
+
+      if (isAnswerModalizeOpen) {
+        answersModalizeRef.current?.close();
+        setIsAnswerModalizeOpen(false);
+      }
+    }
+  };
   return (
     <>
       <Header
@@ -272,7 +298,7 @@ export default function Podcast() {
             </CommentHeader>
           </Group>
           <CommentContainer>
-            <ProfileAvatar size={50} color={getColor}>
+            <ProfileAvatar size={50} color={COLORS.PRIMARY}>
               <Title>{getFistLetterFromUserName(userName)}</Title>
             </ProfileAvatar>
             <CommentInput
@@ -287,35 +313,14 @@ export default function Podcast() {
               <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
             )}
           </CommentContainer>
-          {podcast.comments.data.map((comment, index) => (
+          {podcast.comments.data.map((comment: IComment, index) => (
             <Comment
               key={index}
-              paddingLeft="20px"
+              comment={comment}
+              onPressComment={() => onPressAnswers(index)}
               isLastComment={podcast.comments.length - 1 === index}
-            >
-              <ProfileAvatar size={40} color={getArrayColor[index]}>
-                <Title fontSize="24px" color="white">
-                  {getFistLetterFromUserName(comment.nome)}
-                </Title>
-              </ProfileAvatar>
-              <CommentContent onPress={() => onPressAnswers(index)}>
-                <Title fontSize="14px" marginBottom="3px">
-                  {comment.nome} • {formateLocalDate(comment.data)}
-                </Title>
-
-                <Subtitle fontSize="12px" marginTop="0px">
-                  {comment.comentario}
-                </Subtitle>
-                {comment.respostas.length ? (
-                  <Answers>
-                    {comment.respostas.length} RESPOSTA
-                    {comment.respostas.length !== 1 ? "S" : ""}
-                  </Answers>
-                ) : (
-                  <></>
-                )}
-              </CommentContent>
-            </Comment>
+              onPressOptions={() => onPressComment(comment.cod)}
+            />
           ))}
         </Comments>
       </Container>
@@ -330,10 +335,11 @@ export default function Podcast() {
         handleStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}
+        onOpen={() => setIsAnswerModalizeOpen(true)}
         HeaderComponent={
           <AnswerHeader>
             <Title fontSize="18px">Respostas</Title>
-            <TouchableOpacity onPress={onPressClose}>
+            <TouchableOpacity onPress={onPressCloseAnswers}>
               <Close />
             </TouchableOpacity>
           </AnswerHeader>
@@ -342,36 +348,20 @@ export default function Podcast() {
         <Comments>
           {selectedCommentIndex !== null ? (
             <>
-              <Comment>
-                <ProfileAvatar
-                  size={40}
-                  color={getArrayAnswersColor[getArrayAnswersColor.length - 1]}
-                >
-                  <Title fontSize="24px" color="white">
-                    {getFistLetterFromUserName(
-                      podcast.comments.data[selectedCommentIndex].nome
-                    )}
-                  </Title>
-                </ProfileAvatar>
-                <CommentContent>
-                  <Title fontSize="14px" marginBottom="5px">
-                    {podcast.comments.data[selectedCommentIndex].nome} •{" "}
-                    {formateLocalDate(
-                      podcast.comments.data[selectedCommentIndex].data
-                    )}
-                  </Title>
-
-                  <Subtitle fontSize="12px" marginTop="0px">
-                    {podcast.comments.data[selectedCommentIndex].comentario}
-                  </Subtitle>
-                </CommentContent>
-              </Comment>
-
+              <Comment
+                disabledCommentPress
+                showAnswers={false}
+                onPressOptions={() => {
+                  onPressComment(
+                    podcast.comments.data[selectedCommentIndex].cod
+                  );
+                }}
+                comment={
+                  podcast.comments.data[selectedCommentIndex] as IComment
+                }
+              />
               <CommentContainer>
-                <ProfileAvatar
-                  size={40}
-                  color={getArrayAnswersColor[getArrayAnswersColor.length - 2]}
-                >
+                <ProfileAvatar size={40} color={COLORS.PRIMARY}>
                   <Title fontSize="24px" color="white">
                     {getFistLetterFromUserName(userName)}
                   </Title>
@@ -393,36 +383,22 @@ export default function Podcast() {
                   <Spinner borderWidth={2} size={25} color={COLORS.BORDER} />
                 )}
               </CommentContainer>
+
               {podcast.comments.data[selectedCommentIndex].respostas.map(
                 (answer, index) => (
                   <Comment
                     key={index}
-                    paddingLeft="20px"
+                    comment={answer as IComment}
+                    disabledCommentPress
+                    showAnswers={false}
+                    onPressOptions={() => onPressComment(answer.cod)}
                     isLastComment={
                       podcast.comments.data[selectedCommentIndex].respostas
                         .length -
                         1 ===
                       index
                     }
-                  >
-                    <ProfileAvatar
-                      size={30}
-                      color={getArrayAnswersColor[index]}
-                    >
-                      <Title fontSize="16px" color="white">
-                        {getFistLetterFromUserName(answer.nome)}
-                      </Title>
-                    </ProfileAvatar>
-                    <CommentContent>
-                      <Title fontSize="12px" marginBottom="5px">
-                        {answer.nome} • {formateLocalDate(answer.data)}
-                      </Title>
-
-                      <Subtitle fontSize="10px" marginTop="0px">
-                        {answer.comentario}
-                      </Subtitle>
-                    </CommentContent>
-                  </Comment>
+                  />
                 )
               )}
             </>
@@ -430,6 +406,34 @@ export default function Podcast() {
             <></>
           )}
         </Comments>
+      </Modalize>
+
+      <Modalize
+        ref={commentOptionModalizeRef}
+        adjustToContentHeight
+        modalStyle={{
+          paddingTop: 15,
+          backgroundColor: COLORS.BACKGROUND,
+        }}
+        handleStyle={{
+          backgroundColor: COLORS.BACKGROUND,
+        }}
+      >
+        <CommentOptionTouchable
+          disabled={loadingRemovingComment}
+          onPress={removeComment}
+        >
+          <CommentOptionContent>
+            <Trash size={18} color={COLORS.TEXT_60} />
+            <CommentOptionTitle fontSize="16px" color={COLORS.TEXT_60}>
+              Excluir
+            </CommentOptionTitle>
+          </CommentOptionContent>
+
+          {loadingRemovingComment && (
+            <Spinner borderWidth={2} size={22} color={COLORS.BORDER} />
+          )}
+        </CommentOptionTouchable>
       </Modalize>
     </>
   );

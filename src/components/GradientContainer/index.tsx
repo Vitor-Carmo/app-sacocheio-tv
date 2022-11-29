@@ -23,8 +23,6 @@ export default function GradientContainer({
 }: GradientContainerProps) {
   const { COLORS, DIMENSIONS } = useTheme();
 
-  console.log();
-
   return (
     <Container
       colors={[
