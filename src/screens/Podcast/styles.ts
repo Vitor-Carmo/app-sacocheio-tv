@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 import Animated from "react-native-reanimated";
 import { DIMENSIONS } from "../../constants";
+import { Title } from "../../styles/global";
 
 export const Container = styled(Animated.ScrollView)`
   flex: 1;
@@ -98,3 +99,26 @@ export const AnswerHeader = styled.View`
   border-bottom-width: 1px;
   border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
 `;
+
+export const CommentOptionTouchable = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.6,
+})`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 16px;
+  height: 60px;
+`;
+
+export const CommentOptionContent = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+
+export const CommentOptionTitle = styled(Title)`
+  font-family: "Poppins_400Regular";
+  margin-left: 20px;
+`;
+
+Title;

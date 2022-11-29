@@ -1,5 +1,6 @@
-import React, { useMemo } from "react";
-import { Title, Subtitle } from "../../styles/global";
+import React, { useMemo, useRef, RefObject } from "react";
+import { Modalize } from "react-native-modalize";
+import { useTheme } from "styled-components/native";
 
 import {
   Container,
@@ -9,6 +10,7 @@ import {
   OptionButton,
 } from "./styles";
 
+import { Title, Subtitle } from "../../styles/global";
 import { formateDate, getRadomColor, HexToHSL } from "../../helpers";
 import { RootState, useTypedSelector } from "../../store";
 
@@ -20,6 +22,7 @@ interface ICommentProps {
   disabledCommentPress?: boolean;
   showAnswers?: boolean;
   onPressComment?: () => void;
+  onPressOptions?: () => void;
 }
 
 export default function Comment({
@@ -28,7 +31,9 @@ export default function Comment({
   disabledCommentPress = false,
   showAnswers = true,
   onPressComment = () => {},
+  onPressOptions = () => {},
 }: ICommentProps) {
+  const { COLORS } = useTheme();
   const userId = useTypedSelector((state: RootState) => state.auth.id);
 
   const formateLocalDate = (data: string) => {
@@ -49,39 +54,41 @@ export default function Comment({
   const isThisUser = comment.usuario === userId;
 
   return (
-    <Container paddingLeft="20px" isLastComment={isLastComment}>
-      <ProfileAvatar size={40} color={getColor}>
-        <Title fontSize="24px" color="white">
-          {getFistLetterFromUserName(comment.nome)}
-        </Title>
-      </ProfileAvatar>
-      <Content onPress={onPressComment} disabled={disabledCommentPress}>
-        <Title
-          fontSize="14px"
-          marginBottom="3px"
-          color={isThisUser ? HexToHSL(getColor, 40, 0.8) : null}
-        >
-          {comment.nome} • {formateLocalDate(comment.data)}
-        </Title>
-        <Subtitle fontSize="12px" marginTop="0px">
-          {comment.comentario}
-        </Subtitle>
-        {showAnswers && comment.respostas?.length ? (
-          <Answers>
-            {comment.respostas.length} RESPOSTA
-            {comment.respostas.length !== 1 ? "S" : ""}
-          </Answers>
+    <>
+      <Container paddingLeft="20px" isLastComment={isLastComment}>
+        <ProfileAvatar size={40} color={isThisUser ? COLORS.PRIMARY : getColor}>
+          <Title fontSize="24px" color="white">
+            {getFistLetterFromUserName(comment.nome)}
+          </Title>
+        </ProfileAvatar>
+        <Content onPress={onPressComment} disabled={disabledCommentPress}>
+          <Title
+            fontSize="14px"
+            marginBottom="3px"
+            color={isThisUser ? COLORS.PRIMARY : null}
+          >
+            {comment.nome} • {formateLocalDate(comment.data)}
+          </Title>
+          <Subtitle fontSize="12px" marginTop="0px">
+            {comment.comentario}
+          </Subtitle>
+          {showAnswers && comment.respostas?.length ? (
+            <Answers>
+              {comment.respostas.length} RESPOSTA
+              {comment.respostas.length !== 1 ? "S" : ""}
+            </Answers>
+          ) : (
+            <></>
+          )}
+        </Content>
+        {isThisUser ? (
+          <OptionButton onPress={onPressOptions}>
+            <Options />
+          </OptionButton>
         ) : (
           <></>
         )}
-      </Content>
-      {isThisUser ? (
-        <OptionButton>
-          <Options />
-        </OptionButton>
-      ) : (
-        <></>
-      )}
-    </Container>
+      </Container>
+    </>
   );
 }

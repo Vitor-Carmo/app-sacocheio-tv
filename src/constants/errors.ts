@@ -8,6 +8,8 @@ export default {
     "Ocorreu algum erro ao tentar dar like no podcast. Por favor, tente mais tarde!",
   UNKNOWN_SEND_COMMENT_ERROR:
     "Ocorreu algum erro ao tentar comentar no podcast. Por favor, tente mais tarde!",
+  UNKNOWN_REMOVE_COMMENT_ERROR:
+    "Ocorreu algum erro ao tentar remover comentário. Por favor, tente mais tarde!",
   UNKNOWN_ERROR:
     "Ocorreu algum erro desconhecido. Por favor, tente mais tarde!",
 };
