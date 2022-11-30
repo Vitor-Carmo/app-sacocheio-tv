@@ -1,7 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Dimensions, TouchableOpacity } from "react-native";
 import { useTheme } from "styled-components";
 import { Modalize } from "react-native-modalize";
+import { Audio, AVPlaybackStatus } from "expo-av";
 
 import Arrow from "../Arrow";
 import Heart from "../Heart";
@@ -40,15 +41,31 @@ export default function AudioPlayer() {
   const { COLORS } = useTheme();
   const { height } = Dimensions.get("screen");
 
+  const [playbackInstance, setPlaybackInstance] = useState<Audio.Sound | null>(
+    null
+  );
+
+  const [playbackState, setPlaybackState] = useState({
+    muted: false,
+    playbackInstancePosition: 0,
+    playbackInstanceDuration: 0,
+    shouldPlay: false,
+    isPlaying: false,
+    isBuffering: false,
+    isLoading: true,
+    isLooping: false,
+    shouldCorrectPitch: true,
+    volume: 1,
+    rate: 1,
+    useNativeControls: false,
+    throughEarpiece: false,
+  });
+
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const handlePressLike = (): void => {
     setIsLiked((isLiked) => !isLiked);
-  };
-
-  const handlePressPlay = (): void => {
-    setIsPlaying((isPlaying) => !isPlaying);
   };
 
   const handleOpenPodcastControl = (): void => {
@@ -58,6 +75,82 @@ export default function AudioPlayer() {
   const handleClosePodcastControl = (): void => {
     playerRef.current?.close();
   };
+
+  async function handlePressPlay() {
+    if (playbackInstance === null) return;
+
+    if (playbackState.isPlaying) {
+      playbackInstance.pauseAsync();
+      return;
+    }
+
+    if (
+      playbackState.playbackInstancePosition ===
+      playbackState.playbackInstanceDuration
+    ) {
+      await playbackInstance?.setPositionAsync(0);
+    }
+    playbackInstance.playAsync();
+  }
+
+  const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+    if (status.isLoaded) {
+      setPlaybackState((oldState) => ({
+        ...oldState,
+        playbackInstancePosition: status.positionMillis,
+        playbackInstanceDuration: status.durationMillis ?? 0,
+        shouldPlay: status.shouldPlay,
+        isPlaying: status.isPlaying,
+        isBuffering: status.isBuffering,
+        rate: status.rate,
+        muted: status.isMuted,
+        volume: status.volume,
+        isLooping: status.isLooping,
+        shouldCorrectPitch: status.shouldCorrectPitch,
+      }));
+    }
+  };
+
+  const initiateAudio = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      {
+        uri: "https://portal.sacocheio.tv/rss/3962/38JyGE6eiG/763d1063c462a0dadede80a239525ac7.mp3",
+      },
+      {
+        shouldPlay: false,
+        progressUpdateIntervalMillis: 1000,
+        rate: playbackState.rate,
+        shouldCorrectPitch: playbackState.shouldCorrectPitch,
+        volume: playbackState.volume,
+        isMuted: playbackState.muted,
+        isLooping: false,
+      },
+      onPlaybackStatusUpdate
+    );
+
+    setPlaybackInstance(sound);
+  };
+
+  function msToTime(duration: number) {
+    let seconds: string | number = Math.floor((duration / 1000) % 60);
+    let minutes: string | number = Math.floor((duration / (1000 * 60)) % 60);
+    let hours: string | number = Math.floor((duration / (1000 * 60 * 60)) % 24);
+
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    return `${hours !== "00" ? hours + ":" : ""}${minutes}:${seconds}`;
+  }
+
+  useEffect(() => {
+    initiateAudio();
+
+    return () => {
+      playbackInstance?.unloadAsync();
+      setPlaybackInstance(null);
+    };
+  }, []);
 
   return (
     <>
@@ -113,35 +206,74 @@ export default function AudioPlayer() {
           <Subtitle fontSize="13px">Arthur Petry</Subtitle>
           <AudioSlider
             minimumValue={0}
-            maximumValue={1}
+            maximumValue={playbackState.playbackInstanceDuration}
             minimumTrackTintColor={COLORS.PRIMARY}
             maximumTrackTintColor={COLORS.TEXT_40}
             thumbTintColor={COLORS.PRIMARY}
+            value={playbackState.playbackInstancePosition}
+            onSlidingComplete={(number) =>
+              playbackInstance?.setPositionAsync(number)
+            }
+            onValueChange={(number) => console.log(number)}
           />
           <TimeContainer>
-            <PlayerTime>01:06</PlayerTime>
-            <PlayerTime>03:16</PlayerTime>
+            <PlayerTime>
+              {msToTime(playbackState.playbackInstancePosition)}
+            </PlayerTime>
+            <PlayerTime>
+              {msToTime(playbackState.playbackInstanceDuration)}
+            </PlayerTime>
           </TimeContainer>
 
           <Player>
-            <SpeedContainer>
-              <Speed>1x</Speed>
+            <SpeedContainer
+              onPress={() =>
+                playbackInstance?.setRateAsync(
+                  playbackState.rate !== 2 ? playbackState.rate + 0.25 : 1,
+                  true
+                )
+              }
+            >
+              <Speed>{playbackState.rate}x</Speed>
             </SpeedContainer>
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() =>
+                playbackInstance?.setPositionAsync(
+                  playbackState.playbackInstancePosition - 15000
+                )
+              }
+            >
               <Arrow type="player" size={23} />
             </TouchableOpacity>
             <PlayContainer onPress={handlePressPlay}>
-              {!isPlaying ? (
+              {!playbackState.isPlaying ? (
                 <Play size={78} backgroundColor={COLORS.PRIMARY} />
               ) : (
                 <Pause size={78} backgroundColor={COLORS.PRIMARY} />
               )}
             </PlayContainer>
-            <TouchableOpacity activeOpacity={0.6}>
+            <TouchableOpacity
+              activeOpacity={0.6}
+              onPress={() =>
+                playbackInstance?.setPositionAsync(
+                  playbackState.playbackInstancePosition + 15000
+                )
+              }
+            >
               <Arrow type="player" size={23} direction="right" />
             </TouchableOpacity>
-            <RepeatContainer>
-              <Repeat color={COLORS.TEXT_60} />
+            <RepeatContainer
+              onPress={() =>
+                playbackInstance?.setIsLoopingAsync(!playbackState.isLooping)
+              }
+            >
+              <Repeat
+                size={24}
+                color={
+                  playbackState.isLooping ? COLORS.PRIMARY : COLORS.TEXT_60
+                }
+              />
             </RepeatContainer>
           </Player>
         </PlayerControls>

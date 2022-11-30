@@ -130,6 +130,8 @@ export const SpeedContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
   margin-right: 20px;
+  width: 60px;
+  align-items: center;
 `;
 
 export const Speed = styled.Text`
@@ -141,5 +143,7 @@ export const Speed = styled.Text`
 export const RepeatContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
+  align-items: center;
   margin-left: 20px;
+  width: 60px;
 `;
