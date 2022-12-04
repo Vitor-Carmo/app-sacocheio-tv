@@ -1,6 +1,7 @@
 import styled from "styled-components/native";
 import Constants from "expo-constants";
 import Animated from "react-native-reanimated";
+
 import { DIMENSIONS } from "../../constants";
 
 export const Container = styled(Animated.View)`
@@ -18,11 +19,16 @@ export const Container = styled(Animated.View)`
   z-index: 1;
 `;
 
-export const Title = styled(Animated.Text)`
+export const Title = styled.Text`
   font-family: "Poppins_500Medium";
   font-size: 14px;
   color: ${({ theme }) => theme.COLORS.TEXT};
-  opacity: 1;
+`;
+
+export const TitleContainer = styled(Animated.View)`
+  width: 72%;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const GoBackOpacity = styled.TouchableOpacity.attrs({

@@ -5,6 +5,7 @@ export interface TitleProps {
   marginBottom?: string;
   color?: string | null;
   flex?: "none" | number;
+  align?: string;
 }
 
 export const Title = styled.Text<TitleProps>`
@@ -13,6 +14,7 @@ export const Title = styled.Text<TitleProps>`
   font-size: ${({ fontSize }) => fontSize ?? "24px"};
   color: ${({ theme, color }) => color ?? theme.COLORS.TEXT};
   margin-bottom: ${({ marginBottom }) => marginBottom ?? "0px"};
+  text-align: ${({ align }) => align ?? "left"};
 `;
 
 export interface SubtitleProps {

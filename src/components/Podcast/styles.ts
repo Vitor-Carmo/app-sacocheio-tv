@@ -27,6 +27,7 @@ export const Avatar = styled.View`
   border-radius: 5px;
   margin-right: 10px;
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
 `;
 
 export const Description = styled.Text`

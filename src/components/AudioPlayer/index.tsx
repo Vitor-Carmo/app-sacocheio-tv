@@ -2,7 +2,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { Dimensions, TouchableOpacity } from "react-native";
 import { useTheme } from "styled-components";
 import { Modalize } from "react-native-modalize";
-import { Audio, AVPlaybackStatus } from "expo-av";
+import { Audio } from "expo-av";
+
+import {
+  useAnimatedStyle,
+  withTiming,
+  useSharedValue,
+  Easing,
+} from "react-native-reanimated";
+
+import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
+import { playPodcast } from "../../store/fetch";
 
 import Arrow from "../Arrow";
 import Heart from "../Heart";
@@ -10,6 +20,7 @@ import Play from "../Play";
 import Pause from "../Pause";
 import Options from "../Options";
 import Repeat from "../Repeat";
+import CachedSvgUri from "../CachedSvgUri";
 
 import {
   Container,
@@ -21,9 +32,9 @@ import {
   Title,
   PlayerHead,
   PlayerHeadButtons,
-  Cover,
   PlayerControls,
   PodcastName,
+  Presenters,
   AudioSlider,
   TimeContainer,
   PlayerTime,
@@ -32,104 +43,53 @@ import {
   Speed,
   SpeedContainer,
   RepeatContainer,
+  Avatar,
 } from "./styles";
 
-import { Subtitle } from "../../styles/global";
+import { podcastIcon } from "../../helpers";
 
 export default function AudioPlayer() {
-  const playerRef = useRef<Modalize>(null);
+  const dispatch = useTypedDispatch();
+
+  const modalizeContainerRef = useRef<Modalize>(null);
+
   const { COLORS } = useTheme();
+
   const { height } = Dimensions.get("screen");
 
-  const [playbackInstance, setPlaybackInstance] = useState<Audio.Sound | null>(
-    null
+  const podcast = useTypedSelector<IPodcast | null>(
+    (state: RootState) => state.podcast.podcast
   );
 
-  const [playbackState, setPlaybackState] = useState({
-    muted: false,
-    playbackInstancePosition: 0,
-    playbackInstanceDuration: 0,
-    shouldPlay: false,
-    isPlaying: false,
-    isBuffering: false,
-    isLoading: true,
-    isLooping: false,
-    shouldCorrectPitch: true,
-    volume: 1,
-    rate: 1,
-    useNativeControls: false,
-    throughEarpiece: false,
-  });
+  const playbackInstance = useTypedSelector<Audio.Sound | null>(
+    (state: RootState) => state.podcast.playbackInstance
+  );
 
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const playbackState = useTypedSelector(
+    (state: RootState) => state.podcast.playbackState
+  );
+
+  const [isLiked, setIsLiked] = useState<boolean>(
+    !!podcast?.episode.isFavorite
+  );
 
   const handlePressLike = (): void => {
     setIsLiked((isLiked) => !isLiked);
   };
 
   const handleOpenPodcastControl = (): void => {
-    playerRef.current?.open();
+    modalizeContainerRef.current?.open();
   };
 
   const handleClosePodcastControl = (): void => {
-    playerRef.current?.close();
+    modalizeContainerRef.current?.close();
   };
 
   async function handlePressPlay() {
-    if (playbackInstance === null) return;
+    if (!podcast) return;
 
-    if (playbackState.isPlaying) {
-      playbackInstance.pauseAsync();
-      return;
-    }
-
-    if (
-      playbackState.playbackInstancePosition ===
-      playbackState.playbackInstanceDuration
-    ) {
-      await playbackInstance?.setPositionAsync(0);
-    }
-    playbackInstance.playAsync();
+    dispatch(playPodcast(podcast));
   }
-
-  const onPlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-    if (status.isLoaded) {
-      setPlaybackState((oldState) => ({
-        ...oldState,
-        playbackInstancePosition: status.positionMillis,
-        playbackInstanceDuration: status.durationMillis ?? 0,
-        shouldPlay: status.shouldPlay,
-        isPlaying: status.isPlaying,
-        isBuffering: status.isBuffering,
-        rate: status.rate,
-        muted: status.isMuted,
-        volume: status.volume,
-        isLooping: status.isLooping,
-        shouldCorrectPitch: status.shouldCorrectPitch,
-      }));
-    }
-  };
-
-  const initiateAudio = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      {
-        uri: "https://portal.sacocheio.tv/rss/3962/38JyGE6eiG/763d1063c462a0dadede80a239525ac7.mp3",
-      },
-      {
-        shouldPlay: false,
-        progressUpdateIntervalMillis: 1000,
-        rate: playbackState.rate,
-        shouldCorrectPitch: playbackState.shouldCorrectPitch,
-        volume: playbackState.volume,
-        isMuted: playbackState.muted,
-        isLooping: false,
-      },
-      onPlaybackStatusUpdate
-    );
-
-    setPlaybackInstance(sound);
-  };
 
   function msToTime(duration: number) {
     let seconds: string | number = Math.floor((duration / 1000) % 60);
@@ -143,30 +103,52 @@ export default function AudioPlayer() {
     return `${hours !== "00" ? hours + ":" : ""}${minutes}:${seconds}`;
   }
 
-  useEffect(() => {
-    initiateAudio();
+  const audioPlayerPosition = useSharedValue(-5);
 
-    return () => {
-      playbackInstance?.unloadAsync();
-      setPlaybackInstance(null);
+  const playerContainerStyle = useAnimatedStyle(() => {
+    return {
+      bottom: audioPlayerPosition.value,
     };
-  }, []);
+  });
+
+  useEffect(() => {
+    if (playbackInstance === null) {
+      audioPlayerPosition.value = withTiming(-5, {
+        duration: 280,
+        easing: Easing.ease,
+      });
+    } else {
+      audioPlayerPosition.value = withTiming(105, {
+        duration: 280,
+        easing: Easing.ease,
+      });
+    }
+  }, [playbackInstance]);
 
   return (
     <>
-      <Container>
+      <Container style={playerContainerStyle}>
         <TimeLine>
-          <Line progress={50} />
+          <Line
+            progress={
+              (playbackState.playbackInstancePosition /
+                playbackState.playbackInstanceDuration) *
+              100
+            }
+          />
         </TimeLine>
         <Content>
           <TouchableAction onPress={handlePressLike}>
             <Heart size={22} isLiked={isLiked} />
           </TouchableAction>
+
           <TouchablePodcast onPress={handleOpenPodcastControl}>
-            <Title numberOfLines={1}>#152 - Licença Obesidade</Title>
+            <Title speed={0.1} marqueeOnStart={true} loop={true} delay={1000}>
+              {podcast?.episode.title}
+            </Title>
           </TouchablePodcast>
           <TouchableAction onPress={handlePressPlay}>
-            {!isPlaying ? (
+            {!playbackState.isPlaying ? (
               <Play outline backgroundColor="#9E9E9E" size={22} />
             ) : (
               <Pause outline backgroundColor="#9E9E9E" size={22} />
@@ -176,7 +158,7 @@ export default function AudioPlayer() {
       </Container>
 
       <Modalize
-        ref={playerRef}
+        ref={modalizeContainerRef}
         modalStyle={{
           backgroundColor: COLORS.BACKGROUND,
           minHeight: height,
@@ -193,17 +175,32 @@ export default function AudioPlayer() {
             <Options type="horizontal" borderColor="#fff" size={19} />
           </PlayerHeadButtons>
         </PlayerHead>
-        <Cover
-          source={{
-            uri: "www.google.com",
-          }}
-        />
+
+        <Avatar>
+          <CachedSvgUri
+            width="100%"
+            height="100%"
+            uri={podcastIcon(podcast?.id ?? 0)}
+          />
+        </Avatar>
 
         <PlayerControls>
-          <PodcastName fontSize="16px" marginBottom="5px">
-            #144 Hitler era um cancelador
+          <PodcastName
+            speed={0.1}
+            marqueeOnStart={true}
+            loop={true}
+            delay={2000}
+          >
+            {podcast?.episode.title}
           </PodcastName>
-          <Subtitle fontSize="13px">Arthur Petry</Subtitle>
+          <Presenters
+            speed={0.5}
+            marqueeOnStart={true}
+            loop={true}
+            delay={2000}
+          >
+            {podcast?.apresentador}
+          </Presenters>
           <AudioSlider
             minimumValue={0}
             maximumValue={playbackState.playbackInstanceDuration}
@@ -211,10 +208,9 @@ export default function AudioPlayer() {
             maximumTrackTintColor={COLORS.TEXT_40}
             thumbTintColor={COLORS.PRIMARY}
             value={playbackState.playbackInstancePosition}
-            onSlidingComplete={(number) =>
-              playbackInstance?.setPositionAsync(number)
-            }
-            onValueChange={(number) => console.log(number)}
+            onSlidingComplete={(number) => {
+              playbackInstance?.setPositionAsync(number);
+            }}
           />
           <TimeContainer>
             <PlayerTime>

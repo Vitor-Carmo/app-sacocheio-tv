@@ -1,12 +1,14 @@
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import Slider from "@react-native-community/slider";
-import { Dimensions } from "react-native";
-import { Title as GBTitle } from "../../styles/global";
+import Animated from "react-native-reanimated";
+import MarqueeText from "react-native-marquee";
+
 import { DIMENSIONS } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
-export const Container = styled.View`
+export const Container = styled(Animated.View)`
   position: absolute;
   bottom: 105px;
 
@@ -42,7 +44,7 @@ export const TouchablePodcast = styled.TouchableOpacity.attrs({
   height: 100%;
   padding: 0 15px;
 `;
-export const Title = styled.Text`
+export const Title = styled(MarqueeText)`
   font-family: "Roboto_400Regular";
   font-size: 14px;
   color: ${({ theme }) => theme.COLORS.TEXT_50};
@@ -84,6 +86,15 @@ export const Cover = styled.Image`
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
 `;
 
+export const Avatar = styled.View`
+  width: ${width * 0.75}px;
+  height: ${width * 0.75}px;
+  align-self: center;
+  border-radius: 20px;
+  background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
+`;
+
 export const PlayerControls = styled.View`
   margin: 0 auto;
   margin-top: 35px;
@@ -92,8 +103,17 @@ export const PlayerControls = styled.View`
   align-items: center;
 `;
 
-export const PodcastName = styled(GBTitle)`
-  text-align: center;
+export const PodcastName = styled(MarqueeText)`
+  font-family: "Poppins_600SemiBold";
+  font-size: 16px;
+  color: ${({ theme }) => theme.COLORS.TEXT};
+  margin-bottom: 10px;
+`;
+
+export const Presenters = styled(MarqueeText)`
+  font-family: "Poppins_600SemiBold";
+  font-size: 13px;
+  color: ${({ theme }) => theme.COLORS.TEXT_50};
 `;
 
 export const AudioSlider = styled(Slider)`

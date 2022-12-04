@@ -4,8 +4,10 @@ import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
+import { useDispatch } from "react-redux";
 
-import { RootState, useTypedSelector } from "../../store";
+import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
+import { playPodcast } from "../../store/fetch";
 import {
   Pause,
   Play,
@@ -46,7 +48,6 @@ import {
   HexToHSL,
   podcastColor,
   podcastIcon,
-  getRadomColor,
 } from "../../helpers";
 
 import api from "../../services/api";
@@ -54,20 +55,28 @@ import api from "../../services/api";
 import { ERROS } from "../../constants";
 
 export default function Podcast() {
+  const dispatch = useTypedDispatch();
+
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollHandler, scrollY } = useScrollAnimated();
+
   const {
     params: { podcast: podcast__ },
   }: RouteProp<{ params: { podcast: IPodcast } }, "params"> = useRoute();
 
   const userName = useTypedSelector((state: RootState) => state.auth.userName);
+  const playbackState = useTypedSelector(
+    (state: RootState) => state.podcast.playbackState
+  );
+  const currentPodcast = useTypedSelector(
+    (state: RootState) => state.podcast.podcast
+  );
 
   const [comment, setComment] = useState("");
   const [answer, setAnswer] = useState("");
 
   const [selectedCod, setSelectedCode] = useState<number>(0);
 
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isDownloaded, setIsDownloaded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
 
@@ -89,7 +98,7 @@ export default function Podcast() {
   const { height } = Dimensions.get("window");
 
   const onPressPlayButton = () => {
-    setIsPlaying((isPlaying) => !isPlaying);
+    dispatch(playPodcast(podcast));
   };
 
   const onPressLikeButton = () => {
@@ -110,8 +119,6 @@ export default function Podcast() {
     setSelectedCode(cod);
     commentOptionModalizeRef.current?.open();
   };
-
-  const getColor = useMemo(() => getRadomColor(), []);
 
   const getFistLetterFromUserName = (name: string | null) => {
     const [firstLetter] = (name ?? "").trim();
@@ -233,7 +240,7 @@ export default function Podcast() {
   return (
     <>
       <Header
-        title={podcast.titulo}
+        title={podcast.episode.title}
         scrollY={scrollY}
         backgroundColor={HexToHSL(
           podcastColor(podcast.id),
@@ -278,7 +285,8 @@ export default function Podcast() {
                   </Option>
                 </Options>
                 <TouchableOpacity onPress={onPressPlayButton}>
-                  {isPlaying ? (
+                  {playbackState.isPlaying &&
+                  currentPodcast?.id === podcast.id ? (
                     <Pause size={50} backgroundColor={COLORS.PRIMARY} />
                   ) : (
                     <Play size={50} backgroundColor={COLORS.PRIMARY} />
@@ -328,7 +336,7 @@ export default function Podcast() {
       <Modalize
         ref={answersModalizeRef}
         keyboardAvoidingBehavior="height"
-        modalHeight={height * 0.73}
+        modalHeight={height * 0.75}
         modalStyle={{
           backgroundColor: COLORS.BACKGROUND,
         }}
