@@ -143,7 +143,7 @@ export default function Program() {
   return (
     <>
       <Header
-        title="Podcast Saco Cheio"
+        title={program.titulo}
         scrollY={scrollY}
         backgroundColor={HexToHSL(
           podcastColor(program.id),
