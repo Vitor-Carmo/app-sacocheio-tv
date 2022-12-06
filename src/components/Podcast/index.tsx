@@ -29,7 +29,8 @@ import CachedSvgUri from "../CachedSvgUri";
 import { podcastIcon, likeEpisode } from "../../helpers";
 import api from "../../services/api";
 import cachingRequest from "../../services/cache";
-
+import { playPodcast } from "../../store/fetch";
+import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
 export interface PodcastProps extends IEpisode {
   podcastId: number;
   podcastUrl: string;
@@ -51,17 +52,22 @@ export default function Podcast({
   isLastPodcast,
   onLikedEpisode = () => {},
 }: PodcastProps) {
+  const playbackInstance = useTypedSelector(
+    (state: RootState) => state.podcast.playbackInstance
+  );
+  const playbackState = useTypedSelector(
+    (state: RootState) => state.podcast.playbackState
+  );
+  const currentPodcast = useTypedSelector(
+    (state: RootState) => state.podcast.podcast
+  );
   const [loading, setLoading] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isPodcastLiked, setIsPodcastLiked] = useState(isFavorite);
-
+  const dispatch = useTypedDispatch();
   const { COLORS } = useTheme();
 
   const navigation = useNavigation();
-
-  const handlePressPlayButton = () => {
-    setIsPlaying((isPlaying) => !isPlaying);
-  };
 
   const handleOnLikePodcast = async () => {
     setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
@@ -79,18 +85,29 @@ export default function Podcast({
   };
 
   const handlePressPodcast = async () => {
+    const navigate = (podcast: IPodcast) =>
+      navigation.navigate("Programs", {
+        screen: "Podcast",
+        params: { podcast: podcast },
+        initial: false,
+      });
+
+    if (currentPodcast?.episode?.id === id) {
+      navigate(currentPodcast);
+      return;
+    }
+
     setLoading(true);
+
     try {
       const {
         data: { data },
       } = await cachingRequest(slug, async () =>
-        api.get<PodcastResponse>(`/podcast/episode/${podcastUrl}/${slug}`)
+        api.get<PodcastResponse>(
+          `/podcast/episode/${podcastUrl ?? podcastName}/${slug}`
+        )
       );
-      navigation.navigate("Programs", {
-        screen: "Podcast",
-        params: { podcast: data },
-        initial: false,
-      });
+      navigate(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -98,6 +115,34 @@ export default function Podcast({
     }
   };
 
+  const handlePlayPodcast = async () => {
+    const play = (podcast: IPodcast) => dispatch(playPodcast(podcast));
+
+    if (currentPodcast?.episode?.id === id) {
+      play(currentPodcast);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      if (playbackState.isPlaying) {
+        await playbackInstance?.pauseAsync();
+      }
+
+      const {
+        data: { data },
+      } = await cachingRequest(slug, async () =>
+        api.get<PodcastResponse>(
+          `/podcast/episode/${podcastUrl ?? podcastName}/${slug}`
+        )
+      );
+      play(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <Container
       isLastPodcast={isLastPodcast}
@@ -112,7 +157,7 @@ export default function Podcast({
           flex={1}
           numberOfLines={2}
           fontSize="18px"
-          color={isPlaying ? COLORS.PRIMARY : null}
+          color={currentPodcast?.episode?.id === id ? COLORS.PRIMARY : null}
         >
           {titulo}
         </Title>
@@ -140,11 +185,17 @@ export default function Podcast({
           </Option>
         </Options>
 
-        <PlayButton onPress={handlePressPlayButton}>
+        <PlayButton onPress={handlePlayPodcast}>
           {loading ? (
             <Spinner size={20} color="#9E9E9E" borderWidth={1.5} />
           ) : (
-            <>{isPlaying ? <Pause /> : <Play />}</>
+            <>
+              {currentPodcast?.episode?.id === id && playbackState.isPlaying ? (
+                <Pause />
+              ) : (
+                <Play />
+              )}
+            </>
           )}
         </PlayButton>
       </OptionsContainer>

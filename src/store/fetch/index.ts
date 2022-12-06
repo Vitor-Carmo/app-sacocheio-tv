@@ -57,7 +57,7 @@ export const playPodcast = (podcast: IPodcast) => {
       return;
     }
 
-    if (current_podcast?.id !== podcast.id) {
+    if (current_podcast?.episode?.id !== podcast.episode.id) {
       await playbackInstance?.unloadAsync();
       createPodcast();
       return;
