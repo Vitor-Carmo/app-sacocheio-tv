@@ -8,10 +8,6 @@ import {
   AvatarContainer,
   Avatar,
   Description,
-  TimeContainer,
-  Time,
-  TimerContainer,
-  TimerRange,
   OptionsContainer,
   Options,
   Option,
@@ -62,7 +58,6 @@ export default function Podcast({
     (state: RootState) => state.podcast.podcast
   );
   const [loading, setLoading] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isPodcastLiked, setIsPodcastLiked] = useState(isFavorite);
   const dispatch = useTypedDispatch();
   const { COLORS } = useTheme();
@@ -163,12 +158,6 @@ export default function Podcast({
         </Title>
       </AvatarContainer>
       <Description numberOfLines={2}>{descricao}</Description>
-      <TimeContainer>
-        <Time>57 min restantes</Time>
-        <TimerContainer>
-          <TimerRange width={30}></TimerRange>
-        </TimerContainer>
-      </TimeContainer>
       <OptionsContainer>
         <Options>
           <Option onPress={handleOnLikePodcast}>

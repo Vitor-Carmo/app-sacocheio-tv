@@ -11,7 +11,12 @@ import {
   Easing,
 } from "react-native-reanimated";
 
-import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
+import api from "../../services/api";
+import store, {
+  RootState,
+  useTypedSelector,
+  useTypedDispatch,
+} from "../../store";
 import { playPodcast } from "../../store/fetch";
 
 import Arrow from "../Arrow";
@@ -110,6 +115,31 @@ export default function AudioPlayer() {
       bottom: audioPlayerPosition.value,
     };
   });
+
+  useEffect(() => {
+    let interval: string | number | NodeJS.Timer | undefined;
+
+    if (podcast) {
+      const updateSaveTime = async () => {
+        const {
+          podcast: {
+            playbackState: { playbackInstancePosition },
+          },
+        } = store.getState();
+
+        await api.post("/podcast/set_time", {
+          episodeId: podcast.episode.id,
+          time: playbackInstancePosition,
+        });
+      };
+
+      interval = setInterval(updateSaveTime, 15000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [podcast]);
 
   useEffect(() => {
     if (playbackInstance === null) {
@@ -223,12 +253,13 @@ export default function AudioPlayer() {
 
           <Player>
             <SpeedContainer
-              onPress={() =>
-                playbackInstance?.setRateAsync(
-                  playbackState.rate !== 2 ? playbackState.rate + 0.25 : 1,
-                  true
-                )
-              }
+              onPress={async () => {
+                const rate =
+                  playbackState.rate !== 2 ? playbackState.rate + 0.25 : 1;
+
+                playbackInstance?.setRateAsync(rate, true);
+                playbackInstance?.setProgressUpdateIntervalAsync(1000 / rate);
+              }}
             >
               <Speed>{playbackState.rate}x</Speed>
             </SpeedContainer>

@@ -1,7 +1,12 @@
 import { Dispatch } from "redux";
 import { Audio, AVPlaybackStatus } from "expo-av";
-import { updatePlayerState, setPlayer } from "../duck/podcast";
+import {
+  updatePlayerState,
+  setPlayer,
+  updateSavedPointTime,
+} from "../duck/podcast";
 import { RootState } from "../";
+import api from "../../services/api";
 
 export const playPodcast = (podcast: IPodcast) => {
   return async (dispatch: Dispatch, state: () => RootState) => {
@@ -10,46 +15,69 @@ export const playPodcast = (podcast: IPodcast) => {
     } = state();
 
     const createPodcast = async () => {
-      const { sound } = await Audio.Sound.createAsync(
-        {
-          uri: podcast.episode.audio ?? "",
-        },
-        {
-          shouldPlay: true,
-          progressUpdateIntervalMillis: 1000,
-          rate: playbackState.rate,
-          shouldCorrectPitch: playbackState.shouldCorrectPitch,
-          volume: playbackState.volume,
-          isMuted: playbackState.muted,
-          isLooping: playbackState.isLooping,
-        },
-        (status: AVPlaybackStatus) => {
-          if (status.isLoaded) {
-            dispatch({
-              type: updatePlayerState.type,
-              payload: {
-                playbackState: {
-                  playbackInstancePosition: status.positionMillis,
-                  playbackInstanceDuration: status.durationMillis ?? 0,
-                  shouldPlay: status.shouldPlay,
-                  isPlaying: status.isPlaying,
-                  isBuffering: status.isBuffering,
-                  rate: status.rate,
-                  muted: status.isMuted,
-                  volume: status.volume,
-                  isLooping: status.isLooping,
-                  shouldCorrectPitch: status.shouldCorrectPitch,
-                },
-              },
-            });
-          }
-        }
-      );
+      try {
+        const {
+          data: { data },
+        } = await api.get<GetTimeResponse>(
+          `podcast/get_time/${podcast.episode.id}`
+        );
 
-      dispatch({
-        type: setPlayer.type,
-        payload: { playbackInstance: sound, podcast: podcast },
-      });
+        dispatch({
+          type: updateSavedPointTime.type,
+          payload: {
+            saved_point_time: data.minuto,
+          },
+        });
+
+        const { sound } = await Audio.Sound.createAsync(
+          {
+            uri: podcast.episode.audio ?? "",
+          },
+          {
+            shouldPlay: true,
+            progressUpdateIntervalMillis: 1000 / playbackState.rate,
+            rate: playbackState.rate,
+            shouldCorrectPitch: playbackState.shouldCorrectPitch,
+            volume: playbackState.volume,
+            isMuted: playbackState.muted,
+            isLooping: playbackState.isLooping,
+            positionMillis: data.minuto,
+          },
+          async (status: AVPlaybackStatus) => {
+            if (status.isLoaded) {
+              dispatch({
+                type: updatePlayerState.type,
+                payload: {
+                  playbackState: {
+                    playbackInstancePosition: status.positionMillis,
+                    playbackInstanceDuration: status.durationMillis ?? 0,
+                    shouldPlay: status.shouldPlay,
+                    isPlaying: status.isPlaying,
+                    isBuffering: status.isBuffering,
+                    rate: status.rate,
+                    muted: status.isMuted,
+                    volume: status.volume,
+                    isLooping: status.isLooping,
+                    shouldCorrectPitch: status.shouldCorrectPitch,
+                  },
+                },
+              });
+            }
+          }
+        );
+
+        dispatch({
+          type: setPlayer.type,
+          payload: { playbackInstance: sound, podcast: podcast },
+        });
+      } catch (error) {
+        dispatch({
+          type: setPlayer.type,
+          payload: { playbackInstance: null, podcast: null },
+        });
+
+        console.log(error);
+      }
     };
 
     if (!playbackInstance) {

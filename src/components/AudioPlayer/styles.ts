@@ -41,6 +41,7 @@ export const TouchablePodcast = styled.TouchableOpacity.attrs({
 })`
   flex: 1;
   justify-content: center;
+  align-items: center;
   height: 100%;
   padding: 0 15px;
 `;
@@ -62,7 +63,8 @@ export const Content = styled.View`
 export const PlayerHead = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding: 30px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  padding: 50px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  padding-bottom: 30px;
 `;
 
 export const PlayerHeadButtons = styled.TouchableOpacity.attrs({

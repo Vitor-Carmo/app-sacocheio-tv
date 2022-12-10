@@ -61,4 +61,10 @@ export declare global {
       length: number;
     };
   }
+
+  interface GetTimeResponse extends BaseResponse {
+    data: {
+      minuto: number;
+    };
+  }
 }

@@ -17,6 +17,7 @@ export interface IPodcastState {
     rate: number;
     useNativeControls: boolean;
     throughEarpiece: boolean;
+    saved_point_time: number;
   };
   podcast: IPodcast | null;
 }
@@ -37,13 +38,14 @@ const INITIAL_STATE: IPodcastState = {
     rate: 1,
     useNativeControls: false,
     throughEarpiece: false,
+    saved_point_time: 0,
   },
   podcast: null,
 };
 
 export const setPlayer = createAction("SET_PLAYER");
 export const updatePlayerState = createAction("UPDATE_PLAYER_STATE");
-export const play = createAction("PLAY");
+export const updateSavedPointTime = createAction("UPDATE_SAVED_POINT_TIME");
 
 export default createReducer(INITIAL_STATE, {
   [setPlayer.type]: (state, action) => ({
@@ -68,6 +70,14 @@ export default createReducer(INITIAL_STATE, {
       volume: action.payload.playbackState.volume,
       isLooping: action.payload.playbackState.isLooping,
       shouldCorrectPitch: action.payload.playbackState.shouldCorrectPitch,
+    },
+  }),
+
+  [updateSavedPointTime.type]: (state, action) => ({
+    ...state,
+    playbackState: {
+      ...state.playbackState,
+      saved_point_time: action.payload.saved_point_time,
     },
   }),
 });
