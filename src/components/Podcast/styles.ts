@@ -27,6 +27,7 @@ export const Avatar = styled.View`
   border-radius: 5px;
   margin-right: 10px;
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
 `;
 
 export const Description = styled.Text`
@@ -34,35 +35,6 @@ export const Description = styled.Text`
   font-size: 12px;
   color: ${({ theme }) => theme.COLORS.TEXT_80};
   margin-bottom: 10px;
-`;
-
-export const TimeContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-export const Time = styled.Text`
-  font-family: "Poppins_600SemiBold";
-  font-size: 12px;
-  color: ${({ theme }) => theme.COLORS.TEXT_30};
-  margin-right: 8px;
-`;
-
-export const TimerContainer = styled.View`
-  width: 100px;
-  height: 6px;
-  background-color: ${({ theme }) => theme.COLORS.TIMER_BACKGROUND};
-  border-radius: 6px;
-  overflow: hidden;
-`;
-
-export const TimerRange = styled.View<{ width: number }>`
-  flex: 1;
-  width: ${({ width }) => `${width}%`};
-  height: 100%;
-  background-color: ${({ theme }) => theme.COLORS.PRIMARY};
-  border-top-left-radius: 6px;
-  border-bottom-left-radius: 6px;
 `;
 
 export const OptionsContainer = styled.View`

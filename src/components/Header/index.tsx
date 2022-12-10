@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "styled-components";
+import MarqueeText from "react-native-marquee";
+
 import GoBack from "../GoBack";
 import Options from "../Options";
 import {
@@ -17,6 +19,7 @@ import {
   GoBackOpacity,
   OptionsContainer,
   OpacityTouchable,
+  TitleContainer,
 } from "./styles";
 
 interface HeaderProps {
@@ -66,7 +69,6 @@ export default function Header({
     if (navigation.canGoBack()) {
       navigation.goBack();
     }
-   
   };
 
   return (
@@ -74,7 +76,12 @@ export default function Header({
       <GoBackOpacity onPress={handlePressGoBack}>
         <GoBack size={20} />
       </GoBackOpacity>
-      <Title style={opacityStyle}>{title}</Title>
+
+      <TitleContainer style={opacityStyle}>
+        <MarqueeText speed={0.3} marqueeOnStart loop delay={1000}>
+          <Title>{title}</Title>
+        </MarqueeText>
+      </TitleContainer>
 
       <OptionsContainer style={opacityStyle}>
         <OpacityTouchable>

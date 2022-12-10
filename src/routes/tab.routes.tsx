@@ -2,6 +2,8 @@ import React from "react";
 import { useTheme } from "styled-components";
 import { TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { RootState, useTypedSelector } from "../store";
+import { Audio } from "expo-av";
 
 import {
   HomeIcon,
@@ -20,6 +22,10 @@ const { Navigator, Screen } = createBottomTabNavigator();
 
 export default function TabRoutes() {
   const { COLORS } = useTheme();
+
+  const playbackInstance = useTypedSelector<Audio.Sound | null>(
+    (state: RootState) => state.podcast.playbackInstance
+  );
 
   const screens = [
     {
@@ -54,7 +60,8 @@ export default function TabRoutes() {
             backgroundColor: COLORS.BACKGROUND,
             borderTopWidth: 1,
             borderTopColor: COLORS.BORDER,
-            marginTop: DIMENSIONS.AUDIO_PLAYER_HEIGHT,
+            marginTop: !playbackInstance ? 0 : DIMENSIONS.AUDIO_PLAYER_HEIGHT,
+            zIndex: 1,
           },
         }}
       >

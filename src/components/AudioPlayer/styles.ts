@@ -1,12 +1,14 @@
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import Slider from "@react-native-community/slider";
-import { Dimensions } from "react-native";
-import { Title as GBTitle } from "../../styles/global";
+import Animated from "react-native-reanimated";
+import MarqueeText from "react-native-marquee";
+
 import { DIMENSIONS } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
-export const Container = styled.View`
+export const Container = styled(Animated.View)`
   position: absolute;
   bottom: 105px;
 
@@ -39,10 +41,11 @@ export const TouchablePodcast = styled.TouchableOpacity.attrs({
 })`
   flex: 1;
   justify-content: center;
+  align-items: center;
   height: 100%;
   padding: 0 15px;
 `;
-export const Title = styled.Text`
+export const Title = styled(MarqueeText)`
   font-family: "Roboto_400Regular";
   font-size: 14px;
   color: ${({ theme }) => theme.COLORS.TEXT_50};
@@ -60,7 +63,8 @@ export const Content = styled.View`
 export const PlayerHead = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  padding: 30px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  padding: 50px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  padding-bottom: 30px;
 `;
 
 export const PlayerHeadButtons = styled.TouchableOpacity.attrs({
@@ -84,6 +88,15 @@ export const Cover = styled.Image`
   background-color: ${({ theme }) => theme.COLORS.SECONDARY};
 `;
 
+export const Avatar = styled.View`
+  width: ${width * 0.75}px;
+  height: ${width * 0.75}px;
+  align-self: center;
+  border-radius: 20px;
+  background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  overflow: hidden;
+`;
+
 export const PlayerControls = styled.View`
   margin: 0 auto;
   margin-top: 35px;
@@ -92,8 +105,17 @@ export const PlayerControls = styled.View`
   align-items: center;
 `;
 
-export const PodcastName = styled(GBTitle)`
-  text-align: center;
+export const PodcastName = styled(MarqueeText)`
+  font-family: "Poppins_600SemiBold";
+  font-size: 16px;
+  color: ${({ theme }) => theme.COLORS.TEXT};
+  margin-bottom: 10px;
+`;
+
+export const Presenters = styled(MarqueeText)`
+  font-family: "Poppins_600SemiBold";
+  font-size: 13px;
+  color: ${({ theme }) => theme.COLORS.TEXT_50};
 `;
 
 export const AudioSlider = styled(Slider)`
@@ -130,6 +152,8 @@ export const SpeedContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
   margin-right: 20px;
+  width: 60px;
+  align-items: center;
 `;
 
 export const Speed = styled.Text`
@@ -141,5 +165,7 @@ export const Speed = styled.Text`
 export const RepeatContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
+  align-items: center;
   margin-left: 20px;
+  width: 60px;
 `;

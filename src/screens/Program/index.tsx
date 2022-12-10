@@ -1,9 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  useRoute,
-  RouteProp,
-  useNavigation,
-} from "@react-navigation/native";
+import { useRoute, RouteProp, useNavigation } from "@react-navigation/native";
 import { NativeScrollEvent, Dimensions } from "react-native";
 import axios from "axios";
 import {
@@ -143,7 +139,7 @@ export default function Program() {
   return (
     <>
       <Header
-        title="Podcast Saco Cheio"
+        title={program.titulo}
         scrollY={scrollY}
         backgroundColor={HexToHSL(
           podcastColor(program.id),
@@ -154,7 +150,8 @@ export default function Program() {
       <Container
         onScroll={scrollHandler}
         onMomentumScrollEnd={({ nativeEvent }) => {
-          if (isCloseToBottom(nativeEvent)) handleFetchMorePodcasts();
+          if (isCloseToBottom(nativeEvent) && !loadingMorePodcast)
+            handleFetchMorePodcasts();
         }}
         scrollEventThrottle={16}
       >
