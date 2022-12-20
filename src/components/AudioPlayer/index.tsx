@@ -18,6 +18,7 @@ import store, {
   useTypedDispatch,
 } from "../../store";
 import { playPodcast } from "../../store/fetch";
+import { likeEpisode } from "../../helpers";
 
 import Arrow from "../Arrow";
 import Heart from "../Heart";
@@ -79,7 +80,7 @@ export default function AudioPlayer() {
   );
 
   const handlePressLike = (): void => {
-    setIsLiked((isLiked) => !isLiked);
+    likeEpisode(podcast?.episode?.id ?? 0, podcast?.id ?? 0, setIsLiked);
   };
 
   const handleOpenPodcastControl = (): void => {

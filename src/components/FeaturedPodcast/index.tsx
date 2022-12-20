@@ -34,16 +34,7 @@ export default function FeaturedPodcast({
   const navigation = useNavigation();
 
   const handleLike = async () => {
-    setLiked((liked) => !liked);
-    try {
-      const result = await likeEpisode(podcast.latest_episode.id, podcast.id);
-      if (!result) {
-        setLiked((liked) => !liked);
-      }
-    } catch (error) {
-      console.log(error);
-      setLiked((liked) => !liked);
-    }
+    likeEpisode(podcast.latest_episode.id, podcast.id, setLiked);
   };
 
   const handlePressProgram = async () => {

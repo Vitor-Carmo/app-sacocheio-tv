@@ -64,19 +64,8 @@ export default function Podcast({
 
   const navigation = useNavigation();
 
-  const handleOnLikePodcast = async () => {
-    setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
-    try {
-      const result = await likeEpisode(id, podcastId);
-      if (!result) {
-        setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
-      } else {
-        onLikedEpisode();
-      }
-    } catch (error) {
-      console.log(error);
-      setIsPodcastLiked((isPodcastLiked) => !isPodcastLiked);
-    }
+  const handleOnLikePodcast = () => {
+    likeEpisode(id, podcastId, setIsPodcastLiked);
   };
 
   const handlePressPodcast = async () => {

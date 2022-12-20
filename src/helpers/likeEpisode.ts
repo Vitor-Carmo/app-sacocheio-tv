@@ -1,8 +1,14 @@
+import { SetStateAction } from "react";
 import Toast from "react-native-toast-message";
 import api from "../services/api";
 import { ERROS } from "../constants";
 
-export default async function (episodeId: number, podcastId: number) {
+export default async function (
+  episodeId: number,
+  podcastId: number,
+  likeState: (value: SetStateAction<boolean>) => void
+) {
+  likeState((liked) => !liked);
   try {
     const {
       data: { data },
@@ -19,7 +25,7 @@ export default async function (episodeId: number, podcastId: number) {
         text1: "Erro",
         text2: ERROS.UNKNOWN_LIKE_ERROR,
       });
-      return false;
+      likeState((liked) => !liked);
     }
     return true;
   } catch (error) {
@@ -29,6 +35,6 @@ export default async function (episodeId: number, podcastId: number) {
       text2: ERROS.UNKNOWN_ERROR,
     });
     console.log(error);
-    return false;
+    likeState((liked) => !liked);
   }
 }

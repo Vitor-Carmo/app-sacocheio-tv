@@ -1,10 +1,9 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef } from "react";
 import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
 
 import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
 import { playPodcast } from "../../store/fetch";
@@ -48,6 +47,7 @@ import {
   HexToHSL,
   podcastColor,
   podcastIcon,
+  likeEpisode,
 } from "../../helpers";
 
 import api from "../../services/api";
@@ -102,7 +102,7 @@ export default function Podcast() {
   };
 
   const onPressLikeButton = () => {
-    setIsLiked((isLiked) => !isLiked);
+    likeEpisode(podcast.episode.id, podcast.id, setIsLiked);
   };
 
   const onPressAnswers = (index: number) => {
