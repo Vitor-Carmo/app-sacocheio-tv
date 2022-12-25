@@ -61,9 +61,11 @@ export default function LibraryHeader({
       </Head>
       <FilterContainer>
         <Title fontSize="16px">{route.params.filterLabel}</Title>
-        <FilterButton>
-          <FilterButtonTitle>Filtrar</FilterButtonTitle>
-        </FilterButton>
+        {/*
+          <FilterButton>
+            <FilterButtonTitle>Filtrar</FilterButtonTitle>
+          </FilterButton>
+        */}
       </FilterContainer>
     </>
   );

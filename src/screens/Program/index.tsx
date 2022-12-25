@@ -182,9 +182,11 @@ export default function Program() {
 
           <FilterContainer>
             <Title fontSize="18px">Todos episódios</Title>
-            <FilterButton>
-              <FilterButtonTitle>Filtrar</FilterButtonTitle>
-            </FilterButton>
+            {/*
+              <FilterButton>
+                <FilterButtonTitle>Filtrar</FilterButtonTitle>
+              </FilterButton>
+            */}
           </FilterContainer>
         </GradientContainer>
 
