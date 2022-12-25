@@ -22,7 +22,7 @@ import Share from "../Share";
 import OptionsIcon from "../Options";
 import Spinner from "../Spinner";
 import CachedSvgUri from "../CachedSvgUri";
-import { podcastIcon, likeEpisode } from "../../helpers";
+import { podcastIcon, likeEpisode, sharePodcast } from "../../helpers";
 import api from "../../services/api";
 import cachingRequest from "../../services/cache";
 import { playPodcast } from "../../store/fetch";
@@ -31,7 +31,6 @@ export interface PodcastProps extends IEpisode {
   podcastId: number;
   podcastUrl: string;
   isLastPodcast?: boolean;
-  onLikedEpisode?: () => void;
 }
 
 export default function Podcast({
@@ -46,7 +45,6 @@ export default function Podcast({
   isFavorite,
   podcastName,
   isLastPodcast,
-  onLikedEpisode = () => {},
 }: PodcastProps) {
   const playbackInstance = useTypedSelector(
     (state: RootState) => state.podcast.playbackInstance
@@ -72,7 +70,7 @@ export default function Podcast({
     const navigate = (podcast: IPodcast) =>
       navigation.navigate("Programs", {
         screen: "Podcast",
-        params: { podcast: podcast },
+        params: { podcast: { ...podcast, podcastUrl, podcastName, slug } },
         initial: false,
       });
 
@@ -127,6 +125,11 @@ export default function Podcast({
       setLoading(false);
     }
   };
+
+  const handleShare = () => {
+    sharePodcast(titulo, podcastUrl, slug);
+  };
+
   return (
     <Container
       isLastPodcast={isLastPodcast}
@@ -155,7 +158,7 @@ export default function Podcast({
           <Option>
             <Download />
           </Option>
-          <Option>
+          <Option onPress={handleShare}>
             <Share />
           </Option>
           <Option>
