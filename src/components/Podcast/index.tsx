@@ -161,9 +161,9 @@ export default function Podcast({
           <Option onPress={handleShare}>
             <Share />
           </Option>
-          <Option>
+          {/* <Option>
             <OptionsIcon />
-          </Option>
+          </Option> */}
         </Options>
 
         <PlayButton onPress={handlePlayPodcast}>
