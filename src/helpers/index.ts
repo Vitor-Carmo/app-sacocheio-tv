@@ -6,6 +6,7 @@ import podcastColor from "./podcastColor";
 import getRadomColor from "./getRadomColor";
 import likeEpisode from "./likeEpisode";
 import sharePodcast from "./sharePodcast";
+export * from "./podcastControlStorage";
 
 export {
   greetings,

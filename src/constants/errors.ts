@@ -12,4 +12,6 @@ export default {
     "Ocorreu algum erro ao tentar remover comentário. Por favor, tente mais tarde!",
   UNKNOWN_ERROR:
     "Ocorreu algum erro desconhecido. Por favor, tente mais tarde!",
+  UNKNOWN_DOWNLOAD_PODCAST_ERROR:
+    "Ocorreu algum erro ao tentar baixar o podcast. Por favor, tente mais tarde!",
 };

@@ -1,11 +1,6 @@
 import React from "react";
 
-import {
-  Container,
-  AvatarContainer,
-
-} from "../../Podcast/styles";
-
+import { PodcastContainer, AvatarContainer } from "../../Podcast/styles";
 
 import ShimmerPlaceholder from "../../ShimmerPlaceholder";
 
@@ -14,9 +9,8 @@ export type PodcastProps = {
 };
 
 export default function LoadingPodcast({ isLastPodcast }: PodcastProps) {
-
   return (
-    <Container isLastPodcast={isLastPodcast} >
+    <PodcastContainer isLastPodcast={isLastPodcast}>
       <AvatarContainer>
         <ShimmerPlaceholder
           borderRadius={5}
@@ -38,7 +32,6 @@ export default function LoadingPodcast({ isLastPodcast }: PodcastProps) {
         height={12}
         marginBottom={12}
       />
-
-    </Container>
+    </PodcastContainer>
   );
 }

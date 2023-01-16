@@ -23,11 +23,14 @@ export default function LatestPodcasts() {
       setLoading(true);
       try {
         const {
-          data: { data },
+          data: { data, error },
         } = await api.post<LatestEpisodesResponse>(
           "/podcast/latest_episodes_of_each_podcast"
         );
-        setPodcasts(data);
+
+        if(!error){
+          setPodcasts(data);
+        }
       } catch (error) {
         console.error(error);
       } finally {

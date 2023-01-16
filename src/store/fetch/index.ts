@@ -7,6 +7,9 @@ import {
 } from "../duck/podcast";
 import { RootState } from "../";
 import api from "../../services/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ASYNC_STORAGE_KEYS } from "../../constants";
+import { getPodcastFilePath } from "../../helpers";
 
 export const playPodcast = (podcast: IPodcast) => {
   return async (dispatch: Dispatch, state: () => RootState) => {
@@ -14,24 +17,52 @@ export const playPodcast = (podcast: IPodcast) => {
       podcast: { playbackInstance, playbackState, podcast: current_podcast },
     } = state();
 
+    const getTheDownloadedPodcast = async () => {
+      const downloadedPodcastsStorage = await AsyncStorage.getItem(
+        ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
+      );
+
+      const downloadedPodcasts = downloadedPodcastsStorage
+        ? (JSON.parse(downloadedPodcastsStorage) as IEpisodeDownloaded[])
+        : null;
+
+      if (!downloadedPodcasts) return null;
+
+      return downloadedPodcasts.find(
+        (podcastDownloaded) => podcastDownloaded.id == podcast.episode.id
+      );
+    };
+
+    const getPodcastTime = async (isPodcastDownloaded: boolean = false) => {
+      if (isPodcastDownloaded) return 0;
+
+      const {
+        data: { data },
+      } = await api.get<GetTimeResponse>(
+        `podcast/get_time/${podcast.episode.id}`
+      );
+
+      return data.minuto;
+    };
+
     const createPodcast = async () => {
       try {
-        const {
-          data: { data },
-        } = await api.get<GetTimeResponse>(
-          `podcast/get_time/${podcast.episode.id}`
-        );
+        const podcastDownloaded = await getTheDownloadedPodcast();
+
+        const podcastTime = await getPodcastTime(!!podcastDownloaded);
 
         dispatch({
           type: updateSavedPointTime.type,
           payload: {
-            saved_point_time: data.minuto,
+            saved_point_time: podcastTime,
           },
         });
 
         const { sound } = await Audio.Sound.createAsync(
           {
-            uri: podcast.episode.audio ?? "",
+            uri: podcastDownloaded
+              ? getPodcastFilePath(podcastDownloaded.id)
+              : (podcast.episode.audio as string),
           },
           {
             shouldPlay: true,
@@ -41,7 +72,7 @@ export const playPodcast = (podcast: IPodcast) => {
             volume: playbackState.volume,
             isMuted: playbackState.muted,
             isLooping: playbackState.isLooping,
-            positionMillis: data.minuto,
+            positionMillis: podcastTime,
           },
           async (status: AVPlaybackStatus) => {
             if (status.isLoaded) {

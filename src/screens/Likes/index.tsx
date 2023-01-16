@@ -53,7 +53,6 @@ export default function Likes() {
               thumbnail={podcast.episode.thumbnail}
               podcastUrl={podcast.url}
               isLastPodcast={podcasts.length - 1 === index}
-              onLikedEpisode={() => handleRemoveEpisode(index)}
             />
           ))}
         </>

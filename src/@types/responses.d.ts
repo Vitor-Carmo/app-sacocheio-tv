@@ -19,6 +19,7 @@ export declare global {
 
   interface LatestEpisodesResponse extends BaseResponse {
     data: ILatestEpisode[];
+    error?: string;
   }
 
   interface FavoritesEpisodeResponse extends BaseResponse {

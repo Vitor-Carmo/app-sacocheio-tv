@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
 import * as SecureStore from "expo-secure-store";
 import { useDispatch } from "react-redux";
 import {
@@ -23,7 +24,7 @@ import {
   Logout,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
-import { greetings } from "../../helpers";
+import { greetings, removeAllPodcasts } from "../../helpers";
 import { ASYNC_STORAGE_KEYS } from "../../constants";
 
 import {
@@ -51,6 +52,7 @@ export default function Home() {
         Promise.all([
           SecureStore.deleteItemAsync(ASYNC_STORAGE_KEYS.USER_DATA),
           AsyncStorage.clear(),
+          removeAllPodcasts(),
         ]).then(() => {
           dispatch(signOut());
         });

@@ -69,4 +69,9 @@ export declare global {
       length: number;
     };
   }
+
+  interface IEpisodeDownloaded extends IEpisode {
+    podcastUrl: string;
+    podcastId?: number | string;
+  }
 }

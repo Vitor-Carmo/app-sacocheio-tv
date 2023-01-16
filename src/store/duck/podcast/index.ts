@@ -1,5 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { Audio } from "expo-av";
+import * as FileSystem from "expo-file-system";
 
 export interface IPodcastState {
   playbackInstance: Audio.Sound | null;
@@ -20,6 +21,9 @@ export interface IPodcastState {
     saved_point_time: number;
   };
   podcast: IPodcast | null;
+  podcastDownloadResumable: FileSystem.DownloadResumable | null;
+  podcastDownloadResumableProgress: FileSystem.DownloadProgressData | null;
+  episodeIdThatIsDownloading: number | null;
 }
 
 const INITIAL_STATE: IPodcastState = {
@@ -41,11 +45,20 @@ const INITIAL_STATE: IPodcastState = {
     saved_point_time: 0,
   },
   podcast: null,
+  podcastDownloadResumable: null,
+  podcastDownloadResumableProgress: null,
+  episodeIdThatIsDownloading: null,
 };
 
 export const setPlayer = createAction("SET_PLAYER");
 export const updatePlayerState = createAction("UPDATE_PLAYER_STATE");
 export const updateSavedPointTime = createAction("UPDATE_SAVED_POINT_TIME");
+export const setPodcastDownloadResumable = createAction(
+  "SET_PODCAST_DOWNLOAD_RESUMABLE"
+);
+export const setPodcastDownloadResumableProgress = createAction(
+  "SET_PODCAST_DOWNLOAD_RESUMABLE_PROGRESS"
+);
 
 export default createReducer(INITIAL_STATE, {
   [setPlayer.type]: (state, action) => ({
@@ -72,12 +85,21 @@ export default createReducer(INITIAL_STATE, {
       shouldCorrectPitch: action.payload.playbackState.shouldCorrectPitch,
     },
   }),
-
   [updateSavedPointTime.type]: (state, action) => ({
     ...state,
     playbackState: {
       ...state.playbackState,
       saved_point_time: action.payload.saved_point_time,
     },
+  }),
+  [setPodcastDownloadResumable.type]: (state, action) => ({
+    ...state,
+    podcastDownloadResumable: action.payload.podcastDownloadResumable,
+    episodeIdThatIsDownloading:  action.payload.episodeIdThatIsDownloading,
+  }),
+  [setPodcastDownloadResumableProgress.type]: (state, action) => ({
+    ...state,
+    podcastDownloadResumableProgress:
+      action.payload.podcastDownloadResumableProgress,
   }),
 });

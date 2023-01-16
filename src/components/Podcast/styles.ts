@@ -1,3 +1,4 @@
+import Animated from "react-native-reanimated";
 import styled from "styled-components/native";
 
 type IContainerProps = {
@@ -6,12 +7,28 @@ type IContainerProps = {
 
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
+})`
+  position: relative;
+  flex: 1;
+`;
+
+export const PodcastContainer = styled.TouchableOpacity.attrs({
+  activeOpacity: 0.8,
 })<IContainerProps>`
+  position: relative;
   flex: 1;
   padding: 15px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
   border-bottom-width: ${({ isLastPodcast }) =>
     isLastPodcast ? "0px" : "1px"};
   border-bottom-color: ${({ theme }) => theme.COLORS.BORDER};
+`;
+
+export const DownloadContainer = styled(Animated.View)<{ progress: number }>`
+  position: absolute;
+  width: ${({ progress }) => `${progress * 100}%`};
+  height: 100%;
+  opacity: 0.05;
+  background-color: ${({ theme }) => theme.COLORS.PRIMARY};
 `;
 
 export const AvatarContainer = styled.View`
@@ -53,6 +70,7 @@ export const Option = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })`
   padding: 10px 7.5px;
+  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
 `;
 
 export const PlayButton = styled.TouchableOpacity.attrs({
