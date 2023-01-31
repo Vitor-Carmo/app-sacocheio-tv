@@ -13,11 +13,18 @@ export default function Download({
   borderColor = "#9E9E9E",
   backgroundColor = "#FFC739",
   isDownloaded = false,
+  ...props
 }: DownloadProps) {
   return (
     <>
       {!isDownloaded ? (
-        <Svg width={size} height={size} viewBox="0 0 15 15" fill="#000">
+        <Svg
+          width={size}
+          height={size}
+          viewBox="0 0 15 15"
+          fill="#000"
+          {...props}
+        >
           <Path
             d="M7.5 0C3.36198 0 0 3.36211 0 7.5C0 11.638 3.36212 15 7.5 15C11.638 15 15 11.6379 15 7.5C15 3.36198 11.6381 0 7.5 0ZM7.5 13.9655C3.93099 13.9655 1.03448 11.069 1.03448 7.5C1.03448 3.93099 3.93099 1.03448 7.5 1.03448C11.069 1.03448 13.9655 3.93099 13.9655 7.5C13.9655 11.069 11.069 13.9655 7.5 13.9655Z"
             fill={borderColor}
@@ -28,7 +35,13 @@ export default function Download({
           />
         </Svg>
       ) : (
-        <Svg width={size} height={size} viewBox="0 0 23 23" fill="none">
+        <Svg
+          width={size}
+          height={size}
+          viewBox="0 0 23 23"
+          fill="none"
+          {...props}
+        >
           <Path
             d="M23 11.5C23 17.8513 17.8513 23 11.5 23C5.14873 23 0 17.8513 0 11.5C0 5.14873 5.14873 0 11.5 0C17.8513 0 23 5.14873 23 11.5Z"
             fill="transparent"

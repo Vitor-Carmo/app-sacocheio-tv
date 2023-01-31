@@ -16,7 +16,6 @@ export const PodcastContainer = styled.TouchableOpacity.attrs({
   activeOpacity: 0.8,
 })<IContainerProps>`
   position: relative;
-  flex: 1;
   padding: 15px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
   border-bottom-width: ${({ isLastPodcast }) =>
     isLastPodcast ? "0px" : "1px"};

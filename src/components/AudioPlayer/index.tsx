@@ -180,9 +180,9 @@ export default function AudioPlayer() {
           </TouchablePodcast>
           <TouchableAction onPress={handlePressPlay}>
             {!playbackState.isPlaying ? (
-              <Play outline backgroundColor="#9E9E9E" size={22} />
+              <Play playColor="#9E9E9E" size={16} type="flat" />
             ) : (
-              <Pause outline backgroundColor="#9E9E9E" size={22} />
+              <Pause playColor="#9E9E9E" size={16} type="flat" />
             )}
           </TouchableAction>
         </Content>

@@ -31,7 +31,24 @@ async function ensurePodcastDirExists() {
   }
 }
 
-export const getPodcastFilePath = (id: string | number) => podcastsDir + `${id}.mp3`;
+export const getPodcastFilePath = (id: string | number) =>
+  podcastsDir + `${id}.mp3`;
+
+const getTheDownloadedPodcast = async (podcast: IEpisodeDownloaded) => {
+  const downloadedPodcastsStorage = await AsyncStorage.getItem(
+    ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
+  );
+
+  const downloadedPodcasts = downloadedPodcastsStorage
+    ? (JSON.parse(downloadedPodcastsStorage) as IEpisodeDownloaded[])
+    : null;
+
+  if (!downloadedPodcasts) return null;
+
+  return downloadedPodcasts.find(
+    (podcastDownloaded) => podcastDownloaded.id == podcast.id
+  );
+};
 
 export async function downloadPodcast(podcast: IEpisodeDownloaded) {
   try {
@@ -40,6 +57,13 @@ export async function downloadPodcast(podcast: IEpisodeDownloaded) {
     }
 
     await ensurePodcastDirExists();
+
+    const isPodcastDownloaded = !!(await getTheDownloadedPodcast(podcast));
+
+    if (isPodcastDownloaded) {
+      await removePodcast(podcast.id);
+      return;
+    }
 
     dispatch({
       type: setPodcastDownloadResumable.type,
@@ -83,10 +107,6 @@ export async function downloadPodcast(podcast: IEpisodeDownloaded) {
       );
     }
 
-    // put here a notification saying that the podcast was downloaded
-
-    /*   return download?.uri; */
-
     console.log("podcasts downloaded => ", podcasts.length);
 
     dispatch({
@@ -94,6 +114,13 @@ export async function downloadPodcast(podcast: IEpisodeDownloaded) {
       payload: {
         podcastDownloadResumable: null,
         episodeIdThatIsDownloading: null,
+      },
+    });
+
+    dispatch({
+      type: setPodcastDownloadResumableProgress.type,
+      payload: {
+        podcastDownloadResumableProgress: 0,
       },
     });
   } catch (error) {
@@ -120,7 +147,38 @@ export async function resumePodcast() {
 }
 
 export async function removePodcast(id: string | number) {
-  await FileSystem.deleteAsync( getPodcastFilePath(id));
+  try {
+    let podcasts: string | IEpisode[] = (await AsyncStorage.getItem(
+      ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
+    )) as string;
+
+    podcasts = JSON.parse(podcasts) as IEpisode[];
+
+    podcasts = podcasts.filter((podcast) => podcast.id != id);
+
+    await AsyncStorage.setItem(
+      ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS,
+      JSON.stringify(podcasts)
+    );
+
+    await FileSystem.deleteAsync(getPodcastFilePath(id));
+
+    dispatch({
+      type: setPodcastDownloadResumable.type,
+      payload: {
+        podcastDownloadResumable: null,
+        episodeIdThatIsDownloading: null,
+      },
+    });
+
+    Toast.show({
+      type: "success",
+      text1: "Boa, Boleta!",
+      text2: "Podcast removido com sucesso!",
+    });
+  } catch (error) {
+    console.log("error on deleting podcast from download", error);
+  }
 }
 
 export async function removeAllPodcasts() {

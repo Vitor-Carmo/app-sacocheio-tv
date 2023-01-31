@@ -48,11 +48,11 @@ import { playPodcast } from "../../store/fetch";
 import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
 import { ASYNC_STORAGE_KEYS, ERROS } from "../../constants";
 
-
 export interface PodcastProps extends IEpisode {
   podcastId: number;
   podcastUrl: string;
   isLastPodcast?: boolean;
+  onFinishDownload?: () => void;
 }
 
 export default function Podcast({
@@ -67,6 +67,7 @@ export default function Podcast({
   isFavorite,
   podcastName,
   isLastPodcast,
+  onFinishDownload = () => {},
 }: PodcastProps) {
   const playbackInstance = useTypedSelector(
     (state: RootState) => state.podcast.playbackInstance
@@ -162,6 +163,7 @@ export default function Podcast({
         podcastName,
         slug,
       });
+      onFinishDownload();
       console.log("downloaded ...");
     } catch (error) {
       Toast.show({
@@ -218,6 +220,22 @@ export default function Podcast({
     checkIfIsDownloaded();
   }, [episodeIdThatIsDownloading]);
 
+  const getProgress = () => {
+    if (episodeIdThatIsDownloading === id && podcastDownloadResumableProgress) {
+      const progress =
+        podcastDownloadResumableProgress.totalBytesWritten /
+        podcastDownloadResumableProgress.totalBytesExpectedToWrite;
+
+      if (progress <= 0.05) {
+        return 0.05;
+      }
+
+      return progress;
+    }
+
+    return 0;
+  };
+
   useEffect(() => {
     if (episodeIdThatIsDownloading === id) {
       downloadContainerOpacity.value = withRepeat(
@@ -241,12 +259,7 @@ export default function Podcast({
     <Container>
       <DownloadContainer
         style={downloadContainerStyle}
-        progress={
-          episodeIdThatIsDownloading === id && podcastDownloadResumableProgress
-            ? podcastDownloadResumableProgress.totalBytesWritten /
-              podcastDownloadResumableProgress.totalBytesExpectedToWrite
-            : 0
-        }
+        progress={getProgress()}
       />
 
       <PodcastContainer
@@ -278,7 +291,11 @@ export default function Podcast({
               onPress={handleDownload}
               disabled={episodeIdThatIsDownloading === id}
             >
-              <Download isDownloaded={isDownloaded} />
+              {episodeIdThatIsDownloading === id ? (
+                <Spinner size={15} borderWidth={1.5} color="#9E9E9E" />
+              ) : (
+                <Download isDownloaded={isDownloaded} />
+              )}
             </Option>
             <Option onPress={handleShare}>
               <Share />
