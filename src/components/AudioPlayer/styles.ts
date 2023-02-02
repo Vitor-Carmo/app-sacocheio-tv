@@ -43,7 +43,7 @@ export const TouchablePodcast = styled.TouchableOpacity.attrs({
   justify-content: center;
   align-items: center;
   height: 100%;
-  padding: 0 15px;
+  padding: 0 0px;
 `;
 export const Title = styled(MarqueeText)`
   font-family: "Roboto_400Regular";

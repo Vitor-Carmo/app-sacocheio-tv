@@ -11,12 +11,6 @@ export default function Likes() {
   const [loading, setLoading] = useState(true);
   const { LoadingPodcast } = Loading;
 
-  const handleRemoveEpisode = (index: number) => {
-    setPodcasts((podcasts) =>
-      podcasts.filter((podcast, podcastIndex) => podcastIndex !== index)
-    );
-  };
-
   useEffect(() => {
     const handleFetchLikedEpisodes = async () => {
       setLoading(true);
@@ -53,7 +47,6 @@ export default function Likes() {
               thumbnail={podcast.episode.thumbnail}
               podcastUrl={podcast.url}
               isLastPodcast={podcasts.length - 1 === index}
-              onLikedEpisode={() => handleRemoveEpisode(index)}
             />
           ))}
         </>

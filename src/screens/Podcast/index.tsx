@@ -1,10 +1,9 @@
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef } from "react";
 import { TouchableOpacity, Dimensions } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components/native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
 
 import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
 import { playPodcast } from "../../store/fetch";
@@ -48,6 +47,8 @@ import {
   HexToHSL,
   podcastColor,
   podcastIcon,
+  likeEpisode,
+  sharePodcast,
 } from "../../helpers";
 
 import api from "../../services/api";
@@ -60,9 +61,15 @@ export default function Podcast() {
   const { COLORS, DIMENSIONS } = useTheme();
   const { scrollHandler, scrollY } = useScrollAnimated();
 
+  interface IPodcastParams extends IPodcast {
+    podcastUrl: string;
+    podcastName: string;
+    slug: string;
+  }
+
   const {
     params: { podcast: podcast__ },
-  }: RouteProp<{ params: { podcast: IPodcast } }, "params"> = useRoute();
+  }: RouteProp<{ params: { podcast: IPodcastParams } }, "params"> = useRoute();
 
   const userName = useTypedSelector((state: RootState) => state.auth.userName);
   const playbackState = useTypedSelector(
@@ -86,7 +93,7 @@ export default function Podcast() {
 
   const [isAnswerModalizeOpen, setIsAnswerModalizeOpen] = useState(false);
 
-  const [podcast, setPodcast] = useState<IPodcast>(podcast__);
+  const [podcast, setPodcast] = useState<IPodcastParams>(podcast__);
 
   const [selectedCommentIndex, setSelectedCommentIndex] = useState<
     number | null
@@ -102,7 +109,7 @@ export default function Podcast() {
   };
 
   const onPressLikeButton = () => {
-    setIsLiked((isLiked) => !isLiked);
+    likeEpisode(podcast.episode.id, podcast.id, setIsLiked);
   };
 
   const onPressAnswers = (index: number) => {
@@ -237,6 +244,14 @@ export default function Podcast() {
       }
     }
   };
+
+  const handleShare = () => {
+    sharePodcast(
+      podcast.episode.title ?? "",
+      podcast.podcastUrl ?? podcast.podcastName,
+      podcast.slug
+    );
+  };
   return (
     <>
       <Header
@@ -270,11 +285,11 @@ export default function Podcast() {
                 <InfoText>{podcast.titulo}</InfoText> por{" "}
                 <InfoText>{podcast.apresentador}</InfoText>
               </Subtitle>
-              <Subtitle>1 hr 20 min</Subtitle>
+              {/*<Subtitle>1 hr 20 min</Subtitle>*/}
 
               <PodcastActions>
                 <Options>
-                  <Option>
+                  <Option onPress={handleShare}>
                     <Share size={18} />
                   </Option>
                   <Option onPress={onPressLikeButton}>

@@ -84,9 +84,9 @@ export default function Header({
       </TitleContainer>
 
       <OptionsContainer style={opacityStyle}>
-        <OpacityTouchable>
+        {/*    <OpacityTouchable>
           <Options borderColor={COLORS.TEXT} size={3.8} />
-        </OpacityTouchable>
+        </OpacityTouchable> */}
       </OptionsContainer>
     </Container>
   );
