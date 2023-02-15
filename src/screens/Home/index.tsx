@@ -22,6 +22,7 @@ import {
   GradientContainer,
   Options,
   Logout,
+  OfflineComponent,
 } from "../../components";
 import { Title, Subtitle } from "../../styles/global";
 import { greetings, removeAllPodcasts } from "../../helpers";
@@ -119,48 +120,50 @@ export default function Home() {
   }, [navigation]);
 
   return (
-    <Container>
-      <TouchableOptions onPress={handleOnPressOptions}>
-        <Options size={4} />
-      </TouchableOptions>
-      <OptionsContainerList style={optionsContainerListStyle}>
-        {options.map((option, index) => (
-          <TouchableOption
-            key={index}
-            onPress={option.onPress}
-            disabled={!showOptionModal}
-          >
-            {option.icon}
-            <OptionListText>{option.title}</OptionListText>
-          </TouchableOption>
-        ))}
-      </OptionsContainerList>
+    <OfflineComponent>
+      <Container>
+        <TouchableOptions onPress={handleOnPressOptions}>
+          <Options size={4} />
+        </TouchableOptions>
+        <OptionsContainerList style={optionsContainerListStyle}>
+          {options.map((option, index) => (
+            <TouchableOption
+              key={index}
+              onPress={option.onPress}
+              disabled={!showOptionModal}
+            >
+              {option.icon}
+              <OptionListText>{option.title}</OptionListText>
+            </TouchableOption>
+          ))}
+        </OptionsContainerList>
 
-      <GradientContainer
-        onStartShouldSetResponder={(evt) => true}
-        onMoveShouldSetResponder={(evt) => true}
-        onResponderGrant={() => setShowOptionModal(false)}
-        onResponderMove={() => setShowOptionModal(false)}
-      >
-        <Head>
-          <Title>{greetings()}, Jegue! 🐯🏹</Title>
-          <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
-        </Head>
+        <GradientContainer
+          onStartShouldSetResponder={(evt) => true}
+          onMoveShouldSetResponder={(evt) => true}
+          onResponderGrant={() => setShowOptionModal(false)}
+          onResponderMove={() => setShowOptionModal(false)}
+        >
+          <Head>
+            <Title>{greetings()}, Jegue! 🐯🏹</Title>
+            <Subtitle marginBottom="30px">Tudo chupeta, xuxu?</Subtitle>
+          </Head>
 
-        <AnchorContainer>
-          <Anchors />
-        </AnchorContainer>
+          <AnchorContainer>
+            <Anchors />
+          </AnchorContainer>
 
-        <LatestPodcastsContainer>
-          <LatestPodcasts />
-        </LatestPodcastsContainer>
+          <LatestPodcastsContainer>
+            <LatestPodcasts />
+          </LatestPodcastsContainer>
 
-        <LikedEpisodes />
+          <LikedEpisodes />
 
-        <Shows />
+          <Shows />
 
-        <OfficialPlaylist />
-      </GradientContainer>
-    </Container>
+          <OfficialPlaylist />
+        </GradientContainer>
+      </Container>
+    </OfflineComponent>
   );
 }

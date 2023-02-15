@@ -49,9 +49,8 @@ export const FilterContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding: 0px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
+  padding: 20px ${({ theme }) => theme.DIMENSIONS.PADDING_VERTICAL};
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND};
-  margin-bottom: 15px;
 `;
 
 export const FilterButton = styled.TouchableOpacity.attrs({

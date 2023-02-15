@@ -34,6 +34,8 @@ import SeeMore from "./SeeMore";
 import CachedSvgUri from "./CachedSvgUri";
 import Comment from "./Comment";
 import Trash from "./Trash";
+import NoWiFi from "./NoWiFi";
+import OfflineComponent from "./OfflineComponent";
 
 export {
   Anchors,
@@ -72,4 +74,6 @@ export {
   CachedSvgUri,
   Comment,
   Trash,
+  NoWiFi,
+  OfflineComponent,
 };

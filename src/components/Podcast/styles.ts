@@ -1,8 +1,13 @@
 import Animated from "react-native-reanimated";
 import styled from "styled-components/native";
+import { Title as CommonTitle } from "../../styles/global";
 
 type IContainerProps = {
   isLastPodcast?: boolean;
+};
+
+type IDisabledProp = {
+  disabled?: boolean;
 };
 
 export const Container = styled.TouchableOpacity.attrs({
@@ -37,20 +42,25 @@ export const AvatarContainer = styled.View`
   margin-bottom: 10px;
 `;
 
-export const Avatar = styled.View`
+export const Avatar = styled.View<IDisabledProp>`
   width: 60px;
   height: 60px;
   border-radius: 5px;
   margin-right: 10px;
-  background-color: ${({ theme }) => theme.COLORS.SECONDARY};
+  background-color: ${({ theme }) => theme.COLORS.TOAST_BACKGROUND};
   overflow: hidden;
+  opacity: ${({ disabled }) => (disabled ? 0.8 : 1)};
+`;
+export const Title = styled(CommonTitle)<IDisabledProp>`
+  opacity: ${({ disabled }) => (disabled ? 0.8 : 1)};
 `;
 
-export const Description = styled.Text`
+export const Description = styled.Text<IDisabledProp>`
   font-family: "Poppins_400Regular";
   font-size: 12px;
   color: ${({ theme }) => theme.COLORS.TEXT_80};
   margin-bottom: 10px;
+  opacity: ${({ disabled }) => (disabled ? 0.8 : 1)};
 `;
 
 export const OptionsContainer = styled.View`
