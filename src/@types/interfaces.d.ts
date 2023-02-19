@@ -74,4 +74,8 @@ export declare global {
     podcastUrl: string;
     podcastId?: number | string;
   }
+
+  interface IPodcastDownloaded extends IPodcast {
+    episode: IEpisodeDownloaded;
+  }
 }

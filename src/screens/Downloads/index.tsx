@@ -10,7 +10,7 @@ import { ASYNC_STORAGE_KEYS } from "../../constants";
 import { Title } from "../../styles/global";
 
 export default function Downloads() {
-  const [podcasts, setPodcasts] = useState<IEpisodeDownloaded[]>([]);
+  const [podcasts, setPodcasts] = useState<IPodcastDownloaded[]>([]);
   const [loading, setLoading] = useState(true);
 
   const getDownloadedPodcast  = async () => {
@@ -21,7 +21,7 @@ export default function Downloads() {
       );
 
       if (downloadedPodcasts) {
-        setPodcasts(JSON.parse(downloadedPodcasts) as IEpisodeDownloaded[]);
+        setPodcasts(JSON.parse(downloadedPodcasts) as IPodcastDownloaded[]);
         console.log(JSON.parse(downloadedPodcasts));
       }
     } catch (error) {
@@ -50,17 +50,17 @@ export default function Downloads() {
               <>
                 {podcasts.map((podcast, index) => (
                   <Podcast
-                    key={podcast.id}
-                    id={podcast.id}
-                    podcastId={podcast.podcastId as number}
-                    titulo={podcast.title as string}
-                    data={podcast.data}
-                    descricao={podcast.description as string}
-                    isFavorite={podcast.isFavorite}
-                    slug={podcast.slug}
-                    podcastName={podcast.podcastName}
-                    thumbnail={podcast.thumbnail}
-                    podcastUrl={podcast.podcastUrl}
+                    key={podcast.episode.id}
+                    id={podcast.episode.id}
+                    podcastId={podcast.episode.podcastId as number}
+                    titulo={podcast.episode.title as string}
+                    data={podcast.episode.data}
+                    descricao={podcast.episode.description as string}
+                    isFavorite={podcast.episode.isFavorite}
+                    slug={podcast.episode.slug}
+                    podcastName={podcast.episode.podcastName}
+                    thumbnail={podcast.episode.thumbnail}
+                    podcastUrl={podcast.episode.podcastUrl}
                     isLastPodcast={podcasts.length - 1 === index}
                     onFinishDownload={getDownloadedPodcast}
                   />

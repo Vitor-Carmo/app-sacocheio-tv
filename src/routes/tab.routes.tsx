@@ -10,6 +10,7 @@ import {
   ProgramsIcon,
   LibraryIcon,
   AudioPlayer,
+  Connection,
 } from "../components";
 
 import { DIMENSIONS } from "../constants";
@@ -50,6 +51,8 @@ export default function TabRoutes() {
 
   return (
     <>
+      <Connection />
+
       <Navigator
         initialRouteName="Home"
         screenOptions={{

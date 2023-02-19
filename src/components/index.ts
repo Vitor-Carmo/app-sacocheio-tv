@@ -36,6 +36,7 @@ import Comment from "./Comment";
 import Trash from "./Trash";
 import NoWiFi from "./NoWiFi";
 import OfflineComponent from "./OfflineComponent";
+import Connection from "./Connection";
 
 export {
   Anchors,
@@ -76,4 +77,5 @@ export {
   Trash,
   NoWiFi,
   OfflineComponent,
+  Connection,
 };

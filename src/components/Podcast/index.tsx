@@ -155,6 +155,17 @@ export default function Podcast({
   };
 
   const getPodcast = async () => {
+    if (!isConnectToInternet) {
+      const downloadedPodcasts = await getDownloadedPodcasts();
+      const downloadedPodcast = downloadedPodcasts.find(
+        (podcast) => podcast.episode.id === id
+      );
+
+      if (!downloadPodcast) return null;
+
+      // this is just in case the app is offline, so whats really matter is the episode prop
+      return downloadedPodcast;
+    }
     const {
       data: { data },
     } = await cachingRequest(slug, async () =>
@@ -174,10 +185,13 @@ export default function Podcast({
     try {
       console.log("downloading ...");
       await downloadPodcast({
-        ...podcast.episode,
-        podcastUrl,
-        podcastName,
-        slug,
+        ...podcast,
+        episode: {
+          ...podcast.episode,
+          podcastUrl,
+          podcastName,
+          slug,
+        },
       });
       onFinishDownload();
       console.log("downloaded ...");
@@ -206,6 +220,15 @@ export default function Podcast({
       }
 
       const podcast = await getPodcast();
+      console.log(podcast)
+      if (!podcast) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: ERROS.NO_INTERNET_DOWNLOAD,
+        });
+        return;
+      }
       play(podcast);
     } catch (error) {
       console.error(error);
@@ -225,7 +248,7 @@ export default function Podcast({
 
     const downloadedPodcasts = JSON.parse(
       storagePodcasts ?? "[]"
-    ) as IEpisodeDownloaded[];
+    ) as IPodcastDownloaded[];
 
     return downloadedPodcasts;
   };
@@ -235,7 +258,7 @@ export default function Podcast({
       const downloadedPodcasts = await getDownloadedPodcasts();
 
       setIsDownloaded(
-        !!downloadedPodcasts.find((podcast) => podcast.id === id)
+        !!downloadedPodcasts.find((podcast) => podcast.episode.id === id)
       );
     };
 

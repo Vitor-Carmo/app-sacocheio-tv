@@ -1,5 +1,10 @@
 import { Dispatch } from "redux";
-import { Audio, AVPlaybackStatus, InterruptionModeAndroid, InterruptionModeIOS} from "expo-av";
+import {
+  Audio,
+  AVPlaybackStatus,
+  InterruptionModeAndroid,
+  InterruptionModeIOS,
+} from "expo-av";
 import {
   updatePlayerState,
   setPlayer,
@@ -10,6 +15,7 @@ import api from "../../services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNC_STORAGE_KEYS } from "../../constants";
 import { getPodcastFilePath } from "../../helpers";
+import { fetch } from "@react-native-community/netinfo";
 
 export const playPodcast = (podcast: IPodcast) => {
   return async (dispatch: Dispatch, state: () => RootState) => {
@@ -23,18 +29,20 @@ export const playPodcast = (podcast: IPodcast) => {
       );
 
       const downloadedPodcasts = downloadedPodcastsStorage
-        ? (JSON.parse(downloadedPodcastsStorage) as IEpisodeDownloaded[])
+        ? (JSON.parse(downloadedPodcastsStorage) as IPodcastDownloaded[])
         : null;
 
       if (!downloadedPodcasts) return null;
 
       return downloadedPodcasts.find(
-        (podcastDownloaded) => podcastDownloaded.id == podcast.episode.id
+        (podcastDownloaded) => podcastDownloaded.episode.id == podcast.episode.id
       );
     };
 
     const getPodcastTime = async (isPodcastDownloaded: boolean = false) => {
-      if (isPodcastDownloaded) return 0;
+      const { isConnected } = await fetch();
+
+      if (!isConnected || isPodcastDownloaded) return 0;
 
       const {
         data: { data },
@@ -71,7 +79,7 @@ export const playPodcast = (podcast: IPodcast) => {
         const { sound } = await Audio.Sound.createAsync(
           {
             uri: podcastDownloaded
-              ? getPodcastFilePath(podcastDownloaded.id)
+              ? getPodcastFilePath(podcastDownloaded.episode.id)
               : (podcast.episode.audio as string),
           },
           {
