@@ -55,9 +55,9 @@ export default function LibraryHeader({
             ))}
           </Sections>
         </HeadContent>
-        <TouchableOpacity>
+       {/*  <TouchableOpacity>
           <Play size={50} backgroundColor={COLORS.PRIMARY} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Head>
       <FilterContainer>
         <Title fontSize="18px">{route.params.filterLabel}</Title>
