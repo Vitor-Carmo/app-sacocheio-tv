@@ -8,6 +8,7 @@ import TabRoutes from "./tab.routes";
 import AuthenticationRoutes from "./authentication.routes";
 import { RootState } from "../store";
 import { useNavigationTheme } from "../hooks";
+import { Connection } from "../components";
 
 const { Navigator, Screen } = createNativeStackNavigator();
 

@@ -15,7 +15,6 @@ import {
   cancelAnimation,
 } from "react-native-reanimated";
 
-import { Title, Subtitle } from "../../styles/global";
 import {
   Container,
   PodcastContainer,
@@ -27,6 +26,7 @@ import {
   Option,
   PlayButton,
   DownloadContainer,
+  Title,
 } from "./styles";
 
 import Play from "../Play";
@@ -47,6 +47,7 @@ import cachingRequest from "../../services/cache";
 import { playPodcast } from "../../store/fetch";
 import { RootState, useTypedSelector, useTypedDispatch } from "../../store";
 import { ASYNC_STORAGE_KEYS, ERROS } from "../../constants";
+import { useNetworkInfo } from "../../hooks";
 
 export interface PodcastProps extends IEpisode {
   podcastId: number;
@@ -93,6 +94,7 @@ export default function Podcast({
   const { COLORS } = useTheme();
 
   const navigation = useNavigation();
+  const isConnectToInternet = useNetworkInfo();
 
   const downloadContainerOpacity = useSharedValue(0.02);
   const downloadContainerStyle = useAnimatedStyle(() => {
@@ -106,6 +108,20 @@ export default function Podcast({
   };
 
   const handlePressPodcast = async () => {
+    if (!isConnectToInternet) {
+      if (isDownloaded) {
+        await handlePlayPodcast();
+        return;
+      }
+
+      Toast.show({
+        type: "error",
+        text1: "Sem Acesso à Internet",
+        text2: ERROS.NO_INTERNET_DOWNLOAD,
+      });
+      return;
+    }
+
     const navigate = (podcast: IPodcast) =>
       navigation.navigate("Programs", {
         screen: "Podcast",
@@ -139,6 +155,17 @@ export default function Podcast({
   };
 
   const getPodcast = async () => {
+    if (!isConnectToInternet) {
+      const downloadedPodcasts = await getDownloadedPodcasts();
+      const downloadedPodcast = downloadedPodcasts.find(
+        (podcast) => podcast.episode.id === id
+      );
+
+      if (!downloadPodcast) return null;
+
+      // this is just in case the app is offline, so whats really matter is the episode prop
+      return downloadedPodcast;
+    }
     const {
       data: { data },
     } = await cachingRequest(slug, async () =>
@@ -158,10 +185,13 @@ export default function Podcast({
     try {
       console.log("downloading ...");
       await downloadPodcast({
-        ...podcast.episode,
-        podcastUrl,
-        podcastName,
-        slug,
+        ...podcast,
+        episode: {
+          ...podcast.episode,
+          podcastUrl,
+          podcastName,
+          slug,
+        },
       });
       onFinishDownload();
       console.log("downloaded ...");
@@ -190,6 +220,15 @@ export default function Podcast({
       }
 
       const podcast = await getPodcast();
+      console.log(podcast)
+      if (!podcast) {
+        Toast.show({
+          type: "error",
+          text1: "Erro",
+          text2: ERROS.NO_INTERNET_DOWNLOAD,
+        });
+        return;
+      }
       play(podcast);
     } catch (error) {
       console.error(error);
@@ -202,18 +241,24 @@ export default function Podcast({
     sharePodcast(titulo, podcastUrl ?? podcastName, slug);
   };
 
+  const getDownloadedPodcasts = async () => {
+    const storagePodcasts = await AsyncStorage.getItem(
+      ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
+    );
+
+    const downloadedPodcasts = JSON.parse(
+      storagePodcasts ?? "[]"
+    ) as IPodcastDownloaded[];
+
+    return downloadedPodcasts;
+  };
+
   useEffect(() => {
     const checkIfIsDownloaded = async () => {
-      const storagePodcasts = await AsyncStorage.getItem(
-        ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
-      );
-
-      const downloadedPodcasts = JSON.parse(
-        storagePodcasts ?? "[]"
-      ) as IEpisodeDownloaded[];
+      const downloadedPodcasts = await getDownloadedPodcasts();
 
       setIsDownloaded(
-        !!downloadedPodcasts.find((podcast) => podcast.id === id)
+        !!downloadedPodcasts.find((podcast) => podcast.episode.id === id)
       );
     };
 
@@ -235,6 +280,8 @@ export default function Podcast({
 
     return 0;
   };
+
+  const disabledPodcast = () => !isConnectToInternet && !isDownloaded;
 
   useEffect(() => {
     if (episodeIdThatIsDownloading === id) {
@@ -268,7 +315,7 @@ export default function Podcast({
         disabled={loading}
       >
         <AvatarContainer>
-          <Avatar>
+          <Avatar disabled={disabledPodcast()}>
             <CachedSvgUri uri={podcastIcon(podcastId)} width={60} height={60} />
           </Avatar>
           <Title
@@ -276,11 +323,14 @@ export default function Podcast({
             numberOfLines={2}
             fontSize="18px"
             color={currentPodcast?.episode?.id === id ? COLORS.PRIMARY : null}
+            disabled={disabledPodcast()}
           >
             {titulo}
           </Title>
         </AvatarContainer>
-        <Description numberOfLines={2}>{descricao}</Description>
+        <Description numberOfLines={2} disabled={disabledPodcast()}>
+          {descricao}
+        </Description>
 
         <OptionsContainer>
           <Options>

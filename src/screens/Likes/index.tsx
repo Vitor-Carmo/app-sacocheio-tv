@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Podcast from "../../components/Podcast";
 import * as Loading from "../../components/Loading";
+import OfflineComponent from "../../components/OfflineComponent";
 
 import api from "../../services/api";
 
@@ -30,34 +31,36 @@ export default function Likes() {
   }, []);
 
   return (
-    <Container>
-      {!loading ? (
-        <>
-          {podcasts.map((podcast, index) => (
-            <Podcast
-              key={podcast.episode.id}
-              id={podcast.episode.id}
-              podcastId={podcast.id}
-              titulo={podcast.episode.titulo}
-              data={podcast.episode.data}
-              descricao={podcast.episode.descricao}
-              isFavorite={podcast.episode.isFavorite}
-              slug={podcast.episode.slug}
-              podcastName={podcast.episode.podcastName}
-              thumbnail={podcast.episode.thumbnail}
-              podcastUrl={podcast.url}
-              isLastPodcast={podcasts.length - 1 === index}
-            />
-          ))}
-        </>
-      ) : (
-        <>
-          <LoadingPodcast />
-          <LoadingPodcast />
-          <LoadingPodcast />
-          <LoadingPodcast isLastPodcast />
-        </>
-      )}
-    </Container>
+    <OfflineComponent>
+      <Container>
+        {!loading ? (
+          <>
+            {podcasts.map((podcast, index) => (
+              <Podcast
+                key={podcast.episode.id}
+                id={podcast.episode.id}
+                podcastId={podcast.id}
+                titulo={podcast.episode.titulo}
+                data={podcast.episode.data}
+                descricao={podcast.episode.descricao}
+                isFavorite={podcast.episode.isFavorite}
+                slug={podcast.episode.slug}
+                podcastName={podcast.episode.podcastName}
+                thumbnail={podcast.episode.thumbnail}
+                podcastUrl={podcast.url}
+                isLastPodcast={podcasts.length - 1 === index}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            <LoadingPodcast />
+            <LoadingPodcast />
+            <LoadingPodcast />
+            <LoadingPodcast isLastPodcast />
+          </>
+        )}
+      </Container>
+    </OfflineComponent>
   );
 }

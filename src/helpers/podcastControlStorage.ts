@@ -34,25 +34,25 @@ async function ensurePodcastDirExists() {
 export const getPodcastFilePath = (id: string | number) =>
   podcastsDir + `${id}.mp3`;
 
-const getTheDownloadedPodcast = async (podcast: IEpisodeDownloaded) => {
+const getTheDownloadedPodcast = async (podcast: IPodcastDownloaded) => {
   const downloadedPodcastsStorage = await AsyncStorage.getItem(
     ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
   );
 
   const downloadedPodcasts = downloadedPodcastsStorage
-    ? (JSON.parse(downloadedPodcastsStorage) as IEpisodeDownloaded[])
+    ? (JSON.parse(downloadedPodcastsStorage) as IPodcastDownloaded[])
     : null;
 
   if (!downloadedPodcasts) return null;
 
   return downloadedPodcasts.find(
-    (podcastDownloaded) => podcastDownloaded.id == podcast.id
+    (podcastDownloaded) => podcastDownloaded.episode.id == podcast.episode.id
   );
 };
 
-export async function downloadPodcast(podcast: IEpisodeDownloaded) {
+export async function downloadPodcast(podcast: IPodcastDownloaded) {
   try {
-    if (!podcast.audio || getState().podcast.podcastDownloadResumable) {
+    if (!podcast.episode.audio || getState().podcast.podcastDownloadResumable) {
       return;
     }
 
@@ -61,17 +61,17 @@ export async function downloadPodcast(podcast: IEpisodeDownloaded) {
     const isPodcastDownloaded = !!(await getTheDownloadedPodcast(podcast));
 
     if (isPodcastDownloaded) {
-      await removePodcast(podcast.id);
+      await removePodcast(podcast.episode.id);
       return;
     }
 
     dispatch({
       type: setPodcastDownloadResumable.type,
       payload: {
-        episodeIdThatIsDownloading: podcast.id,
+        episodeIdThatIsDownloading: podcast.episode.id,
         podcastDownloadResumable: await FileSystem.createDownloadResumable(
-          podcast.audio,
-          getPodcastFilePath(podcast.id),
+          podcast.episode.audio,
+          getPodcastFilePath(podcast.episode.id),
           { cache: true },
           callback
         ),
@@ -80,7 +80,7 @@ export async function downloadPodcast(podcast: IEpisodeDownloaded) {
 
     await getState().podcast.podcastDownloadResumable?.downloadAsync();
 
-    let podcasts: string | IEpisode[] | null = await AsyncStorage.getItem(
+    let podcasts: string | IPodcast[] | null = await AsyncStorage.getItem(
       ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
     );
 
@@ -91,9 +91,9 @@ export async function downloadPodcast(podcast: IEpisodeDownloaded) {
         JSON.stringify([podcast])
       );
     } else {
-      podcasts = JSON.parse(podcasts) as IEpisode[];
+      podcasts = JSON.parse(podcasts) as IPodcast[];
       const podcastAlreadyExist = podcasts.find(
-        (podcast_) => podcast_.id === podcast.id
+        (podcast_) => podcast_.episode.id === podcast.episode.id
       );
 
       if (podcastAlreadyExist) {
@@ -148,13 +148,13 @@ export async function resumePodcast() {
 
 export async function removePodcast(id: string | number) {
   try {
-    let podcasts: string | IEpisode[] = (await AsyncStorage.getItem(
+    let podcasts: string | IPodcast[] = (await AsyncStorage.getItem(
       ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS
     )) as string;
 
-    podcasts = JSON.parse(podcasts) as IEpisode[];
+    podcasts = JSON.parse(podcasts) as IPodcast[];
 
-    podcasts = podcasts.filter((podcast) => podcast.id != id);
+    podcasts = podcasts.filter((podcast) => podcast.episode.id != id);
 
     await AsyncStorage.setItem(
       ASYNC_STORAGE_KEYS.PODCASTS_DOWNLOADS,

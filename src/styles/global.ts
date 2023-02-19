@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 export interface TitleProps {
   fontSize?: string;
   marginBottom?: string;
+  marginTop?: string;
   color?: string | null;
   flex?: "none" | number;
   align?: string;
@@ -14,6 +15,7 @@ export const Title = styled.Text<TitleProps>`
   font-size: ${({ fontSize }) => fontSize ?? "24px"};
   color: ${({ theme, color }) => color ?? theme.COLORS.TEXT};
   margin-bottom: ${({ marginBottom }) => marginBottom ?? "0px"};
+  margin-top: ${({ marginTop }) => marginTop ?? "0px"};
   text-align: ${({ align }) => align ?? "left"};
 `;
 

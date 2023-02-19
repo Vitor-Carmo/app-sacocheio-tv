@@ -53,10 +53,12 @@ import {
 } from "./styles";
 
 import { podcastIcon } from "../../helpers";
+import { useNetworkInfo } from "../../hooks";
+import { fetch } from "@react-native-community/netinfo";
 
 export default function AudioPlayer() {
   const dispatch = useTypedDispatch();
-
+  const isConnectToInternet = useNetworkInfo();
   const modalizeContainerRef = useRef<Modalize>(null);
 
   const { COLORS } = useTheme();
@@ -122,6 +124,9 @@ export default function AudioPlayer() {
 
     if (podcast) {
       const updateSaveTime = async () => {
+        const { isConnected } = await fetch()
+        if (!isConnected) return;
+
         const {
           podcast: {
             playbackState: { playbackInstancePosition },

@@ -14,4 +14,6 @@ export default {
     "Ocorreu algum erro desconhecido. Por favor, tente mais tarde!",
   UNKNOWN_DOWNLOAD_PODCAST_ERROR:
     "Ocorreu algum erro ao tentar baixar o podcast. Por favor, tente mais tarde!",
+  NO_INTERNET_DOWNLOAD:
+    "Sem Acesso à Internet. O podcast não foi baixado e não pode ser exibido sem acesso à Internet.",
 };

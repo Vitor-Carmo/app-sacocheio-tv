@@ -55,12 +55,12 @@ export default function LibraryHeader({
             ))}
           </Sections>
         </HeadContent>
-        <TouchableOpacity>
+       {/*  <TouchableOpacity>
           <Play size={50} backgroundColor={COLORS.PRIMARY} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Head>
       <FilterContainer>
-        <Title fontSize="16px">{route.params.filterLabel}</Title>
+        <Title fontSize="18px">{route.params.filterLabel}</Title>
         {/*
           <FilterButton>
             <FilterButtonTitle>Filtrar</FilterButtonTitle>
