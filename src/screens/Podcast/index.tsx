@@ -122,6 +122,7 @@ export default function Podcast() {
     answersModalizeRef.current?.close();
   };
 
+
   const onPressComment = (cod: number) => {
     setSelectedCode(cod);
     commentOptionModalizeRef.current?.open();
@@ -295,9 +296,11 @@ export default function Podcast() {
                   <Option onPress={onPressLikeButton}>
                     <Heart size={24} isLiked={isLiked} />
                   </Option>
+                {/*    
                   <Option>
                     <Download size={21} isDownloaded={isDownloaded} />
-                  </Option>
+                  </Option> 
+                */}
                 </Options>
                 <TouchableOpacity onPress={onPressPlayButton}>
                   {playbackState.isPlaying &&
